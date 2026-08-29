@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>swiftMed Kenya | Faster Healthcare, No Queues</title>
     
-    <!-- Preconnect for performance -->
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Google Fonts -->
@@ -27,7 +27,6 @@
                 <span class="logo-icon">+</span> swiftMed <span class="logo-highlight">Kenya</span>
             </div>
             
-            <!-- Hamburger Menu Icon (mobile) -->
             <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileMenu()">
                 <i class="fa-solid fa-bars"></i>
             </button>
@@ -38,7 +37,7 @@
                     <li><a href="#insurance">Insurance</a></li>
                     <li><a href="#corporate">Corporate</a></li>
                     <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#faq">FAQs</a></li>
+                    <li><a href="faq.html">FAQs</a></li>
                 </ul>
             </nav>
             
@@ -161,7 +160,7 @@
     </section>
 
     <!-- Symptom Checker -->
-    <div class="symptom-checker">
+    <div class="symptom-checker" id="symptom-checker">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
             <div>
                 <h3 style="margin-bottom: 5px;">Not sure who to see?</h3>
@@ -244,9 +243,7 @@
             <div class="corporate-form-box">
                 <h3>Request Corporate Access</h3>
                 <p>Our team will call you within 2 business hours to set up your bespoke plan.</p>
-                <!-- Multi-step form -->
                 <form id="corp-access-form" novalidate>
-                    <!-- Step 1 -->
                     <div class="form-step active" data-step="1">
                         <div class="form-group">
                             <input type="text" placeholder="HR Manager Name" required>
@@ -258,7 +255,6 @@
                         </div>
                         <button type="button" class="btn-secondary next-step">Continue</button>
                     </div>
-                    <!-- Step 2 -->
                     <div class="form-step" data-step="2" style="display:none;">
                         <div class="form-group">
                             <input type="tel" placeholder="Office Phone Number" required>
@@ -273,7 +269,6 @@
                             <button type="submit" class="btn-whatsapp" style="flex:1;">Send to Corporate Concierge</button>
                         </div>
                     </div>
-                    <!-- Progress bar -->
                     <div class="form-progress">
                         <div class="progress-bar" id="corp-progress-bar"></div>
                     </div>
@@ -283,35 +278,66 @@
         </div>
     </section>
 
-    <!-- Informative FAQ Section -->
-    <section id="faq" class="faq-section">
+    <!-- CTA Banner -->
+    <section class="cta-banner">
         <div class="container">
-            <div class="section-header">
-                <h2>Frequently Asked Questions</h2>
-                <p>Straight answers to what you're probably thinking.</p>
-            </div>
-            <div class="faq-list">
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>How do I book an appointment?</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Simple! Click the “Book Appointment” button, choose your doctor and time, and confirm. Or just WhatsApp us and we'll do it for you.</p>
-                    </div>
-                </div>
-                <!-- Rest of FAQ items (same as before) -->
+            <h2>Ready to skip the queue?</h2>
+            <p>Book your appointment now or talk to us on WhatsApp.</p>
+            <div class="hero-actions">
+                <a href="#" class="btn-primary open-booking-modal">Book in 60 Seconds</a>
+                <a href="https://wa.me/254702555093" target="_blank" class="btn-secondary">WhatsApp Us</a>
             </div>
         </div>
     </section>
 
-    <!-- Booking Modal (Full Redesign) -->
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4>swiftMed Kenya</h4>
+                <p>Nairobi's fastest healthcare. No queues, no stress.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="#insurance">Insurance</a></li>
+                    <li><a href="#corporate">Corporate</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="faq.html">FAQs</a></li>
+                    <li><a href="#" class="open-booking-modal">Book Appointment</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><i class="fa-solid fa-phone"></i> <a href="tel:+254702555093">0702 555 093</a></p>
+                <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/254702555093" target="_blank">WhatsApp Us</a></p>
+                <p><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</p>
+            </div>
+            <div class="footer-col">
+                <h4>Hours</h4>
+                <p>Mon–Fri: 8:00 AM – 8:00 PM</p>
+                <p>Sat: 9:00 AM – 6:00 PM</p>
+                <p>Sun: By appointment</p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 swiftMed Kenya. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
     <div id="booking-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
         <div class="modal-content">
             <button class="modal-close" aria-label="Close booking modal" onclick="closeBookingModal()">×</button>
             <h2 id="booking-title" class="modal-title">Book Your Appointment</h2>
 
-            <!-- Step Indicator -->
             <div class="booking-progress">
                 <span class="step-dot active" data-step="1">1</span>
                 <span class="step-line active"></span>
@@ -324,7 +350,6 @@
                 <span class="step-dot" data-step="5">5</span>
             </div>
 
-            <!-- Step 1: Appointment Type -->
             <div id="step-1" class="modal-step">
                 <h3>Select Type of Visit</h3>
                 <div class="type-select">
@@ -342,7 +367,6 @@
                 <button class="btn-primary" style="margin-top:15px" onclick="nextStep(2)">Continue</button>
             </div>
 
-            <!-- Step 2: Doctor Selection -->
             <div id="step-2" class="modal-step" style="display:none">
                 <h3>Choose Your Specialist</h3>
                 <div class="doctor-select">
@@ -373,7 +397,6 @@
                 </div>
             </div>
 
-            <!-- Step 3: Date & Time -->
             <div id="step-3" class="modal-step" style="display:none">
                 <h3>Select Date & Time</h3>
                 <div class="date-picker">
@@ -384,16 +407,13 @@
                         <option value="day-after">Day After Tomorrow</option>
                     </select>
                 </div>
-                <div class="time-slots" id="time-slots">
-                    <!-- Populated by JS -->
-                </div>
+                <div class="time-slots" id="time-slots"></div>
                 <div style="margin-top:15px; display:flex; gap:10px;">
                     <button class="btn-secondary" onclick="nextStep(2)">Back</button>
                     <button class="btn-primary" onclick="nextStep(4)">Continue</button>
                 </div>
             </div>
 
-            <!-- Step 4: Patient Details -->
             <div id="step-4" class="modal-step" style="display:none">
                 <h3>Patient Information</h3>
                 <form id="patient-form" novalidate>
@@ -403,13 +423,13 @@
                     </div>
                     <div class="form-group">
                         <input type="tel" id="patient-phone" placeholder="Phone (e.g., 07XX XXX XXX)" required pattern="^07[0-9]{8}$">
-                        <small class="error-msg">Enter a valid Kenyan phone (07XXXXXXXX).</small>
+                        <small class="error-msg">Enter a valid Kenyan phone.</small>
                     </div>
                     <div class="form-group">
                         <input type="email" id="patient-email" placeholder="Email (optional)">
                     </div>
                     <div class="form-group">
-                        <textarea id="patient-notes" placeholder="Notes for the doctor (optional)" rows="3"></textarea>
+                        <textarea id="patient-notes" placeholder="Notes (optional)" rows="3"></textarea>
                     </div>
                     <div style="margin-top:15px; display:flex; gap:10px;">
                         <button class="btn-secondary" type="button" onclick="nextStep(3)">Back</button>
@@ -418,7 +438,6 @@
                 </form>
             </div>
 
-            <!-- Step 5: Confirm & Pay -->
             <div id="step-5" class="modal-step" style="display:none">
                 <h3>Confirm Your Booking</h3>
                 <div class="booking-summary">
@@ -438,39 +457,31 @@
                         <span class="btn-text">Send STK Push</span>
                         <span class="spinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i></span>
                     </button>
-                    <small style="display:block; margin-top:10px;">You'll receive a prompt on your phone to enter your M‑PESA PIN.</small>
+                    <small style="display:block; margin-top:10px;">You'll receive a prompt to enter your PIN.</small>
                 </div>
                 <div style="margin-top:15px; display:flex; gap:10px;">
                     <button class="btn-secondary" onclick="nextStep(4)">Back</button>
                 </div>
             </div>
 
-            <!-- Step 6: Success -->
             <div id="step-6" class="modal-step" style="display:none; text-align:center;">
                 <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
                 <h3>Appointment Confirmed!</h3>
                 <p>Your booking reference is:</p>
                 <div class="booking-ref" id="booking-ref">SM-2026-XXXXXX</div>
-                <p style="margin-top:15px;">A confirmation SMS and WhatsApp will be sent shortly.</p>
+                <p style="margin-top:15px;">Confirmation will be sent shortly.</p>
                 <button class="btn-primary" onclick="closeBookingModal()">Done</button>
             </div>
         </div>
     </div>
 
-    <!-- Demo Simulation Area (Remove in Production) -->
-    <div style="margin: 50px auto; text-align: center; border: 2px dashed #ccc; padding: 20px; max-width: 600px;">
-        <h4>Module 3 Test Simulation (Backend Trigger)</h4>
-        <p>Click to simulate a post-visit check-out for "Jane Doe"</p>
-        <button onclick="triggerFeedbackCheckout('Jane Doe')" class="btn-primary">Simulate Checkout</button>
-    </div>
-
-    <!-- Add-on 4: Emergency Ambulance Quick Action -->
+    <!-- Emergency FAB and Toast Container -->
     <div class="emergency-fab-container">
         <div id="emergency-menu" class="emergency-menu">
             <a href="tel:+254702555093" class="emergency-option call-option">
                 <i class="fa-solid fa-phone-volume"></i> Call Ambulance
             </a>
-            <a href="https://wa.me/254702555093?text=EMERGENCY%20AMBULANCE%20REQUEST%20-%20Sending%20my%20live%20location.%20Please%20dispatch%20immediately." target="_blank" class="emergency-option wa-option">
+            <a href="https://wa.me/254702555093?text=EMERGENCY%20AMBULANCE%20REQUEST" target="_blank" class="emergency-option wa-option">
                 <i class="fa-brands fa-whatsapp"></i> WhatsApp Location
             </a>
         </div>
@@ -479,54 +490,10 @@
         </button>
     </div>
 
-    <!-- Back-to-Top Button -->
     <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="container footer-grid">
-            <div class="footer-col">
-                <h4>swiftMed Kenya</h4>
-                <p>Nairobi's fastest healthcare. No queues, no stress.</p>
-                <div class="social-links">
-                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                </div>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="services.html">Services</a></li>
-                    <li><a href="#insurance">Insurance</a></li>
-                    <li><a href="#corporate">Corporate</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#faq">FAQs</a></li>
-                    <li><a href="#" class="open-booking-modal">Book Appointment</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Contact</h4>
-                <p><i class="fa-solid fa-phone"></i> <a href="tel:+254702555093">0702 555 093</a></p>
-                <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/254702555093" target="_blank">WhatsApp Us</a></p>
-                <p><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</p>
-            </div>
-            <div class="footer-col">
-                <h4>Hours</h4>
-                <p>Mon–Fri: 8:00 AM – 8:00 PM</p>
-                <p>Sat: 9:00 AM – 6:00 PM</p>
-                <p>Sun: By appointment</p>
-            </div>
-        </div>
-        <div class="container footer-bottom">
-            <p>&copy; 2026 swiftMed Kenya. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Toast Notification Container -->
     <div id="toast-container"></div>
 
     <script src="app.js" defer></script>

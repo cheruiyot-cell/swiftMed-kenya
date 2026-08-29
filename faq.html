@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs | swiftMed Kenya</title>
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Global Sticky Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo">
+                <span class="logo-icon">+</span> swiftMed <span class="logo-highlight">Kenya</span>
+            </div>
+            
+            <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            
+            <nav id="mobile-nav">
+                <ul>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="index.html#insurance">Insurance</a></li>
+                    <li><a href="index.html#corporate">Corporate</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="faq.html">FAQs</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-cta" id="header-cta">
+                <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya,%20I%20want%20to%20book%20an%20appointment." target="_blank" class="btn-whatsapp">WhatsApp Us</a>
+                <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <p class="tagline">All Your Questions Answered</p>
+            <h1>Frequently Asked Questions</h1>
+            <p class="subtext">Straight answers to what you're probably thinking.</p>
+            <div class="hero-actions">
+                <a href="#" class="btn-primary open-booking-modal">Book Now</a>
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed,%20I%20have%20a%20question." target="_blank" class="btn-secondary">Ask on WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Content -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-list">
+                <!-- Category: Booking & Appointments -->
+                <div class="faq-category">
+                    <h3>Booking & Appointments</h3>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do I book an appointment?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Simple! Click the “Book Appointment” button anywhere on the site, follow the steps, and confirm. Or just WhatsApp us at 0702 555 093 and we'll handle it for you in a minute.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I book for someone else?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, absolutely. During booking, just enter the patient's name and phone number. You can pay using your own M-PESA.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I reschedule or cancel?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Of course! WhatsApp or call us at least 2 hours before your appointment and we'll move it or cancel it – no charge.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What happens if I'm late for my appointment?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We'll do our best to see you, but if you're more than 15 minutes late, we may need to reschedule to avoid holding up other patients. That's why we promise zero wait – we respect everyone's time.</p>
+                    </div>
+                </div>
+
+                <!-- Category: Insurance & Payment -->
+                <div class="faq-category">
+                    <h3>Insurance & Payment</h3>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Do you accept my insurance? (SHA, AAR, Jubilee)</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, we work with all major insurers in Kenya: SHA, AAR, Jubilee, and others. Use the “Verify My Coverage” widget on the homepage and we'll confirm instantly.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What if my insurance doesn't cover my treatment?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No worries. We'll explain the cost upfront before any treatment. You can choose to pay out-of-pocket via M-PESA or explore alternatives. We're transparent – no surprises.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How much do consultations cost?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>General consultation is KES 2,500. Specialist consultation starts at KES 3,000. Teleconsult is KES 2,500. You'll always see the exact fee before you confirm your booking.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do I pay?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We accept M-PESA, all major cards, and corporate invoicing. You'll get an STK push on your phone – just enter your PIN and you're done.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Do you offer a receipt for insurance claims?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, every payment comes with an official receipt that you can present to your insurer. For corporate clients, we provide detailed billing statements automatically.</p>
+                    </div>
+                </div>
+
+                <!-- Category: Wait Times & Efficiency -->
+                <div class="faq-category">
+                    <h3>Wait Times & Efficiency</h3>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How long will I actually wait?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Zero minutes. That's our promise. You book a specific time slot, you arrive at that time, and the doctor sees you immediately. The live ticker at the top shows current wait times – you'll see it's always 0.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do you guarantee zero waiting?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We use a strict booking system that allocates exact time slots for each patient. Our doctors are never double-booked, and we prepare your consultation in advance. If we're ever running late, we'll let you know immediately and offer an alternative.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What if I need to walk in without booking?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We highly recommend booking to guarantee a slot. However, if you walk in, we'll check the live waitlist. If there's a free slot, we'll see you right away; otherwise we'll book you for the next available time – it's usually within 30 minutes.</p>
+                    </div>
+                </div>
+
+                <!-- Category: Teleconsult -->
+                <div class="faq-category">
+                    <h3>Teleconsult</h3>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does teleconsult work?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>After booking, you'll receive a video call link via WhatsApp/SMS. At your scheduled time, click the link and you'll be connected to your doctor. You'll get a prescription and any follow-up notes digitally.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I get a lab test done after a teleconsult?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. If the doctor orders tests, you can visit our lab at your convenience – no need to book. You'll receive results via WhatsApp within a few hours.</p>
+                    </div>
+                </div>
+
+                <!-- Category: Corporate -->
+                <div class="faq-category">
+                    <h3>Corporate</h3>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do I set up corporate access?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Fill out the “Request Corporate Access” form on the homepage, or WhatsApp us. Our team will call you within 2 business hours to set up your bespoke plan and give you a dashboard login.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I get a consolidated bill for my employees?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, we provide monthly consolidated invoices, automated insurance billing, and quarterly anonymized wellness reports for your HR team.</p>
+                    </div>
+                </div>
+
+                <!-- Category: Emergencies -->
+                <div class="faq-category">
+                    <h3>Emergencies</h3>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What if I have a medical emergency?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Call our emergency line immediately at 0702 555 093, or use the red ambulance button on the bottom left of every page. We'll dispatch an ambulance right away and guide you over the phone.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Are you open 24/7 for emergencies?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our ambulance and urgent care services are available 24/7. For regular appointments, our hours are Mon–Fri 8:00–20:00, Sat 9:00–18:00, Sun by appointment.</p>
+                    </div>
+                </div>
+
+                <!-- Category: General -->
+                <div class="faq-category">
+                    <h3>General</h3>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Where are you located?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We're in the heart of Nairobi, easily accessible from CBD, Westlands, and Upper Hill. You'll get exact directions when you book.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do I know which doctor is right for me?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Use the symptom checker on the homepage, or describe your symptoms on WhatsApp. We'll recommend the best specialist for you.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Will my data be kept private?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, absolutely. We comply with the Kenya Data Protection Act. All medical records are encrypted and only shared with your direct care team.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I get my medical records?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, just request them via WhatsApp and we'll send you digital copies of your prescriptions, lab results, and reports.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Still Have Questions? CTA -->
+    <section class="cta-banner">
+        <div class="container">
+            <h2>Still have questions?</h2>
+            <p>We're one WhatsApp message away – talk to a real human.</p>
+            <div class="hero-actions">
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed,%20I%20have%20a%20question." target="_blank" class="btn-whatsapp">Chat on WhatsApp</a>
+                <a href="tel:+254702555093" class="btn-primary">Call Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4>swiftMed Kenya</h4>
+                <p>Nairobi's fastest healthcare. No queues, no stress.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="index.html#insurance">Insurance</a></li>
+                    <li><a href="index.html#corporate">Corporate</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="faq.html">FAQs</a></li>
+                    <li><a href="#" class="open-booking-modal">Book Appointment</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><i class="fa-solid fa-phone"></i> <a href="tel:+254702555093">0702 555 093</a></p>
+                <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/254702555093" target="_blank">WhatsApp Us</a></p>
+                <p><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</p>
+            </div>
+            <div class="footer-col">
+                <h4>Hours</h4>
+                <p>Mon–Fri: 8:00 AM – 8:00 PM</p>
+                <p>Sat: 9:00 AM – 6:00 PM</p>
+                <p>Sun: By appointment</p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 swiftMed Kenya. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Booking Modal (for CTAs) -->
+    <div id="booking-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close booking modal" onclick="closeBookingModal()">×</button>
+            <h2 id="booking-title" class="modal-title">Book Your Appointment</h2>
+
+            <div class="booking-progress">
+                <span class="step-dot active" data-step="1">1</span>
+                <span class="step-line active"></span>
+                <span class="step-dot" data-step="2">2</span>
+                <span class="step-line"></span>
+                <span class="step-dot" data-step="3">3</span>
+                <span class="step-line"></span>
+                <span class="step-dot" data-step="4">4</span>
+                <span class="step-line"></span>
+                <span class="step-dot" data-step="5">5</span>
+            </div>
+
+            <div id="step-1" class="modal-step">
+                <h3>Select Type of Visit</h3>
+                <div class="type-select">
+                    <button class="type-card" onclick="setApptType('in-clinic', this)">
+                        <i class="fa-solid fa-hospital"></i>
+                        <span>In‑Clinic</span>
+                        <small>Visit us at our office</small>
+                    </button>
+                    <button class="type-card" onclick="setApptType('teleconsult', this)">
+                        <i class="fa-solid fa-video"></i>
+                        <span>Teleconsult</span>
+                        <small>Video consultation</small>
+                    </button>
+                </div>
+                <button class="btn-primary" style="margin-top:15px" onclick="nextStep(2)">Continue</button>
+            </div>
+
+            <div id="step-2" class="modal-step" style="display:none">
+                <h3>Choose Your Specialist</h3>
+                <div class="doctor-select">
+                    <button class="doctor-card" onclick="setDoctor('Dr. Mwangi', this)">
+                        <img src="https://via.placeholder.com/100" alt="Dr. Mwangi" loading="lazy">
+                        <strong>Dr. Mwangi</strong>
+                        <small>General Physician</small>
+                    </button>
+                    <button class="doctor-card" onclick="setDoctor('Dr. Achieng', this)">
+                        <img src="https://via.placeholder.com/100" alt="Dr. Achieng" loading="lazy">
+                        <strong>Dr. Achieng</strong>
+                        <small>Cardiologist</small>
+                    </button>
+                    <button class="doctor-card" onclick="setDoctor('Dr. Kamau', this)">
+                        <img src="https://via.placeholder.com/100" alt="Dr. Kamau" loading="lazy">
+                        <strong>Dr. Kamau</strong>
+                        <small>Pediatrician</small>
+                    </button>
+                    <button class="doctor-card" onclick="setDoctor('Dr. Otieno', this)">
+                        <img src="https://via.placeholder.com/100" alt="Dr. Otieno" loading="lazy">
+                        <strong>Dr. Otieno</strong>
+                        <small>Dermatologist</small>
+                    </button>
+                </div>
+                <div style="margin-top:15px; display:flex; gap:10px;">
+                    <button class="btn-secondary" onclick="nextStep(1)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(3)">Continue</button>
+                </div>
+            </div>
+
+            <div id="step-3" class="modal-step" style="display:none">
+                <h3>Select Date & Time</h3>
+                <div class="date-picker">
+                    <label for="booking-date">Date</label>
+                    <select id="booking-date" onchange="generateTimeSlots()">
+                        <option value="today">Today</option>
+                        <option value="tomorrow">Tomorrow</option>
+                        <option value="day-after">Day After Tomorrow</option>
+                    </select>
+                </div>
+                <div class="time-slots" id="time-slots"></div>
+                <div style="margin-top:15px; display:flex; gap:10px;">
+                    <button class="btn-secondary" onclick="nextStep(2)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(4)">Continue</button>
+                </div>
+            </div>
+
+            <div id="step-4" class="modal-step" style="display:none">
+                <h3>Patient Information</h3>
+                <form id="patient-form" novalidate>
+                    <div class="form-group">
+                        <input type="text" id="patient-fullname" placeholder="Full Name" required>
+                        <small class="error-msg">Name is required.</small>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="patient-phone" placeholder="Phone (e.g., 07XX XXX XXX)" required pattern="^07[0-9]{8}$">
+                        <small class="error-msg">Enter a valid Kenyan phone.</small>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="patient-email" placeholder="Email (optional)">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="patient-notes" placeholder="Notes (optional)" rows="3"></textarea>
+                    </div>
+                    <div style="margin-top:15px; display:flex; gap:10px;">
+                        <button class="btn-secondary" type="button" onclick="nextStep(3)">Back</button>
+                        <button type="submit" class="btn-primary">Review Booking</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="step-5" class="modal-step" style="display:none">
+                <h3>Confirm Your Booking</h3>
+                <div class="booking-summary">
+                    <p><strong>Type:</strong> <span id="summary-type"></span></p>
+                    <p><strong>Doctor:</strong> <span id="summary-doctor"></span></p>
+                    <p><strong>Date:</strong> <span id="summary-date"></span></p>
+                    <p><strong>Time:</strong> <span id="summary-time"></span></p>
+                    <p><strong>Patient:</strong> <span id="summary-patient"></span></p>
+                    <p><strong>Phone:</strong> <span id="summary-phone"></span></p>
+                    <p><strong>Fee:</strong> <span id="summary-fee"></span></p>
+                </div>
+                <div class="mpesa-card">
+                    <i class="fa-solid fa-mobile-screen" style="font-size: 3rem; color: #25D366; margin-bottom: 10px;"></i>
+                    <h3>M‑PESA Payment</h3>
+                    <p>A payment request will be sent to <strong id="mpesa-phone"></strong>.</p>
+                    <button class="btn-whatsapp" id="pay-btn" onclick="simulatePayment()">
+                        <span class="btn-text">Send STK Push</span>
+                        <span class="spinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                    </button>
+                    <small style="display:block; margin-top:10px;">You'll receive a prompt to enter your PIN.</small>
+                </div>
+                <div style="margin-top:15px; display:flex; gap:10px;">
+                    <button class="btn-secondary" onclick="nextStep(4)">Back</button>
+                </div>
+            </div>
+
+            <div id="step-6" class="modal-step" style="display:none; text-align:center;">
+                <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
+                <h3>Appointment Confirmed!</h3>
+                <p>Your booking reference is:</p>
+                <div class="booking-ref" id="booking-ref">SM-2026-XXXXXX</div>
+                <p style="margin-top:15px;">Confirmation will be sent shortly.</p>
+                <button class="btn-primary" onclick="closeBookingModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency FAB and Toast Container -->
+    <div class="emergency-fab-container">
+        <div id="emergency-menu" class="emergency-menu">
+            <a href="tel:+254702555093" class="emergency-option call-option">
+                <i class="fa-solid fa-phone-volume"></i> Call Ambulance
+            </a>
+            <a href="https://wa.me/254702555093?text=EMERGENCY%20AMBULANCE%20REQUEST" target="_blank" class="emergency-option wa-option">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp Location
+            </a>
+        </div>
+        <button class="emergency-fab" aria-label="Emergency ambulance options" onclick="toggleEmergencyMenu()">
+            <i class="fa-solid fa-truck-medical"></i>
+        </button>
+    </div>
+
+    <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <div id="toast-container"></div>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
