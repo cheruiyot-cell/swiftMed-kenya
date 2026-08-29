@@ -108,8 +108,15 @@
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
                 </ul>
+                <!-- Mobile-only CTA inside nav -->
+                <div class="header-cta mobile-only" id="header-cta-mobile">
+                    <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
+                    <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya,%20I%20want%20to%20book%20an%20appointment." target="_blank" class="btn-whatsapp">WhatsApp Us</a>
+                    <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
+                </div>
             </nav>
             
+            <!-- Desktop CTA -->
             <div class="header-cta" id="header-cta">
                 <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
                 <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya,%20I%20want%20to%20book%20an%20appointment." target="_blank" class="btn-whatsapp">WhatsApp Us</a>
@@ -357,7 +364,7 @@
                         </div>
                         <button type="button" class="btn-secondary next-step">Continue</button>
                     </div>
-                    <div class="form-step" data-step="2" style="display:none;">
+                    <div class="form-step" data-step="2">
                         <div class="form-group">
                             <input type="tel" placeholder="Office Phone Number" required>
                             <small class="error-msg">Please enter a valid phone number.</small>
@@ -446,16 +453,28 @@
             <h2 id="booking-title" class="modal-title">Book Your Appointment</h2>
 
             <div class="booking-progress">
-                <span class="step-dot active" data-step="1">1</span>
+                <div class="step-group">
+                    <span class="step-dot active" data-step="1">1</span>
+                    <span class="step-label">Type</span>
+                </div>
                 <span class="step-line active"></span>
-                <span class="step-dot" data-step="2">2</span>
+                <div class="step-group">
+                    <span class="step-dot" data-step="2">2</span>
+                    <span class="step-label">Time</span>
+                </div>
                 <span class="step-line"></span>
-                <span class="step-dot" data-step="3">3</span>
+                <div class="step-group">
+                    <span class="step-dot" data-step="3">3</span>
+                    <span class="step-label">Pay</span>
+                </div>
                 <span class="step-line"></span>
-                <span class="step-dot" data-step="4">✓</span>
+                <div class="step-group">
+                    <span class="step-dot" data-step="4">✓</span>
+                    <span class="step-label">Done</span>
+                </div>
             </div>
 
-            <div id="step-1" class="modal-step">
+            <div id="step-1" class="modal-step active">
                 <h3>Select Type & Doctor</h3>
                 <div class="type-select">
                     <button class="type-card" onclick="setApptType('in-clinic', this)">
@@ -469,7 +488,7 @@
                         <small>Video consultation</small>
                     </button>
                 </div>
-                <div class="doctor-select" style="margin-top: 15px;">
+                <div class="doctor-select mt-3">
                     <button class="doctor-card" onclick="setDoctor('Dr. Mwangi', this)">
                         <img src="https://via.placeholder.com/100" alt="Dr. Mwangi" loading="lazy">
                         <strong>Dr. Mwangi</strong>
@@ -491,10 +510,10 @@
                         <small>Dermatologist</small>
                     </button>
                 </div>
-                <button class="btn-primary" style="margin-top:15px" onclick="nextStep(2)">Continue</button>
+                <button class="btn-primary mt-3" onclick="nextStep(2)">Continue</button>
             </div>
 
-            <div id="step-2" class="modal-step" style="display:none">
+            <div id="step-2" class="modal-step">
                 <h3>Select Date & Time</h3>
                 <div class="date-picker">
                     <label for="booking-date">Date</label>
@@ -506,7 +525,7 @@
                 </div>
                 <div class="time-slots" id="time-slots"></div>
 
-                <h3 style="margin-top:20px;">Patient Information</h3>
+                <h3 class="mt-3">Patient Information</h3>
                 <form id="patient-form" novalidate>
                     <div class="form-group">
                         <input type="text" id="patient-fullname" placeholder="Full Name" required>
@@ -524,13 +543,13 @@
                     </div>
                 </form>
 
-                <div style="margin-top:15px; display:flex; gap:10px;">
+                <div class="mt-3" style="display:flex; gap:10px;">
                     <button class="btn-secondary" onclick="nextStep(1)">Back</button>
                     <button class="btn-primary" onclick="nextStep(3)">Continue</button>
                 </div>
             </div>
 
-            <div id="step-3" class="modal-step" style="display:none">
+            <div id="step-3" class="modal-step">
                 <h3>Confirm & Pay</h3>
                 <div class="booking-summary">
                     <p><strong>Type:</strong> <span id="summary-type"></span></p>
@@ -551,17 +570,17 @@
                     </button>
                     <small style="display:block; margin-top:10px;">You'll receive a prompt to enter your PIN.</small>
                 </div>
-                <div style="margin-top:15px; display:flex; gap:10px;">
+                <div class="mt-3" style="display:flex; gap:10px;">
                     <button class="btn-secondary" onclick="nextStep(2)">Back</button>
                 </div>
             </div>
 
-            <div id="step-4" class="modal-step" style="display:none; text-align:center;">
+            <div id="step-4" class="modal-step text-center">
                 <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
                 <h3>Appointment Confirmed!</h3>
                 <p>Your booking reference is:</p>
                 <div class="booking-ref" id="booking-ref">SM-2026-XXXXXX</div>
-                <p style="margin-top:15px;">Confirmation will be sent shortly.</p>
+                <p class="mt-3">Confirmation will be sent shortly.</p>
                 <button class="btn-primary" onclick="closeBookingModal()">Done</button>
             </div>
         </div>

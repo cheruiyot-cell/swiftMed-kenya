@@ -19,9 +19,11 @@ function throttle(func, limit = 100) {
 function closeMobileMenu() {
   const nav = document.getElementById('mobile-nav');
   const cta = document.getElementById('header-cta');
+  const ctaMobile = document.getElementById('header-cta-mobile');
   const hamburger = document.querySelector('.hamburger');
   nav.classList.remove('open');
-  cta.classList.remove('open');
+  if (cta) cta.classList.remove('open');
+  if (ctaMobile) ctaMobile.classList.remove('open');
   hamburger.setAttribute('aria-expanded', 'false');
   hamburger.querySelector('i').className = 'fa-solid fa-bars';
 }
@@ -29,11 +31,13 @@ function closeMobileMenu() {
 function toggleMobileMenu() {
   const nav = document.getElementById('mobile-nav');
   const cta = document.getElementById('header-cta');
+  const ctaMobile = document.getElementById('header-cta-mobile');
   const hamburger = document.querySelector('.hamburger');
   const isOpen = !nav.classList.contains('open');
   if (isOpen) {
     nav.classList.add('open');
-    cta.classList.add('open');
+    if (ctaMobile) ctaMobile.classList.add('open');
+    if (cta) cta.classList.remove('open'); // hide desktop CTA on mobile
     hamburger.setAttribute('aria-expanded', 'true');
     hamburger.querySelector('i').className = 'fa-solid fa-xmark';
   } else { closeMobileMenu(); }
@@ -42,9 +46,8 @@ function toggleMobileMenu() {
 document.addEventListener('click', (e) => {
   if (window.innerWidth <= 768) {
     const nav = document.getElementById('mobile-nav');
-    const cta = document.getElementById('header-cta');
     const isMenuOpen = nav.classList.contains('open');
-    if (isMenuOpen && !e.target.closest('.hamburger') && !e.target.closest('#mobile-nav') && !e.target.closest('#header-cta')) {
+    if (isMenuOpen && !e.target.closest('.hamburger') && !e.target.closest('#mobile-nav') && !e.target.closest('#header-cta-mobile')) {
       closeMobileMenu();
     }
   }
@@ -76,11 +79,11 @@ document.getElementById('insurance-form').addEventListener('submit', function (e
   const provider = document.getElementById('provider').value;
   const memberId = document.getElementById('member-id').value.trim();
 
-  document.querySelectorAll('.error-msg').forEach((el) => (el.style.display = 'none'));
+  document.querySelectorAll('.error-msg').forEach((el) => el.classList.remove('visible'));
   let hasError = false;
-  if (!name) { document.getElementById('name-error').style.display = 'block'; hasError = true; }
-  if (!provider) { document.getElementById('provider-error').style.display = 'block'; hasError = true; }
-  if (!memberId) { document.getElementById('member-error').style.display = 'block'; hasError = true; }
+  if (!name) { document.getElementById('name-error').classList.add('visible'); hasError = true; }
+  if (!provider) { document.getElementById('provider-error').classList.add('visible'); hasError = true; }
+  if (!memberId) { document.getElementById('member-error').classList.add('visible'); hasError = true; }
   if (hasError) { showToast('Please fill in all required fields.', 'error'); return; }
 
   const verifyBtn = document.getElementById('verify-btn');
@@ -165,8 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const currentFields = document.querySelector(`.form-step[data-step="${currentStep}"]`).querySelectorAll('input');
       let valid = true;
       currentFields.forEach(field => {
-        if (!field.value.trim()) { field.classList.add('invalid'); const error = field.parentElement.querySelector('.error-msg'); if (error) error.style.display = 'block'; valid = false; }
-        else { field.classList.remove('invalid'); const error = field.parentElement.querySelector('.error-msg'); if (error) error.style.display = 'none'; }
+        if (!field.value.trim()) { field.classList.add('invalid'); const error = field.parentElement.querySelector('.error-msg'); if (error) error.classList.add('visible'); valid = false; }
+        else { field.classList.remove('invalid'); const error = field.parentElement.querySelector('.error-msg'); if (error) error.classList.remove('visible'); }
       });
       if (valid) showStep(currentStep + 1);
     });
@@ -252,8 +255,8 @@ function nextStep(step) {
     document.getElementById('mpesa-phone').innerText = bookingState.patient.phone;
     document.getElementById('summary-fee').innerText = `KES ${bookingState.fee.toLocaleString()}`;
   }
-  document.querySelectorAll('.modal-step').forEach(s => s.style.display = 'none');
-  document.getElementById('step-' + step).style.display = 'block';
+  document.querySelectorAll('.modal-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + step).classList.add('active');
   updateProgress(step);
   if (step === 2 && !document.querySelector('.slot-btn')) generateTimeSlots();
 }
@@ -277,8 +280,8 @@ function simulatePayment() {
     const ref = 'SM-' + new Date().getFullYear() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
     document.getElementById('booking-ref').innerText = ref;
     showToast('M-PESA payment confirmed! Booking secured.', 'success');
-    document.querySelectorAll('.modal-step').forEach(s => s.style.display = 'none');
-    document.getElementById('step-4').style.display = 'block';
+    document.querySelectorAll('.modal-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-4').classList.add('active');
     updateProgress(4);
     payBtn.disabled = false;
     btnText.textContent = 'Send STK Push';
@@ -301,10 +304,10 @@ function openBookingModal() {
   resetBookingModal();
   const modal = document.getElementById('booking-modal');
   modal.classList.add('active');
-  document.getElementById('step-1').style.display = 'block';
-  document.getElementById('step-2').style.display = 'none';
-  document.getElementById('step-3').style.display = 'none';
-  document.getElementById('step-4').style.display = 'none';
+  document.getElementById('step-1').classList.add('active');
+  document.getElementById('step-2').classList.remove('active');
+  document.getElementById('step-3').classList.remove('active');
+  document.getElementById('step-4').classList.remove('active');
   updateProgress(1);
   const firstInput = document.querySelector('#step-1 input, #step-1 select, #step-1 button');
   if (firstInput) firstInput.focus();
@@ -327,30 +330,29 @@ function toggleEmergencyMenu() {
   document.getElementById('emergency-menu').classList.toggle('active');
 }
 
-/* ==================== Emergency Location Sharing ==================== */
 function sendEmergencyLocation() {
-    showToast('Requesting your location...', 'success');
-    
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-                const message = `EMERGENCY AMBULANCE REQUEST\n\nMy current location:\n${mapsLink}\n\nCoordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                openWhatsApp(message);
-            },
-            function(error) {
-                console.error('Geolocation error:', error);
-                showToast('Could not get location. Please share your location manually.', 'error');
-                openWhatsApp('EMERGENCY AMBULANCE REQUEST. I cannot share my live location. Please call me.');
-            },
-            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-        );
-    } else {
-        showToast('Geolocation not supported. Please share your location manually.', 'error');
+  showToast('Requesting your location...', 'success');
+  
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+        const message = `EMERGENCY AMBULANCE REQUEST\n\nMy current location:\n${mapsLink}\n\nCoordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        openWhatsApp(message);
+      },
+      function(error) {
+        console.error('Geolocation error:', error);
+        showToast('Could not get location. Please share your location manually.', 'error');
         openWhatsApp('EMERGENCY AMBULANCE REQUEST. I cannot share my live location. Please call me.');
-    }
+      },
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+    );
+  } else {
+    showToast('Geolocation not supported. Please share your location manually.', 'error');
+    openWhatsApp('EMERGENCY AMBULANCE REQUEST. I cannot share my live location. Please call me.');
+  }
 }
 
 /* ==================== FAQ Toggle ==================== */
@@ -399,6 +401,15 @@ function sendChatMessage() {
   sentMsg.innerHTML = `<p>${message}</p>`;
   chatBody.appendChild(sentMsg);
   chatBody.scrollTop = chatBody.scrollHeight;
+
+  // Auto bot reply after 1s
+  setTimeout(() => {
+    const botMsg = document.createElement('div');
+    botMsg.className = 'chat-message bot-message';
+    botMsg.innerHTML = `<p>Thanks! We'll connect you via WhatsApp. For urgent issues, call <strong>0702 555 093</strong>.</p>`;
+    chatBody.appendChild(botMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 1000);
 }
 
 /* ==================== Recent Bookings Widget ==================== */
