@@ -327,6 +327,32 @@ function toggleEmergencyMenu() {
   document.getElementById('emergency-menu').classList.toggle('active');
 }
 
+/* ==================== Emergency Location Sharing ==================== */
+function sendEmergencyLocation() {
+    showToast('Requesting your location...', 'success');
+    
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+                const message = `EMERGENCY AMBULANCE REQUEST\n\nMy current location:\n${mapsLink}\n\nCoordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                openWhatsApp(message);
+            },
+            function(error) {
+                console.error('Geolocation error:', error);
+                showToast('Could not get location. Please share your location manually.', 'error');
+                openWhatsApp('EMERGENCY AMBULANCE REQUEST. I cannot share my live location. Please call me.');
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+    } else {
+        showToast('Geolocation not supported. Please share your location manually.', 'error');
+        openWhatsApp('EMERGENCY AMBULANCE REQUEST. I cannot share my live location. Please call me.');
+    }
+}
+
 /* ==================== FAQ Toggle ==================== */
 function toggleFaq(button) {
   const answer = button.nextElementSibling;
