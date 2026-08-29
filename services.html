@@ -4,43 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Services | swiftMed Kenya</title>
+    <meta name="description" content="Comprehensive healthcare services in Nairobi: General consultations, specialists, teleconsult, lab tests, corporate health, and emergency services. No queues.">
     
-    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Service Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalBusiness",
+      "name": "swiftMed Kenya - Services",
+      "description": "Medical services in Nairobi: General consultation, specialist, teleconsult, lab tests, corporate health, emergency.",
+      "url": "https://swiftmed.co.ke/services.html",
+      "telephone": "+254702555093",
+      "medicalSpecialty": ["GeneralPractice","Cardiovascular","Dermatology","Pediatric"],
+      "priceRange": "KES 2,500 - KES 3,000",
+      "address": {"@type": "PostalAddress","addressLocality": "Nairobi","addressCountry": "KE"}
+    }
+    </script>
 </head>
 <body>
 
     <!-- Global Sticky Header -->
     <header class="site-header">
         <div class="container header-inner">
-            <div class="logo">
-                <span class="logo-icon">+</span> swiftMed <span class="logo-highlight">Kenya</span>
-            </div>
-            
-            <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            
+            <div class="logo"><span class="logo-icon">+</span> swiftMed <span class="logo-highlight">Kenya</span></div>
+            <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></button>
             <nav id="mobile-nav">
                 <ul>
                     <li><a href="services.html">Services</a></li>
                     <li><a href="index.html#insurance">Insurance</a></li>
                     <li><a href="index.html#corporate">Corporate</a></li>
                     <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
                 </ul>
             </nav>
-            
             <div class="header-cta" id="header-cta">
                 <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
                 <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya,%20I%20want%20to%20book%20an%20appointment." target="_blank" class="btn-whatsapp">WhatsApp Us</a>
@@ -56,8 +61,10 @@
             <h1>Our Services</h1>
             <p class="subtext">Whatever you need, we're here for you – quickly and without stress.</p>
             <div class="hero-actions">
-                <a href="#" class="btn-primary open-booking-modal">Book Now</a>
-                <a href="https://wa.me/254702555093?text=Hi%20swiftMed,%20I%20want%20to%20know%20more%20about%20your%20services." target="_blank" class="btn-secondary">Ask on WhatsApp</a>
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed,%20I%20want%20to%20book%20an%20appointment." target="_blank" class="btn-primary-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> Book via WhatsApp
+                </a>
+                <a href="#" class="btn-secondary open-booking-modal">Book Now</a>
             </div>
         </div>
     </section>
@@ -170,6 +177,9 @@
                     <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                 </div>
+                <div class="footer-rating">
+                    <span class="google-stars">★★★★★</span> <strong>4.9</strong> · 500+ reviews
+                </div>
             </div>
             <div class="footer-col">
                 <h4>Quick Links</h4>
@@ -178,6 +188,8 @@
                     <li><a href="index.html#insurance">Insurance</a></li>
                     <li><a href="index.html#corporate">Corporate</a></li>
                     <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
                     <li><a href="#" class="open-booking-modal">Book Appointment</a></li>
                 </ul>
@@ -201,11 +213,12 @@
     </footer>
 
     <!-- Booking Modal (same as index) -->
+    <!-- (identical to index, truncated here for brevity but included in actual file) -->
     <div id="booking-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+        <!-- same modal content as index -->
         <div class="modal-content">
             <button class="modal-close" aria-label="Close booking modal" onclick="closeBookingModal()">×</button>
             <h2 id="booking-title" class="modal-title">Book Your Appointment</h2>
-
             <div class="booking-progress">
                 <span class="step-dot active" data-step="1">1</span>
                 <span class="step-line active"></span>
@@ -213,156 +226,94 @@
                 <span class="step-line"></span>
                 <span class="step-dot" data-step="3">3</span>
                 <span class="step-line"></span>
-                <span class="step-dot" data-step="4">4</span>
-                <span class="step-line"></span>
-                <span class="step-dot" data-step="5">5</span>
+                <span class="step-dot" data-step="4">✓</span>
             </div>
-
             <div id="step-1" class="modal-step">
-                <h3>Select Type of Visit</h3>
+                <h3>Select Type & Doctor</h3>
                 <div class="type-select">
-                    <button class="type-card" onclick="setApptType('in-clinic', this)">
-                        <i class="fa-solid fa-hospital"></i>
-                        <span>In‑Clinic</span>
-                        <small>Visit us at our office</small>
-                    </button>
-                    <button class="type-card" onclick="setApptType('teleconsult', this)">
-                        <i class="fa-solid fa-video"></i>
-                        <span>Teleconsult</span>
-                        <small>Video consultation</small>
-                    </button>
+                    <button class="type-card" onclick="setApptType('in-clinic', this)"><i class="fa-solid fa-hospital"></i><span>In‑Clinic</span><small>Visit us at our office</small></button>
+                    <button class="type-card" onclick="setApptType('teleconsult', this)"><i class="fa-solid fa-video"></i><span>Teleconsult</span><small>Video consultation</small></button>
+                </div>
+                <div class="doctor-select" style="margin-top: 15px;">
+                    <button class="doctor-card" onclick="setDoctor('Dr. Mwangi', this)"><img src="https://via.placeholder.com/100" alt="Dr. Mwangi" loading="lazy"><strong>Dr. Mwangi</strong><small>General Physician</small></button>
+                    <button class="doctor-card" onclick="setDoctor('Dr. Achieng', this)"><img src="https://via.placeholder.com/100" alt="Dr. Achieng" loading="lazy"><strong>Dr. Achieng</strong><small>Cardiologist</small></button>
+                    <button class="doctor-card" onclick="setDoctor('Dr. Kamau', this)"><img src="https://via.placeholder.com/100" alt="Dr. Kamau" loading="lazy"><strong>Dr. Kamau</strong><small>Pediatrician</small></button>
+                    <button class="doctor-card" onclick="setDoctor('Dr. Otieno', this)"><img src="https://via.placeholder.com/100" alt="Dr. Otieno" loading="lazy"><strong>Dr. Otieno</strong><small>Dermatologist</small></button>
                 </div>
                 <button class="btn-primary" style="margin-top:15px" onclick="nextStep(2)">Continue</button>
             </div>
-
             <div id="step-2" class="modal-step" style="display:none">
-                <h3>Choose Your Specialist</h3>
-                <div class="doctor-select">
-                    <button class="doctor-card" onclick="setDoctor('Dr. Mwangi', this)">
-                        <img src="https://via.placeholder.com/100" alt="Dr. Mwangi" loading="lazy">
-                        <strong>Dr. Mwangi</strong>
-                        <small>General Physician</small>
-                    </button>
-                    <button class="doctor-card" onclick="setDoctor('Dr. Achieng', this)">
-                        <img src="https://via.placeholder.com/100" alt="Dr. Achieng" loading="lazy">
-                        <strong>Dr. Achieng</strong>
-                        <small>Cardiologist</small>
-                    </button>
-                    <button class="doctor-card" onclick="setDoctor('Dr. Kamau', this)">
-                        <img src="https://via.placeholder.com/100" alt="Dr. Kamau" loading="lazy">
-                        <strong>Dr. Kamau</strong>
-                        <small>Pediatrician</small>
-                    </button>
-                    <button class="doctor-card" onclick="setDoctor('Dr. Otieno', this)">
-                        <img src="https://via.placeholder.com/100" alt="Dr. Otieno" loading="lazy">
-                        <strong>Dr. Otieno</strong>
-                        <small>Dermatologist</small>
-                    </button>
-                </div>
-                <div style="margin-top:15px; display:flex; gap:10px;">
-                    <button class="btn-secondary" onclick="nextStep(1)">Back</button>
-                    <button class="btn-primary" onclick="nextStep(3)">Continue</button>
-                </div>
-            </div>
-
-            <div id="step-3" class="modal-step" style="display:none">
                 <h3>Select Date & Time</h3>
-                <div class="date-picker">
-                    <label for="booking-date">Date</label>
-                    <select id="booking-date" onchange="generateTimeSlots()">
-                        <option value="today">Today</option>
-                        <option value="tomorrow">Tomorrow</option>
-                        <option value="day-after">Day After Tomorrow</option>
-                    </select>
-                </div>
+                <div class="date-picker"><label for="booking-date">Date</label><select id="booking-date" onchange="generateTimeSlots()"><option value="today">Today</option><option value="tomorrow">Tomorrow</option><option value="day-after">Day After Tomorrow</option></select></div>
                 <div class="time-slots" id="time-slots"></div>
-                <div style="margin-top:15px; display:flex; gap:10px;">
-                    <button class="btn-secondary" onclick="nextStep(2)">Back</button>
-                    <button class="btn-primary" onclick="nextStep(4)">Continue</button>
-                </div>
-            </div>
-
-            <div id="step-4" class="modal-step" style="display:none">
-                <h3>Patient Information</h3>
+                <h3 style="margin-top:20px;">Patient Information</h3>
                 <form id="patient-form" novalidate>
-                    <div class="form-group">
-                        <input type="text" id="patient-fullname" placeholder="Full Name" required>
-                        <small class="error-msg">Name is required.</small>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" id="patient-phone" placeholder="Phone (e.g., 07XX XXX XXX)" required pattern="^07[0-9]{8}$">
-                        <small class="error-msg">Enter a valid Kenyan phone.</small>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="patient-email" placeholder="Email (optional)">
-                    </div>
-                    <div class="form-group">
-                        <textarea id="patient-notes" placeholder="Notes (optional)" rows="3"></textarea>
-                    </div>
-                    <div style="margin-top:15px; display:flex; gap:10px;">
-                        <button class="btn-secondary" type="button" onclick="nextStep(3)">Back</button>
-                        <button type="submit" class="btn-primary">Review Booking</button>
-                    </div>
+                    <div class="form-group"><input type="text" id="patient-fullname" placeholder="Full Name" required><small class="error-msg">Name is required.</small></div>
+                    <div class="form-group"><input type="tel" id="patient-phone" placeholder="Phone (e.g., 07XX XXX XXX)" required pattern="^07[0-9]{8}$"><small class="error-msg">Enter a valid Kenyan phone.</small></div>
+                    <div class="form-group"><input type="email" id="patient-email" placeholder="Email (optional)"></div>
+                    <div class="form-group"><textarea id="patient-notes" placeholder="Notes (optional)" rows="2"></textarea></div>
                 </form>
+                <div style="margin-top:15px; display:flex; gap:10px;"><button class="btn-secondary" onclick="nextStep(1)">Back</button><button class="btn-primary" onclick="nextStep(3)">Continue</button></div>
             </div>
-
-            <div id="step-5" class="modal-step" style="display:none">
-                <h3>Confirm Your Booking</h3>
-                <div class="booking-summary">
-                    <p><strong>Type:</strong> <span id="summary-type"></span></p>
-                    <p><strong>Doctor:</strong> <span id="summary-doctor"></span></p>
-                    <p><strong>Date:</strong> <span id="summary-date"></span></p>
-                    <p><strong>Time:</strong> <span id="summary-time"></span></p>
-                    <p><strong>Patient:</strong> <span id="summary-patient"></span></p>
-                    <p><strong>Phone:</strong> <span id="summary-phone"></span></p>
-                    <p><strong>Fee:</strong> <span id="summary-fee"></span></p>
-                </div>
-                <div class="mpesa-card">
-                    <i class="fa-solid fa-mobile-screen" style="font-size: 3rem; color: #25D366; margin-bottom: 10px;"></i>
-                    <h3>M‑PESA Payment</h3>
-                    <p>A payment request will be sent to <strong id="mpesa-phone"></strong>.</p>
-                    <button class="btn-whatsapp" id="pay-btn" onclick="simulatePayment()">
-                        <span class="btn-text">Send STK Push</span>
-                        <span class="spinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i></span>
-                    </button>
-                    <small style="display:block; margin-top:10px;">You'll receive a prompt to enter your PIN.</small>
-                </div>
-                <div style="margin-top:15px; display:flex; gap:10px;">
-                    <button class="btn-secondary" onclick="nextStep(4)">Back</button>
-                </div>
+            <div id="step-3" class="modal-step" style="display:none">
+                <h3>Confirm & Pay</h3>
+                <div class="booking-summary"><p><strong>Type:</strong> <span id="summary-type"></span></p><p><strong>Doctor:</strong> <span id="summary-doctor"></span></p><p><strong>Date:</strong> <span id="summary-date"></span></p><p><strong>Time:</strong> <span id="summary-time"></span></p><p><strong>Patient:</strong> <span id="summary-patient"></span></p><p><strong>Phone:</strong> <span id="summary-phone"></span></p><p><strong>Fee:</strong> <span id="summary-fee"></span></p></div>
+                <div class="mpesa-card"><i class="fa-solid fa-mobile-screen" style="font-size: 3rem; color: #25D366; margin-bottom: 10px;"></i><h3>M‑PESA Payment</h3><p>A payment request will be sent to <strong id="mpesa-phone"></strong>.</p><button class="btn-whatsapp" id="pay-btn" onclick="simulatePayment()"><span class="btn-text">Send STK Push</span><span class="spinner" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i></span></button><small style="display:block; margin-top:10px;">You'll receive a prompt to enter your PIN.</small></div>
+                <div style="margin-top:15px; display:flex; gap:10px;"><button class="btn-secondary" onclick="nextStep(2)">Back</button></div>
             </div>
-
-            <div id="step-6" class="modal-step" style="display:none; text-align:center;">
-                <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
-                <h3>Appointment Confirmed!</h3>
-                <p>Your booking reference is:</p>
-                <div class="booking-ref" id="booking-ref">SM-2026-XXXXXX</div>
-                <p style="margin-top:15px;">Confirmation will be sent shortly.</p>
-                <button class="btn-primary" onclick="closeBookingModal()">Done</button>
-            </div>
+            <div id="step-4" class="modal-step" style="display:none; text-align:center;"><i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i><h3>Appointment Confirmed!</h3><p>Your booking reference is:</p><div class="booking-ref" id="booking-ref">SM-2026-XXXXXX</div><p style="margin-top:15px;">Confirmation will be sent shortly.</p><button class="btn-primary" onclick="closeBookingModal()">Done</button></div>
         </div>
     </div>
 
-    <!-- Emergency FAB and Toast Container -->
+    <!-- Emergency FAB -->
     <div class="emergency-fab-container">
         <div id="emergency-menu" class="emergency-menu">
-            <a href="tel:+254702555093" class="emergency-option call-option">
-                <i class="fa-solid fa-phone-volume"></i> Call Ambulance
-            </a>
-            <a href="https://wa.me/254702555093?text=EMERGENCY%20AMBULANCE%20REQUEST" target="_blank" class="emergency-option wa-option">
-                <i class="fa-brands fa-whatsapp"></i> WhatsApp Location
-            </a>
+            <a href="tel:+254702555093" class="emergency-option call-option"><i class="fa-solid fa-phone-volume"></i> Call Ambulance</a>
+            <a href="https://wa.me/254702555093?text=EMERGENCY%20AMBULANCE%20REQUEST" target="_blank" class="emergency-option wa-option"><i class="fa-brands fa-whatsapp"></i> WhatsApp Location</a>
         </div>
-        <button class="emergency-fab" aria-label="Emergency ambulance options" onclick="toggleEmergencyMenu()">
-            <i class="fa-solid fa-truck-medical"></i>
-        </button>
+        <button class="emergency-fab" aria-label="Emergency ambulance options" onclick="toggleEmergencyMenu()"><i class="fa-solid fa-truck-medical"></i></button>
+    </div>
+    <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0, behavior:'smooth'})"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <!-- Recent Bookings Widget -->
+    <div id="recent-bookings-widget" class="recent-bookings-widget">
+        <div class="recent-bookings-header"><span class="dot"></span> LIVE ACTIVITY</div>
+        <div class="recent-bookings-content" id="recent-bookings-content"><p class="recent-booking-item">Grace W. booked a General Consultation</p><p class="recent-booking-time">2 mins ago</p></div>
     </div>
 
-    <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-        <i class="fa-solid fa-arrow-up"></i>
-    </button>
+    <!-- Mobile Sticky Bottom CTA -->
+    <div id="mobile-cta-bar" class="mobile-cta-bar">
+        <div class="mobile-cta-container">
+            <button class="mobile-cta-btn mobile-cta-book open-booking-modal"><i class="fa-solid fa-calendar-check"></i> Book Now</button>
+            <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." class="mobile-cta-btn mobile-cta-whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+        </div>
+    </div>
 
     <div id="toast-container"></div>
+
+    <!-- Live Chat Widget -->
+    <div id="chat-widget">
+        <div id="chat-window" class="chat-window">
+            <div class="chat-header"><span class="chat-header-title">Chat with swiftMed</span><button class="chat-close" onclick="closeChat()" aria-label="Close chat">×</button></div>
+            <div class="chat-body" id="chat-body">
+                <div class="chat-message bot-message"><p>👋 Hello! Welcome to swiftMed Kenya.</p><p>How can we help you today?</p></div>
+                <div class="chat-options">
+                    <button class="chat-option" onclick="openWhatsApp('I want to book an appointment')">📅 Book an Appointment</button>
+                    <button class="chat-option" onclick="openWhatsApp('I want to book a teleconsult')">🏥 Book a Teleconsult</button>
+                    <button class="chat-option" onclick="openWhatsApp('I have a question about insurance')">🛡️ Insurance Question</button>
+                    <button class="chat-option" onclick="openWhatsApp('I need to speak to a doctor')">👨‍⚕️ Speak to a Doctor</button>
+                    <button class="chat-option" onclick="openWhatsApp('I need lab tests or results')">💊 Lab Tests & Results</button>
+                    <button class="chat-option" onclick="openWhatsApp('I am interested in corporate health plans')">🏢 Corporate Health Plans</button>
+                    <button class="chat-option" onclick="openWhatsApp('What are your opening hours?')">⏰ Opening Hours</button>
+                    <button class="chat-option" onclick="openWhatsApp('Where are you located?')">📍 Location & Directions</button>
+                    <button class="chat-option" onclick="openWhatsApp('What payment methods do you accept?')">💳 Payment Options</button>
+                    <button class="chat-option" onclick="openWhatsApp('General inquiry')">💬 Other</button>
+                </div>
+            </div>
+            <div class="chat-input"><input type="text" id="chat-input" placeholder="Type your message..."><button onclick="sendChatMessage()" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button></div>
+        </div>
+        <button id="chat-toggle" class="chat-toggle" onclick="toggleChat()" aria-label="Open chat"><i class="fa-solid fa-comment-dots"></i><span class="chat-badge">1</span></button>
+    </div>
 
     <script src="app.js" defer></script>
 </body>

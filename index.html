@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>swiftMed Kenya | Faster Healthcare, No Queues</title>
+    <meta name="description" content="Nairobi's fastest clinic. Book in 60 seconds, get insurance verified instantly, and see a top doctor without waiting. No queues, no stress.">
     
     <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +18,72 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Local SEO Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalClinic",
+      "@id": "https://swiftmed.co.ke/#clinic",
+      "name": "swiftMed Kenya",
+      "alternateName": "swiftMed Clinic Nairobi",
+      "description": "Nairobi's fastest healthcare clinic. No queues, no stress. Book in 60 seconds, get your insurance sorted instantly, and see a top doctor without wasting your whole day.",
+      "url": "https://swiftmed.co.ke/",
+      "logo": "https://swiftmed.co.ke/assets/images/logo.png",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600",
+      "telephone": "+254702555093",
+      "priceRange": "KES 2,500 - KES 3,000",
+      "currenciesAccepted": "KES",
+      "paymentAccepted": "M-PESA, Cash, Credit Card",
+      "medicalSpecialty": ["GeneralPractice","Cardiovascular","Dermatology","Pediatric"],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Westlands",
+        "addressLocality": "Nairobi",
+        "addressRegion": "Nairobi County",
+        "postalCode": "00100",
+        "addressCountry": "KE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -1.2686,
+        "longitude": 36.8073
+      },
+      "openingHoursSpecification": [
+        {"@type": "OpeningHoursSpecification","dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens": "08:00","closes": "20:00"},
+        {"@type": "OpeningHoursSpecification","dayOfWeek": "Saturday","opens": "09:00","closes": "18:00"}
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "500",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "sameAs": [
+        "https://www.facebook.com/swiftmedkenya",
+        "https://www.instagram.com/swiftmedkenya",
+        "https://www.linkedin.com/company/swiftmedkenya"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Medical Services",
+        "itemListElement": [
+          {"@type": "Offer","itemOffered": {"@type": "MedicalProcedure","name": "General Consultation","description": "Everyday illnesses, check-ups, and prescriptions.","url": "https://swiftmed.co.ke/services.html"}},
+          {"@type": "Offer","itemOffered": {"@type": "MedicalProcedure","name": "Specialist Consultation","description": "Cardiology, Dermatology, Pediatrics - expert care without the long wait.","url": "https://swiftmed.co.ke/services.html"}},
+          {"@type": "Offer","itemOffered": {"@type": "MedicalProcedure","name": "Teleconsultation","description": "Talk to a doctor over video call - from home, office, or wherever.","url": "https://swiftmed.co.ke/services.html"}},
+          {"@type": "Offer","itemOffered": {"@type": "MedicalTest","name": "Laboratory Tests","description": "Fast and accurate lab work - blood tests, urine tests, and more.","url": "https://swiftmed.co.ke/services.html"}}
+        ]
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+254702555093",
+        "contactType": "customer service",
+        "areaServed": "KE",
+        "availableLanguage": ["English", "Swahili"]
+      }
+    }
+    </script>
 </head>
 <body>
 
@@ -37,6 +104,8 @@
                     <li><a href="#insurance">Insurance</a></li>
                     <li><a href="#corporate">Corporate</a></li>
                     <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
                 </ul>
             </nav>
@@ -82,8 +151,29 @@
                 <p class="subtext">Book in 60 seconds, get your insurance sorted instantly, and see a top doctor without wasting your whole day.</p>
                 
                 <div class="hero-actions">
-                    <a href="services.html" class="btn-primary">Explore Services</a>
-                    <a href="https://wa.me/254702555093?text=Hi%20swiftMed,%20I%20need%20to%20book%20a%20General%20Consultation." target="_blank" class="btn-secondary">Fast-Track WhatsApp</a>
+                    <a href="https://wa.me/254702555093?text=Hi%20swiftMed,%20I%20want%20to%20book%20an%20appointment." target="_blank" class="btn-primary-whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i> Book via WhatsApp
+                    </a>
+                    <a href="services.html" class="btn-secondary">Explore Services</a>
+                </div>
+                
+                <div class="hero-trust-badges">
+                    <span class="trust-badge"><i class="fa-solid fa-users"></i> <strong id="patients-today">23</strong> patients booked today</span>
+                    <span class="trust-badge"><i class="fa-solid fa-star"></i> 4.9/5 (500+ reviews)</span>
+                </div>
+                
+                <!-- Google Reviews Badge -->
+                <div class="google-review-badge">
+                    <a href="https://g.page/r/your-google-review-link/review" target="_blank" class="google-badge-link">
+                        <div class="google-logo">
+                            <svg viewBox="0 0 48 48" width="24" height="24"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+                        </div>
+                        <div class="google-badge-info">
+                            <span class="google-stars">★★★★★</span>
+                            <span class="google-rating">4.9</span>
+                            <span class="google-count">· 500+ reviews</span>
+                        </div>
+                    </a>
                 </div>
                 
                 <!-- Module 1: Insurance Pre-Verification Widget -->
@@ -127,7 +217,7 @@
                 <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop" 
                      alt="Doctor smiling at swiftMed clinic in Nairobi" 
                      style="border-radius: 20px; box-shadow: var(--shadow-lg);" 
-                     loading="lazy">
+                     loading="eager">
             </div>
         </div>
     </section>
@@ -185,6 +275,18 @@
             <div class="section-header">
                 <h2>What Nairobians Say About Us</h2>
                 <p>We listen to every customer. Your feedback shapes how we work.</p>
+                <div class="google-review-badge center-badge">
+                    <a href="https://g.page/r/your-google-review-link/review" target="_blank" class="google-badge-link">
+                        <div class="google-logo">
+                            <svg viewBox="0 0 48 48" width="24" height="24"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+                        </div>
+                        <div class="google-badge-info">
+                            <span class="google-stars">★★★★★</span>
+                            <span class="google-rating">4.9</span>
+                            <span class="google-count">· 500+ reviews</span>
+                        </div>
+                    </a>
+                </div>
             </div>
             
             <div class="testimonial-grid" id="testimonial-grid">
@@ -302,6 +404,9 @@
                     <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                 </div>
+                <div class="footer-rating">
+                    <span class="google-stars">★★★★★</span> <strong>4.9</strong> · 500+ reviews
+                </div>
             </div>
             <div class="footer-col">
                 <h4>Quick Links</h4>
@@ -310,6 +415,8 @@
                     <li><a href="#insurance">Insurance</a></li>
                     <li><a href="#corporate">Corporate</a></li>
                     <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
                     <li><a href="#" class="open-booking-modal">Book Appointment</a></li>
                 </ul>
@@ -345,13 +452,11 @@
                 <span class="step-line"></span>
                 <span class="step-dot" data-step="3">3</span>
                 <span class="step-line"></span>
-                <span class="step-dot" data-step="4">4</span>
-                <span class="step-line"></span>
-                <span class="step-dot" data-step="5">5</span>
+                <span class="step-dot" data-step="4">✓</span>
             </div>
 
             <div id="step-1" class="modal-step">
-                <h3>Select Type of Visit</h3>
+                <h3>Select Type & Doctor</h3>
                 <div class="type-select">
                     <button class="type-card" onclick="setApptType('in-clinic', this)">
                         <i class="fa-solid fa-hospital"></i>
@@ -364,12 +469,7 @@
                         <small>Video consultation</small>
                     </button>
                 </div>
-                <button class="btn-primary" style="margin-top:15px" onclick="nextStep(2)">Continue</button>
-            </div>
-
-            <div id="step-2" class="modal-step" style="display:none">
-                <h3>Choose Your Specialist</h3>
-                <div class="doctor-select">
+                <div class="doctor-select" style="margin-top: 15px;">
                     <button class="doctor-card" onclick="setDoctor('Dr. Mwangi', this)">
                         <img src="https://via.placeholder.com/100" alt="Dr. Mwangi" loading="lazy">
                         <strong>Dr. Mwangi</strong>
@@ -391,13 +491,10 @@
                         <small>Dermatologist</small>
                     </button>
                 </div>
-                <div style="margin-top:15px; display:flex; gap:10px;">
-                    <button class="btn-secondary" onclick="nextStep(1)">Back</button>
-                    <button class="btn-primary" onclick="nextStep(3)">Continue</button>
-                </div>
+                <button class="btn-primary" style="margin-top:15px" onclick="nextStep(2)">Continue</button>
             </div>
 
-            <div id="step-3" class="modal-step" style="display:none">
+            <div id="step-2" class="modal-step" style="display:none">
                 <h3>Select Date & Time</h3>
                 <div class="date-picker">
                     <label for="booking-date">Date</label>
@@ -408,14 +505,8 @@
                     </select>
                 </div>
                 <div class="time-slots" id="time-slots"></div>
-                <div style="margin-top:15px; display:flex; gap:10px;">
-                    <button class="btn-secondary" onclick="nextStep(2)">Back</button>
-                    <button class="btn-primary" onclick="nextStep(4)">Continue</button>
-                </div>
-            </div>
 
-            <div id="step-4" class="modal-step" style="display:none">
-                <h3>Patient Information</h3>
+                <h3 style="margin-top:20px;">Patient Information</h3>
                 <form id="patient-form" novalidate>
                     <div class="form-group">
                         <input type="text" id="patient-fullname" placeholder="Full Name" required>
@@ -429,17 +520,18 @@
                         <input type="email" id="patient-email" placeholder="Email (optional)">
                     </div>
                     <div class="form-group">
-                        <textarea id="patient-notes" placeholder="Notes (optional)" rows="3"></textarea>
-                    </div>
-                    <div style="margin-top:15px; display:flex; gap:10px;">
-                        <button class="btn-secondary" type="button" onclick="nextStep(3)">Back</button>
-                        <button type="submit" class="btn-primary">Review Booking</button>
+                        <textarea id="patient-notes" placeholder="Notes (optional)" rows="2"></textarea>
                     </div>
                 </form>
+
+                <div style="margin-top:15px; display:flex; gap:10px;">
+                    <button class="btn-secondary" onclick="nextStep(1)">Back</button>
+                    <button class="btn-primary" onclick="nextStep(3)">Continue</button>
+                </div>
             </div>
 
-            <div id="step-5" class="modal-step" style="display:none">
-                <h3>Confirm Your Booking</h3>
+            <div id="step-3" class="modal-step" style="display:none">
+                <h3>Confirm & Pay</h3>
                 <div class="booking-summary">
                     <p><strong>Type:</strong> <span id="summary-type"></span></p>
                     <p><strong>Doctor:</strong> <span id="summary-doctor"></span></p>
@@ -460,11 +552,11 @@
                     <small style="display:block; margin-top:10px;">You'll receive a prompt to enter your PIN.</small>
                 </div>
                 <div style="margin-top:15px; display:flex; gap:10px;">
-                    <button class="btn-secondary" onclick="nextStep(4)">Back</button>
+                    <button class="btn-secondary" onclick="nextStep(2)">Back</button>
                 </div>
             </div>
 
-            <div id="step-6" class="modal-step" style="display:none; text-align:center;">
+            <div id="step-4" class="modal-step" style="display:none; text-align:center;">
                 <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--primary); margin-bottom: 20px;"></i>
                 <h3>Appointment Confirmed!</h3>
                 <p>Your booking reference is:</p>
@@ -494,7 +586,66 @@
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
+    <!-- Recent Bookings Social Proof -->
+    <div id="recent-bookings-widget" class="recent-bookings-widget">
+        <div class="recent-bookings-header">
+            <span class="dot"></span> LIVE ACTIVITY
+        </div>
+        <div class="recent-bookings-content" id="recent-bookings-content">
+            <p class="recent-booking-item">Grace W. booked a General Consultation</p>
+            <p class="recent-booking-time">2 mins ago</p>
+        </div>
+    </div>
+
+    <!-- Mobile Sticky Bottom CTA Bar -->
+    <div id="mobile-cta-bar" class="mobile-cta-bar">
+        <div class="mobile-cta-container">
+            <button class="mobile-cta-btn mobile-cta-book open-booking-modal">
+                <i class="fa-solid fa-calendar-check"></i> Book Now
+            </button>
+            <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." class="mobile-cta-btn mobile-cta-whatsapp">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+        </div>
+    </div>
+
     <div id="toast-container"></div>
+
+    <!-- Live Chat Widget -->
+    <div id="chat-widget">
+        <div id="chat-window" class="chat-window">
+            <div class="chat-header">
+                <span class="chat-header-title">Chat with swiftMed</span>
+                <button class="chat-close" onclick="closeChat()" aria-label="Close chat">×</button>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <div class="chat-message bot-message">
+                    <p>👋 Hello! Welcome to swiftMed Kenya.</p>
+                    <p>How can we help you today?</p>
+                </div>
+                <div class="chat-options">
+                    <button class="chat-option" onclick="openWhatsApp('I want to book an appointment')">📅 Book an Appointment</button>
+                    <button class="chat-option" onclick="openWhatsApp('I want to book a teleconsult')">🏥 Book a Teleconsult</button>
+                    <button class="chat-option" onclick="openWhatsApp('I have a question about insurance')">🛡️ Insurance Question</button>
+                    <button class="chat-option" onclick="openWhatsApp('I need to speak to a doctor')">👨‍⚕️ Speak to a Doctor</button>
+                    <button class="chat-option" onclick="openWhatsApp('I need lab tests or results')">💊 Lab Tests & Results</button>
+                    <button class="chat-option" onclick="openWhatsApp('I am interested in corporate health plans')">🏢 Corporate Health Plans</button>
+                    <button class="chat-option" onclick="openWhatsApp('What are your opening hours?')">⏰ Opening Hours</button>
+                    <button class="chat-option" onclick="openWhatsApp('Where are you located?')">📍 Location & Directions</button>
+                    <button class="chat-option" onclick="openWhatsApp('What payment methods do you accept?')">💳 Payment Options</button>
+                    <button class="chat-option" onclick="openWhatsApp('General inquiry')">💬 Other</button>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Type your message...">
+                <button onclick="sendChatMessage()" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button id="chat-toggle" class="chat-toggle" onclick="toggleChat()" aria-label="Open chat">
+            <i class="fa-solid fa-comment-dots"></i>
+            <span class="chat-badge">1</span>
+        </button>
+    </div>
 
     <script src="app.js" defer></script>
 </body>

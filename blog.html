@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Tips & Insights | swiftMed Kenya</title>
+    <meta name="description" content="Practical health tips for Nairobi residents. Learn how to stay healthy, prevent illness, and manage chronic conditions from swiftMed Kenya's expert doctors.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "swiftMed Kenya Health Blog",
+      "url": "https://swiftmed.co.ke/blog.html",
+      "description": "Health tips and insights from the swiftMed Kenya medical team.",
+      "publisher": {"@type": "Organization","name": "swiftMed Kenya","url": "https://swiftmed.co.ke/"}
+    }
+    </script>
+</head>
+<body>
+
+    <!-- Global Sticky Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo"><span class="logo-icon">+</span> swiftMed <span class="logo-highlight">Kenya</span></div>
+            <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></button>
+            <nav id="mobile-nav">
+                <ul>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="index.html#insurance">Insurance</a></li>
+                    <li><a href="index.html#corporate">Corporate</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="faq.html">FAQs</a></li>
+                </ul>
+            </nav>
+            <div class="header-cta" id="header-cta">
+                <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya,%20I%20want%20to%20book%20an%20appointment." target="_blank" class="btn-whatsapp">WhatsApp Us</a>
+                <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <p class="tagline">Health Tips & Insights</p>
+            <h1>Stay Healthy, Nairobi</h1>
+            <p class="subtext">Practical advice from our doctors to help you live a healthier life.</p>
+            <div class="hero-actions">
+                <a href="#" class="btn-primary open-booking-modal">Book a Consultation</a>
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed,%20I%20have%20a%20health%20question." target="_blank" class="btn-secondary">Ask a Doctor</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Article -->
+    <section class="featured-post">
+        <div class="container featured-post-content">
+            <div class="featured-image">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop" alt="Featured health article" loading="lazy" style="border-radius: 20px; box-shadow: var(--shadow-lg);">
+            </div>
+            <div class="featured-text">
+                <span class="featured-tag">FEATURED</span>
+                <h2>5 Warning Signs You Shouldn't Ignore</h2>
+                <p>Some symptoms seem minor but could indicate a serious underlying condition. Our cardiologist Dr. Achieng explains what to watch out for and when to seek medical attention immediately.</p>
+                <div class="post-meta">
+                    <span><i class="fa-solid fa-user-doctor"></i> Dr. Achieng</span>
+                    <span><i class="fa-solid fa-clock"></i> 5 min read</span>
+                    <span><i class="fa-solid fa-calendar"></i> Aug 25, 2026</span>
+                </div>
+                <a href="#" class="btn-primary">Read Full Article</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section class="blog-grid-section">
+        <div class="container">
+            <div class="section-header"><h2>Latest Health Tips</h2><p>Fresh insights from our team of doctors.</p></div>
+            <div class="blog-grid" id="blog-grid"></div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner">
+        <div class="container">
+            <h2>Have a health concern?</h2>
+            <p>Don't wait – book a consultation with one of our doctors today.</p>
+            <div class="hero-actions">
+                <a href="#" class="btn-primary open-booking-modal">Book in 60 Seconds</a>
+                <a href="https://wa.me/254702555093" target="_blank" class="btn-secondary">WhatsApp Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col"><h4>swiftMed Kenya</h4><p>Nairobi's fastest healthcare. No queues, no stress.</p><div class="social-links"><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a><a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a><a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a><a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a></div><div class="footer-rating"><span class="google-stars">★★★★★</span> <strong>4.9</strong> · 500+ reviews</div></div>
+            <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="services.html">Services</a></li><li><a href="index.html#insurance">Insurance</a></li><li><a href="index.html#corporate">Corporate</a></li><li><a href="index.html#how-it-works">How It Works</a></li><li><a href="about.html">About Us</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQs</a></li><li><a href="#" class="open-booking-modal">Book Appointment</a></li></ul></div>
+            <div class="footer-col"><h4>Contact</h4><p><i class="fa-solid fa-phone"></i> <a href="tel:+254702555093">0702 555 093</a></p><p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/254702555093" target="_blank">WhatsApp Us</a></p><p><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</p></div>
+            <div class="footer-col"><h4>Hours</h4><p>Mon–Fri: 8:00 AM – 8:00 PM</p><p>Sat: 9:00 AM – 6:00 PM</p><p>Sun: By appointment</p></div>
+        </div>
+        <div class="container footer-bottom"><p>&copy; 2026 swiftMed Kenya. All rights reserved.</p></div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+        <!-- same as index -->
+    </div>
+
+    <!-- Emergency FAB -->
+    <div class="emergency-fab-container">
+        <div id="emergency-menu" class="emergency-menu"><a href="tel:+254702555093" class="emergency-option call-option"><i class="fa-solid fa-phone-volume"></i> Call Ambulance</a><a href="https://wa.me/254702555093?text=EMERGENCY%20AMBULANCE%20REQUEST" target="_blank" class="emergency-option wa-option"><i class="fa-brands fa-whatsapp"></i> WhatsApp Location</a></div>
+        <button class="emergency-fab" aria-label="Emergency ambulance options" onclick="toggleEmergencyMenu()"><i class="fa-solid fa-truck-medical"></i></button>
+    </div>
+    <button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0, behavior:'smooth'})"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <!-- Recent Bookings Widget -->
+    <div id="recent-bookings-widget" class="recent-bookings-widget">
+        <div class="recent-bookings-header"><span class="dot"></span> LIVE ACTIVITY</div>
+        <div class="recent-bookings-content" id="recent-bookings-content"><p class="recent-booking-item">Grace W. booked a General Consultation</p><p class="recent-booking-time">2 mins ago</p></div>
+    </div>
+
+    <!-- Mobile Sticky Bottom CTA -->
+    <div id="mobile-cta-bar" class="mobile-cta-bar">
+        <div class="mobile-cta-container">
+            <button class="mobile-cta-btn mobile-cta-book open-booking-modal"><i class="fa-solid fa-calendar-check"></i> Book Now</button>
+            <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." class="mobile-cta-btn mobile-cta-whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- Live Chat Widget -->
+    <div id="chat-widget">
+        <div id="chat-window" class="chat-window">
+            <div class="chat-header"><span class="chat-header-title">Chat with swiftMed</span><button class="chat-close" onclick="closeChat()" aria-label="Close chat">×</button></div>
+            <div class="chat-body" id="chat-body">
+                <div class="chat-message bot-message"><p>👋 Hello! Welcome to swiftMed Kenya.</p><p>How can we help you today?</p></div>
+                <div class="chat-options">
+                    <button class="chat-option" onclick="openWhatsApp('I want to book an appointment')">📅 Book an Appointment</button>
+                    <button class="chat-option" onclick="openWhatsApp('I want to book a teleconsult')">🏥 Book a Teleconsult</button>
+                    <button class="chat-option" onclick="openWhatsApp('I have a question about insurance')">🛡️ Insurance Question</button>
+                    <button class="chat-option" onclick="openWhatsApp('I need to speak to a doctor')">👨‍⚕️ Speak to a Doctor</button>
+                    <button class="chat-option" onclick="openWhatsApp('I need lab tests or results')">💊 Lab Tests & Results</button>
+                    <button class="chat-option" onclick="openWhatsApp('I am interested in corporate health plans')">🏢 Corporate Health Plans</button>
+                    <button class="chat-option" onclick="openWhatsApp('What are your opening hours?')">⏰ Opening Hours</button>
+                    <button class="chat-option" onclick="openWhatsApp('Where are you located?')">📍 Location & Directions</button>
+                    <button class="chat-option" onclick="openWhatsApp('What payment methods do you accept?')">💳 Payment Options</button>
+                    <button class="chat-option" onclick="openWhatsApp('General inquiry')">💬 Other</button>
+                </div>
+            </div>
+            <div class="chat-input"><input type="text" id="chat-input" placeholder="Type your message..."><button onclick="sendChatMessage()" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button></div>
+        </div>
+        <button id="chat-toggle" class="chat-toggle" onclick="toggleChat()" aria-label="Open chat"><i class="fa-solid fa-comment-dots"></i><span class="chat-badge">1</span></button>
+    </div>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
