@@ -1018,4 +1018,112 @@ input:focus-visible,
 select:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
+}/* ==================== Services Page Specific ==================== */
+.page-hero {
+    background: var(--accent);
+    padding: 60px 0 40px;
+    text-align: center;
+}
+.page-hero h1 {
+    font-size: 3rem;
+    margin: 10px 0;
+}
+.page-hero .subtext {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 30px;
+}
+.page-hero .hero-actions {
+    justify-content: center;
+}
+
+.services-section {
+    padding: 80px 0;
+    background: var(--white);
+}
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+.service-card {
+    background: var(--accent);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    text-align: center;
+    transition: var(--transition);
+}
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+.service-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+.service-card h3 {
+    margin-bottom: 10px;
+}
+.service-card p {
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+.service-cta {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.not-sure-section {
+    background: var(--secondary);
+    color: white;
+    padding: 40px 0;
+}
+.not-sure-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.not-sure-content h3 {
+    color: white;
+    margin-bottom: 5px;
+}
+.not-sure-content p {
+    color: #94a3b8;
+}
+.not-sure-content .btn-primary {
+    background: var(--primary);
+}
+
+.cta-banner {
+    background: var(--accent);
+    padding: 60px 0;
+    text-align: center;
+}
+.cta-banner h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+.cta-banner p {
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+    .not-sure-content {
+        flex-direction: column;
+        text-align: center;
+    }
 }
