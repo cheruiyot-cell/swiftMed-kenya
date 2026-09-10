@@ -3,6 +3,8 @@ function showToast(message, type = 'success') {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
   toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i> ${message}`;
   container.appendChild(toast);
   setTimeout(() => { toast.classList.add('hide'); setTimeout(() => toast.remove(), 300); }, 3000);
@@ -304,6 +306,7 @@ function openBookingModal() {
   resetBookingModal();
   const modal = document.getElementById('booking-modal');
   modal.classList.add('active');
+  document.body.classList.add('modal-open');
   document.getElementById('step-1').classList.add('active');
   document.getElementById('step-2').classList.remove('active');
   document.getElementById('step-3').classList.remove('active');
@@ -315,6 +318,7 @@ function openBookingModal() {
 
 function closeBookingModal() {
   document.getElementById('booking-modal').classList.remove('active');
+  document.body.classList.remove('modal-open');
 }
 
 /* ==================== Symptom Checker ==================== */
@@ -481,7 +485,7 @@ function bookWithDoctor(btn) {
 
 /* ==================== Initialize ==================== */
 document.addEventListener('DOMContentLoaded', () => {
-  const sectionsToAnimate = ['.how-it-works .step-card', '.corporate-section .corporate-text', '.corporate-form-box', '.faq-section .faq-item', '.patient-voices .testimonial-card', '.services-section .service-card', '.page-hero', '.cta-banner'];
+  const sectionsToAnimate = ['.how-it-works .step-card', '.corporate-section .corporate-text', '.corporate-form-box', '.faq-section .faq-item', '.patient-voices .testimonial-card', '.services-section .service-card', '.page-hero', '.cta-banner', '.about-story-content', '.mission-card', '.vision-card', '.value-card', '.team-card', '.accreditations .partner-badge'];
   sectionsToAnimate.forEach(selector => { document.querySelectorAll(selector).forEach(el => el.classList.add('animate-on-scroll')); });
   renderTestimonials();
   observeAnimations();
