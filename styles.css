@@ -1,5 +1,5 @@
 /* ============================================================
-   swiftMed Kenya – Production Stylesheet (v3)
+   swiftMed Kenya – Production Stylesheet (v4)
    Author: UI/UX Audit & Redesign
    ============================================================ */
 
@@ -123,7 +123,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 ul, ol { list-style: none; }
 
-/* Fluid container system */
+/* ---------- Fluid container system ---------- */
 .container {
   width: 100%;
   max-width: min(100% - 2rem, 1200px);
@@ -135,9 +135,29 @@ ul, ol { list-style: none; }
 .container-lg { max-width: min(100% - 2rem, 1024px); }
 .container-xl { max-width: min(100% - 2rem, 1280px); }
 
-@media (min-width: 1600px) {
-  .container { max-width: min(100% - 4rem, 1600px); }
-  body { font-size: 18px; }
+/* Progressive desktop expansion — reclaim horizontal space */
+@media (min-width: 1280px) {
+  .container    { max-width: min(100% - 3rem, 1240px); }
+  .container-lg { max-width: min(100% - 3rem, 1120px); }
+  .container-xl { max-width: min(100% - 3rem, 1360px); }
+}
+
+@media (min-width: 1536px) {
+  .container    { max-width: min(100% - 4rem, 1440px); }
+  .container-md { max-width: min(100% - 4rem, 880px); }
+  .container-lg { max-width: min(100% - 4rem, 1240px); }
+  .container-xl { max-width: min(100% - 4rem, 1560px); }
+}
+
+@media (min-width: 1920px) {
+  .container    { max-width: min(100% - 6rem, 1680px); }
+  .container-xl { max-width: min(100% - 6rem, 1780px); }
+}
+
+/* Scale type + vertical rhythm once the layout has room */
+@media (min-width: 1536px) {
+  :root { --space-xl: 5rem; }
+  body  { font-size: 17px; }
 
   /* Cap the measure, not the container */
   .hero-text > p,
@@ -1469,7 +1489,7 @@ nav ul li a:hover::after { width: 100%; }
   #back-to-top { transition: none; }
 }
 
-/* ---------- 20. Responsive Grid Collapse (audit fix) ---------- */
+/* ---------- 20. Responsive Grid Collapse ---------- */
 @media (max-width: 900px) {
   .hero-content,
   .featured-post-content,
@@ -1828,7 +1848,8 @@ nav ul li a:hover::after { width: 100%; }
   content-visibility: auto;
   contain-intrinsic-size: 800px;
 }
-/* Append to styles.css — icon & initial avatars */
+
+/* ---------- 22. Icon & Initial Avatars ---------- */
 .team-avatar {
   width: 120px;
   height: 120px;
