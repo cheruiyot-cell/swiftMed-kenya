@@ -1,25 +1,31 @@
 /* ============================================================
-   swiftMed Kenya — Production Stylesheet (v7)
+   swiftMed Kenya — Production Stylesheet (v8)
    Author: UI/UX Audit & Redesign
 
-   WHAT'S NEW IN v7
+   WHAT'S NEW IN v8
    ----------------
-   • Hero photography is now actually visible: the near-opaque
-     scrim has been replaced with a directional radial/linear
-     gradient that keeps text contrast ≥ 8:1 while letting the
-     photograph read at the edges of every hero.
-   • Vertical rhythm is fluid: section padding, card padding,
-     grid gaps and heading margins all scale with the viewport
-     via clamp() rather than being fixed at desktop sizes.
-   • Typographic rhythm tightened for long-form reading:
-     body 1.75, headings 1.25/1.15, paragraphs 1.15rem.
-   • Every card grid (services, blog, testimonials, values,
-     team, steps) shares one fluid gap variable.
-   • Small-screen refinements: mobile h1–h3 sizes, mobile
-     card padding, mobile-safe bottom inset, mobile ticker
-     wrapping.
-   • Contrast fix on the corporate band `.highlight`.
-   • Modal, blog card image, FAQ answer spacing audited.
+   • Every hero photograph now renders at full opacity as a real
+     <img> element. The heavy white scrim gradients are gone, so
+     the photography actually reads as designed.
+   • Home hero: duplicate faded background photo removed — one
+     decode, one request, brighter LCP.
+   • Interior heroes (about / services / blog / faq / 404): new
+     split layout — copy on the left, photograph on the right at
+     100% opacity. Text contrast now comes from a solid tinted
+     panel instead of a fragile gradient.
+   • Responsive hardening (audit patches 1–10):
+     1. Booking progress bar scales with viewport (no more
+        clipping at 320px).
+     2. Time-slot grid auto-fits instead of fixed 3 columns.
+     3. Ticker items wrap instead of forcing one long line.
+     4. Emergency menu capped to viewport width.
+     5. min-width: 0 on every grid/flex child that can be
+        pushed wider by long content.
+     6. Logo hardened against shrink/collapse.
+     7. Toast container bounded on both sides.
+     8. Global overflow safety net (overflow-x: clip + word-break).
+     9. Hero decorative glow capped to viewport.
+    10. Very-narrow viewport (<360px) guardrail rules.
    ============================================================ */
 
 /* ============================================================
@@ -74,10 +80,10 @@
   --space-lg:  2rem;
   --space-xl:  3rem;
 
-  /* Fluid rhythm — new in v7 */
-  --section-y:  clamp(3rem, 8vw, 6rem);      /* section band padding  */
-  --grid-gap:   clamp(1.25rem, 3vw, 2.5rem); /* card grids            */
-  --card-pad:   clamp(1.5rem, 3vw, 2.25rem); /* card interiors        */
+  /* Fluid rhythm */
+  --section-y:  clamp(3rem, 8vw, 6rem);
+  --grid-gap:   clamp(1.25rem, 3vw, 2.5rem);
+  --card-pad:   clamp(1.5rem, 3vw, 2.25rem);
 
   /* Typography */
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
@@ -109,15 +115,18 @@ html {
   scroll-padding-top: calc(var(--header-h) + 1rem);
   font-size: 100%;
   -webkit-text-size-adjust: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 body {
   font-family: var(--font-body);
   font-size: 1rem;
-  line-height: 1.75;               /* was 1.7 — more air */
+  line-height: 1.75;
   color: var(--text-main);
   background: #f9fafb;
-  overflow-x: hidden;
+  max-width: 100%;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -128,11 +137,12 @@ body.chat-open .mobile-cta-bar { display: none; }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  line-height: 1.25;               /* was 1.2 */
+  line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--secondary);
-  margin-bottom: 0.6em;            /* was 0.5em */
+  margin-bottom: 0.6em;
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 h1 { font-size: clamp(2.2rem, 5vw + 1rem, 3.5rem); line-height: 1.15; }
@@ -140,21 +150,27 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
 h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
 
 p {
-  margin-bottom: 1.15rem;          /* was 1rem */
+  margin-bottom: 1.15rem;
   color: var(--text-main);
   text-wrap: pretty;
+  overflow-wrap: break-word;
 }
 
 a {
   text-decoration: none;
   color: inherit;
   transition: var(--transition);
+  overflow-wrap: break-word;
 }
 
-img {
+img, svg, video, canvas, iframe {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+input, select, textarea {
+  max-width: 100%;
 }
 
 ul, ol { list-style: none; }
@@ -196,7 +212,29 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
-   3. UTILITIES & ACCESSIBILITY
+   3. GRID / FLEX CHILD HARDENING  (audit patch 5)
+   ============================================================ */
+.hero-text,
+.hero-image,
+.about-text,
+.about-image,
+.featured-text,
+.featured-image,
+.corporate-text,
+.corporate-form-box,
+.testimonial-card,
+.service-card,
+.blog-card,
+.team-card,
+.value-card,
+.step-card,
+.page-hero-text,
+.page-hero-image {
+  min-width: 0;
+}
+
+/* ============================================================
+   4. UTILITIES & ACCESSIBILITY
    ============================================================ */
 .sr-only {
   position: absolute;
@@ -232,7 +270,7 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
-   4. BUTTONS
+   5. BUTTONS
    ============================================================ */
 .btn,
 .btn-primary,
@@ -315,7 +353,7 @@ ul, ol { list-style: none; }
 .spinner { display: none; }
 
 /* ============================================================
-   5. HEADER & NAVIGATION
+   6. HEADER & NAVIGATION
    ============================================================ */
 .site-header {
   position: sticky;
@@ -332,6 +370,7 @@ ul, ol { list-style: none; }
   justify-content: space-between;
   align-items: center;
   height: var(--header-h);
+  gap: 0.5rem;
 }
 
 .logo {
@@ -342,6 +381,8 @@ ul, ol { list-style: none; }
   display: flex;
   align-items: center;
   gap: 0.3rem;
+  flex-shrink: 0;                    /* patch 6 */
+  white-space: nowrap;
 }
 
 .logo-icon {
@@ -350,6 +391,7 @@ ul, ol { list-style: none; }
   padding: 4px 8px;
   border-radius: 50%;
   font-weight: 800;
+  flex-shrink: 0;
 }
 
 .logo-highlight { color: var(--secondary); }
@@ -442,35 +484,25 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   6. HERO (HOME)
+   7. HERO (HOME)  — full-opacity photograph, no scrim
    ============================================================ */
 .hero {
-  --hero-photo: url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1920&auto=format&fit=crop');
   background-color: #f0fdfa;
-  /* Directional scrim: dense behind the left-aligned text column,
-     translucent on the right so the photograph stays visible.     */
-  background-image:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.90) 0%,
-      rgba(240, 253, 250, 0.72) 50%,
-      rgba(230, 244, 243, 0.52) 100%),
-    var(--hero-photo);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   padding-block: clamp(3.5rem, 7vw, 6rem);
   position: relative;
   overflow: hidden;
 }
 
+/* Decorative glow — capped to viewport so it never triggers
+   horizontal scroll on narrow screens (audit patch 9). */
 .hero::after {
   content: '';
   position: absolute;
   top: -20%;
-  right: -10%;
-  width: 300px;
-  height: 300px;
-  background: rgba(11, 122, 117, 0.1);
+  right: 0;
+  width: min(300px, 60vw);
+  height: min(300px, 60vw);
+  background: rgba(11, 122, 117, 0.10);
   border-radius: 50%;
   filter: blur(60px);
   z-index: 0;
@@ -561,6 +593,7 @@ nav ul li a:hover::after { width: 100%; }
 .hero-image img {
   aspect-ratio: 3 / 2;
   object-fit: cover;
+  width: 100%;
 }
 
 .live-badge {
@@ -651,64 +684,84 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   7. PAGE HERO (INTERIOR PAGES)
+   8. PAGE HERO (INTERIOR PAGES) — split layout, full-opacity
+      photograph on the right. No gradient overlays.
    ============================================================ */
 .page-hero {
   background-color: #f0fdfa;
-  /* Radial scrim: dense behind the centred headline, softer at
-     the outer edges so the photograph reads as a real element.   */
-  background-image:
-    radial-gradient(ellipse 90% 80% at 50% 45%,
-      rgba(255, 255, 255, 0.90) 0%,
-      rgba(255, 255, 255, 0.78) 40%,
-      rgba(240, 253, 250, 0.55) 100%),
-    var(--hero-photo, none);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   padding-block: clamp(3.5rem, 8vw, 6rem);
-  text-align: center;
   position: relative;
+  overflow: hidden;
 }
 
-/* Contrast safety net for centred hero copy over photography */
-.page-hero h1,
-.page-hero .tagline,
-.page-hero .subtext {
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.55);
+.page-hero-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--grid-gap);
+  align-items: center;
 }
 
-.page-hero .tagline { margin-bottom: 0.5rem; }
-.page-hero h1 { margin-bottom: clamp(0.75rem, 2vw, 1.25rem); }
-.page-hero .subtext {
+.page-hero-text {
+  min-width: 0;
+  text-align: left;
+}
+
+.page-hero-text .tagline {
+  margin-bottom: 0.5rem;
+}
+
+.page-hero-text h1 {
+  margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.page-hero-text .subtext {
   margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
   max-width: 52ch;
-  margin-inline: auto;
+  margin-inline: 0;
 }
 
-/* Interior hero + CTA banner actions should not carry a trailing gap */
-.page-hero .hero-actions,
-.cta-banner .hero-actions { margin-bottom: 0; }
+.page-hero-text .hero-actions {
+  margin-bottom: 0;
+  justify-content: flex-start;
+}
 
-/* Per-page hero photographs */
-.page-hero--about {
-  --hero-photo: url('https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=1920&auto=format&fit=crop');
+/* The photograph — 100% opacity, no overlay */
+.page-hero-image {
+  min-width: 0;
 }
-.page-hero--services {
-  --hero-photo: url('https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1920&auto=format&fit=crop');
+
+.page-hero-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
 }
-.page-hero--blog {
-  --hero-photo: url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1920&auto=format&fit=crop');
-}
-.page-hero--faq {
-  --hero-photo: url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1920&auto=format&fit=crop');
-}
-.page-hero--404 {
-  --hero-photo: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1920&auto=format&fit=crop');
+
+/* Stack on tablet & below — text first, photo below */
+@media (max-width: 900px) {
+  .page-hero-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 5vw, 2.5rem);
+  }
+
+  .page-hero-text {
+    text-align: center;
+  }
+
+  .page-hero-text .subtext {
+    margin-inline: auto;
+  }
+
+  .page-hero-text .hero-actions {
+    justify-content: center;
+  }
 }
 
 /* ============================================================
-   8. LIVE TICKER
+   9. LIVE TICKER
    ============================================================ */
 .waitlist-ticker {
   background: var(--secondary);
@@ -743,9 +796,16 @@ nav ul li a:hover::after { width: 100%; }
   flex-shrink: 0;
 }
 
-.ticker-item { display: flex; gap: 0.5rem; align-items: center; }
+.ticker-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;                    /* patch 3 */
+  min-width: 0;
+}
+
 .ticker-label { color: var(--text-ultralight); }
-.ticker-value { font-weight: 700; }
+.ticker-value { font-weight: 700; min-width: 0; }
 
 .ticker-cta a {
   color: var(--success-text);
@@ -759,13 +819,13 @@ nav ul li a:hover::after { width: 100%; }
     justify-content: center;
     text-align: center;
     gap: 0.5rem;
-    row-gap: 0.35rem;            /* new — prevents orphaned pairs */
+    row-gap: 0.35rem;
   }
   .ticker-mobile-hide { display: none; }
 }
 
 /* ============================================================
-   9. HOW IT WORKS
+   10. HOW IT WORKS
    ============================================================ */
 .how-it-works {
   background: var(--white);
@@ -804,7 +864,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   10. SYMPTOM CHECKER
+   11. SYMPTOM CHECKER
    ============================================================ */
 .symptom-checker {
   background: var(--accent);
@@ -825,7 +885,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   11. TESTIMONIALS
+   12. TESTIMONIALS
    ============================================================ */
 .patient-voices {
   background: var(--white);
@@ -834,7 +894,7 @@ nav ul li a:hover::after { width: 100%; }
 
 .section-header {
   text-align: center;
-  margin-bottom: clamp(2rem, 4.5vw, 3.5rem);  /* was fixed 2rem */
+  margin-bottom: clamp(2rem, 4.5vw, 3.5rem);
 }
 
 .center-badge {
@@ -883,7 +943,7 @@ nav ul li a:hover::after { width: 100%; }
 .voices-cta { text-align: center; margin-top: var(--space-lg); }
 
 /* ============================================================
-   12. CORPORATE
+   13. CORPORATE
    ============================================================ */
 .corporate-section {
   background: var(--secondary);
@@ -902,8 +962,6 @@ nav ul li a:hover::after { width: 100%; }
 .corporate-text h2 { color: var(--white); }
 .corporate-text .subtext { color: var(--text-ultralight); }
 
-/* Fix: `--primary` on `--secondary` is ~3.1:1. Use a lighter teal
-   on the dark corporate band so the highlight passes AA at any size. */
 .corporate-section .highlight { color: #5EEAD4; }
 
 .corporate-features {
@@ -976,7 +1034,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   13. CTA BANNER
+   14. CTA BANNER
    ============================================================ */
 .cta-banner {
   background: var(--accent);
@@ -994,7 +1052,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   14. FOOTER
+   15. FOOTER
    ============================================================ */
 .site-footer {
   background: var(--secondary);
@@ -1047,7 +1105,7 @@ nav ul li a:hover::after { width: 100%; }
 .footer-rating { margin-top: var(--space-sm); font-size: 0.9rem; }
 
 /* ============================================================
-   15. PAGE — ABOUT
+   16. PAGE — ABOUT
    ============================================================ */
 .about-story {
   padding-block: var(--section-y);
@@ -1205,7 +1263,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   16. PAGE — SERVICES
+   17. PAGE — SERVICES
    ============================================================ */
 .services-section {
   padding-block: var(--section-y);
@@ -1267,7 +1325,7 @@ nav ul li a:hover::after { width: 100%; }
 .not-sure-content p { margin-bottom: 0; }
 
 /* ============================================================
-   17. PAGE — BLOG
+   18. PAGE — BLOG
    ============================================================ */
 .featured-post {
   padding-block: var(--section-y);
@@ -1341,7 +1399,7 @@ nav ul li a:hover::after { width: 100%; }
 
 .blog-card-image {
   position: relative;
-  aspect-ratio: 16 / 10;          /* was fixed 200px — no more squish */
+  aspect-ratio: 16 / 10;
   overflow: hidden;
 }
 
@@ -1391,7 +1449,7 @@ nav ul li a:hover::after { width: 100%; }
 .read-more:hover { gap: 0.5rem; }
 
 /* ============================================================
-   18. PAGE — FAQ
+   19. PAGE — FAQ
    ============================================================ */
 .faq-section {
   padding-block: var(--section-y);
@@ -1446,7 +1504,7 @@ nav ul li a:hover::after { width: 100%; }
 
 .faq-answer {
   display: none;
-  padding: 0.5rem 1.35rem 1.35rem;   /* was 0 1.25rem 1rem */
+  padding: 0.5rem 1.35rem 1.35rem;
   color: var(--text-main);
   line-height: 1.75;
   border-top: 1px solid var(--border);
@@ -1459,7 +1517,7 @@ nav ul li a:hover::after { width: 100%; }
 .faq-answer p:last-child { margin-bottom: 0; }
 
 /* ============================================================
-   19. BOOKING MODAL
+   20. BOOKING MODAL
    ============================================================ */
 .modal-overlay {
   position: fixed;
@@ -1481,7 +1539,7 @@ nav ul li a:hover::after { width: 100%; }
   width: min(500px, 100%);
   max-height: 90dvh;
   overflow-y: auto;
-  padding: clamp(1.25rem, 4vw, 2rem);   /* responsive */
+  padding: clamp(1.25rem, 4vw, 2rem);
   box-shadow: var(--shadow-lg);
   position: relative;
 }
@@ -1511,12 +1569,16 @@ nav ul li a:hover::after { width: 100%; }
   padding-right: 2.5rem;
 }
 
+/* ---------- Booking progress bar (patch 1) ---------- */
 .booking-progress {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: clamp(0.25rem, 1.5vw, 0.5rem);
   margin-bottom: var(--space-md);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .step-group {
@@ -1524,24 +1586,37 @@ nav ul li a:hover::after { width: 100%; }
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+  min-width: 0;
 }
 
 .step-dot {
-  width: 28px;
-  height: 28px;
+  width: clamp(22px, 6vw, 28px);
+  height: clamp(22px, 6vw, 28px);
   border-radius: 50%;
   background: var(--border);
   color: var(--secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: clamp(0.65rem, 2vw, 0.8rem);
   font-weight: 600;
+  flex-shrink: 0;
 }
 .step-dot.active { background: var(--primary); color: var(--white); }
 
-.step-label { font-size: 0.7rem; color: var(--text-light); }
-.step-line { width: 40px; height: 3px; background: var(--border); }
+.step-label {
+  font-size: clamp(0.6rem, 2vw, 0.7rem);
+  white-space: nowrap;
+  color: var(--text-light);
+}
+
+.step-line {
+  width: clamp(10px, 5vw, 40px);
+  height: 3px;
+  flex-shrink: 1;
+  min-width: 8px;
+  background: var(--border);
+}
 .step-line.active { background: var(--primary); }
 
 .modal-step { display: none; }
@@ -1586,15 +1661,16 @@ nav ul li a:hover::after { width: 100%; }
 .type-card small,
 .doctor-card small { color: var(--text-light); font-size: 0.75rem; }
 
+/* ---------- Time slots (patch 2) ---------- */
 .time-slots {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
   gap: var(--space-xs);
   margin-bottom: var(--space-sm);
 }
 
 .slot-btn {
-  padding: 0.5rem;
+  padding: 0.5rem 0.35rem;
   border: 2px solid var(--border);
   background: var(--white);
   border-radius: var(--radius-sm);
@@ -1604,6 +1680,7 @@ nav ul li a:hover::after { width: 100%; }
   color: inherit;
   transition: var(--transition);
   min-height: 48px;
+  font-size: clamp(0.85rem, 3vw, 0.95rem);
 }
 .slot-btn:hover:not(:disabled) { border-color: var(--primary); }
 .slot-btn.selected { border-color: var(--primary); background: var(--primary-light); }
@@ -1660,10 +1737,10 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   20. FLOATING LAYER
+   21. FLOATING LAYER
    ============================================================ */
 
-/* ---------- Emergency FAB ---------- */
+/* ---------- Emergency FAB (patch 4) ---------- */
 .emergency-fab-container {
   position: fixed;
   bottom: var(--float-b);
@@ -1702,6 +1779,7 @@ nav ul li a:hover::after { width: 100%; }
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  max-width: calc(100vw - 2rem);
 }
 .emergency-menu.active {
   opacity: 1;
@@ -1723,6 +1801,10 @@ nav ul li a:hover::after { width: 100%; }
   border: none;
   font-family: inherit;
   min-height: 48px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .call-option { background: var(--danger); }
 
@@ -1826,6 +1908,7 @@ nav ul li a:hover::after { width: 100%; }
   border-radius: var(--radius-sm);
   max-width: 85%;
   font-size: 0.9rem;
+  overflow-wrap: anywhere;
 }
 .chat-message p { margin-bottom: 0.25rem; }
 .chat-message p:last-child { margin-bottom: 0; }
@@ -2022,19 +2105,19 @@ body.chat-open .recent-bookings-widget {
 @media (max-width: 768px) {
   :root { --float-b: 6.5rem; }
   .mobile-cta-bar { display: block; }
-  /* Reserve space for the fixed bar — includes iOS safe-area */
   body {
     padding-bottom: max(84px, calc(84px + env(safe-area-inset-bottom)));
   }
 }
 
 /* ============================================================
-   21. TOAST
+   22. TOAST  (patch 7)
    ============================================================ */
 #toast-container {
   position: fixed;
   top: calc(var(--header-h) + 1rem);
   right: 1rem;
+  left: auto;
   z-index: 10001;
   display: flex;
   flex-direction: column;
@@ -2056,13 +2139,15 @@ body.chat-open .recent-bookings-widget {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .toast.success { border-left-color: var(--success); }
 .toast.error   { border-left-color: var(--danger-soft); }
 .toast.hide    { animation: slideOut 0.3s ease-in forwards; }
 
 /* ============================================================
-   22. AVATARS & ICONS
+   23. AVATARS & ICONS
    ============================================================ */
 .team-avatar {
   width: 120px;
@@ -2095,7 +2180,7 @@ body.chat-open .recent-bookings-widget {
 .doctor-card.selected .doctor-icon { background: var(--white); }
 
 /* ============================================================
-   23. ANIMATIONS
+   24. ANIMATIONS
    ============================================================ */
 @keyframes pulse {
   0%   { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6); }
@@ -2141,7 +2226,7 @@ body.chat-open .recent-bookings-widget {
 }
 
 /* ============================================================
-   24. RESPONSIVE COLLAPSE
+   25. RESPONSIVE COLLAPSE
    ============================================================ */
 @media (max-width: 900px) {
   .hero-content,
@@ -2154,13 +2239,6 @@ body.chat-open .recent-bookings-widget {
 
   .hero-image { order: 2; }
   .hero-text  { order: 1; }
-
-  /* Long-form prose shouldn't stretch the full tablet width */
-  .about-text p,
-  .featured-text p,
-  .corporate-text p {
-    max-width: 100%;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -2181,7 +2259,6 @@ body.chat-open .recent-bookings-widget {
   h2 { font-size: 1.6rem; line-height: 1.25; }
   h3 { font-size: 1.2rem; line-height: 1.3;  }
 
-  /* Tighter card padding so 320px screens stay readable */
   .step-card,
   .value-card,
   .team-card,
@@ -2195,8 +2272,20 @@ body.chat-open .recent-bookings-widget {
   .modal-content { padding: 1.25rem; }
 }
 
+/* ---------- Very-narrow viewport guardrail (patch 10) ---------- */
+@media (max-width: 360px) {
+  .type-select,
+  .doctor-select { grid-template-columns: 1fr; }
+
+  .hero-actions > * { width: 100%; }
+
+  .header-inner { gap: 0.5rem; }
+
+  .container { max-width: calc(100% - 1.25rem); }
+}
+
 /* ============================================================
-   25. REDUCED MOTION
+   26. REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -2212,7 +2301,7 @@ body.chat-open .recent-bookings-widget {
 }
 
 /* ============================================================
-   26. UTILITY CLASSES
+   27. UTILITY CLASSES
    ============================================================ */
 .mt-1 { margin-top: var(--space-xs); }
 .mt-2 { margin-top: var(--space-sm); }
