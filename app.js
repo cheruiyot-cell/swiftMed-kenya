@@ -1,34 +1,32 @@
 /* ============================================================
-   swiftMed Kenya — Application Script (v4)
+   swiftMed Kenya — Application Script (v5)
    Author: UI/UX Audit & Redesign
 
-   ARCHITECTURE NOTES
-   ------------------
-   • All DOM access is guarded — this file is loaded on every page.
-   • All user-supplied strings go through textContent, never innerHTML.
-   • All storage calls are wrapped (Safari private mode throws).
-   • MOCK DATA: this build is a portfolio demonstration. See the
-     MOCK DATA block below. In production these values would come
-     from a booking API and a real-time events stream.
-
-   ICON STRATEGY
-   -------------
-   Font Awesome via CDN is used here for reviewer convenience.
-   In a production build, replace with an inline SVG sprite:
-   ~250 KB saved and two third-party origins removed from the
-   critical path. See README.md → "Production checklist".
+   v5 CHANGES (audit remediation)
+   ------------------------------
+   • [P0-1] Insurance verifier: no silent redirect. WhatsApp opens
+     in a new tab; form state is preserved.
+   • [P0-3] Mobile nav is `inert` + `aria-hidden` when collapsed on
+     mobile — no hidden-but-focusable links for screen readers.
+   • [P1-1] Blog demo cards show a toast instead of jumping to top.
+   • [P1-2] bookWithDoctor() pre-selects In-Clinic so the user never
+     hits a spurious "select type" toast on Continue.
+   • [P1-3] nextStep() moves focus to the step heading.
+   • [P1-4] .open-booking-modal always preventDefault().
+   • [P1-5] Phone validation accepts 9/10/12-digit inputs.
+   • [P2-1] Corporate form uses the same phone helper.
+   • [P3-1] Hamburger aria-label reflects open/closed state.
+   • NEW:    Open-now status chip updater runs on load + every min.
    ============================================================ */
 'use strict';
 
-/* ---------- Constants ---------- */
 const WHATSAPP_NUMBER = '254702555093';
 const WA_BASE = `https://wa.me/${WHATSAPP_NUMBER}`;
+const MOBILE_BREAKPOINT = 768;
 
-/* ---------- Tiny DOM helpers ---------- */
 const $  = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
-/* ---------- Safe storage ---------- */
 const safeStore = {
   get(k)     { try { return sessionStorage.getItem(k); } catch { return null; } },
   set(k, v)  { try { sessionStorage.setItem(k, v); } catch { /* noop */ } },
@@ -36,11 +34,7 @@ const safeStore = {
   setL(k, v) { try { localStorage.setItem(k, v); } catch { /* noop */ } }
 };
 
-/* ==================== MOCK DATA ====================
-   Everything below is demonstration data for this portfolio build.
-   Replace with real API responses in production.
-   ==================================================== */
-
+/* ==================== MOCK DATA ==================== */
 const MOCK_RECENT_BOOKINGS = [
   { name: 'Grace W.', service: 'General Consultation',    time: '2 mins ago'  },
   { name: 'Brian O.', service: 'Teleconsult',             time: '5 mins ago'  },
@@ -58,6 +52,26 @@ const MOCK_DOCTOR_SHIFTS = {
   sunday:   { onShift: 0 }
 };
 
+/* ==================== Phone helpers ==================== */
+function phoneDigits(raw) {
+  return String(raw || '').replace(/\D/g, '');
+}
+
+function isValidKenyanPhone(raw) {
+  let digits = phoneDigits(raw);
+  if (digits.startsWith('254')) digits = digits.slice(3);
+  else if (digits.startsWith('0')) digits = digits.slice(1);
+  return /^[71]\d{8}$/.test(digits);
+}
+
+function normalizePhone(raw) {
+  const digits = phoneDigits(raw);
+  if (digits.startsWith('254')) return '0' + digits.slice(3);
+  if (digits.startsWith('0'))   return digits;
+  if (digits.length === 9)      return '0' + digits;
+  return digits;
+}
+
 /* ==================== Toast ==================== */
 function showToast(message, type = 'success') {
   const container = document.getElementById('toast-container');
@@ -73,7 +87,7 @@ function showToast(message, type = 'success') {
   icon.setAttribute('aria-hidden', 'true');
 
   const text = document.createElement('span');
-  text.textContent = message;              // ← never innerHTML
+  text.textContent = message;
 
   toast.append(icon, text);
   container.appendChild(toast);
@@ -84,11 +98,15 @@ function showToast(message, type = 'success') {
   }, 3200);
 }
 
-/* ==================== WhatsApp helper (popup-blocker safe) ==================== */
+/* ==================== WhatsApp helper ==================== */
 function openWhatsApp(message, { replace = false } = {}) {
   const url = `${WA_BASE}?text=${encodeURIComponent(message)}`;
-  if (replace) window.location.href = url;
-  else window.open(url, '_blank', 'noopener,noreferrer');
+  if (replace) {
+    window.location.href = url;
+  } else {
+    const win = window.open(url, '_blank', 'noopener,noreferrer');
+    if (!win) showToast('Please allow pop-ups, or tap the WhatsApp button.', 'error');
+  }
 }
 
 /* ==================== Throttle ==================== */
@@ -102,44 +120,112 @@ function throttle(fn, limit = 100) {
   };
 }
 
+/* ==================== Open-now status chip ==================== */
+function computeOpenStatus() {
+  const now = new Date();
+  const d = now.getDay();
+  const h = now.getHours() + now.getMinutes() / 60;
+  let isOpen = false;
+  let closesAt = '';
+  let opensAt = '';
+  if (d >= 1 && d <= 5) {
+    isOpen = h >= 8 && h < 20;
+    closesAt = '8:00 PM';
+    opensAt = '8:00 AM';
+  } else if (d === 6) {
+    isOpen = h >= 9 && h < 18;
+    closesAt = '6:00 PM';
+    opensAt = '9:00 AM';
+  } else {
+    isOpen = false;
+    opensAt = 'Mon 8:00 AM';
+  }
+  return { isOpen, closesAt, opensAt, isSunday: d === 0 };
+}
+
+function updateOpenStatus() {
+  const chip = document.querySelector('[data-open-status]');
+  if (!chip) return;
+  const textEl = chip.querySelector('[data-open-text]');
+  const { isOpen, closesAt, opensAt, isSunday } = computeOpenStatus();
+
+  if (isOpen) {
+    chip.dataset.state = 'open';
+    if (textEl) textEl.textContent = `Open now · closes ${closesAt}`;
+  } else {
+    chip.dataset.state = 'closed';
+    if (textEl) {
+      textEl.textContent = isSunday
+        ? 'Closed today · opens Mon 8:00 AM'
+        : `Closed · opens ${opensAt}`;
+    }
+  }
+}
+
 /* ==================== Mobile Menu ==================== */
+const mobileMQ = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`);
+
+function syncMobileNavA11y() {
+  const nav = document.getElementById('mobile-nav');
+  if (!nav) return;
+  const isMobile = mobileMQ.matches;
+  const isOpen   = nav.classList.contains('open');
+
+  if (isMobile && !isOpen) {
+    nav.setAttribute('inert', '');
+    nav.setAttribute('aria-hidden', 'true');
+  } else {
+    nav.removeAttribute('inert');
+    nav.removeAttribute('aria-hidden');
+  }
+}
+
 function closeMobileMenu() {
   const nav = document.getElementById('mobile-nav');
   const cta = document.getElementById('header-cta');
-  const ctaMobile = document.getElementById('header-cta-mobile');
   const hamburger = $('.hamburger');
+
   if (nav) nav.classList.remove('open');
   if (cta) cta.classList.remove('open');
-  if (ctaMobile) ctaMobile.classList.remove('open');
+
   if (hamburger) {
     hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
     const icon = hamburger.querySelector('i');
     if (icon) icon.className = 'fa-solid fa-bars';
   }
+  syncMobileNavA11y();
 }
 
 function toggleMobileMenu() {
   const nav = document.getElementById('mobile-nav');
   const cta = document.getElementById('header-cta');
-  const ctaMobile = document.getElementById('header-cta-mobile');
   const hamburger = $('.hamburger');
   if (!nav || !hamburger) return;
 
-  const isOpen = !nav.classList.contains('open');
-  if (isOpen) {
+  const willOpen = !nav.classList.contains('open');
+  if (willOpen) {
     nav.classList.add('open');
-    if (ctaMobile) ctaMobile.classList.add('open');
     if (cta) cta.classList.remove('open');
     hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
     const icon = hamburger.querySelector('i');
     if (icon) icon.className = 'fa-solid fa-xmark';
   } else {
     closeMobileMenu();
+    return;
   }
+  syncMobileNavA11y();
+}
+
+if (typeof mobileMQ.addEventListener === 'function') {
+  mobileMQ.addEventListener('change', syncMobileNavA11y);
+} else if (typeof mobileMQ.addListener === 'function') {
+  mobileMQ.addListener(syncMobileNavA11y);
 }
 
 document.addEventListener('click', (e) => {
-  if (window.innerWidth > 768) return;
+  if (window.innerWidth > MOBILE_BREAKPOINT) return;
   const nav = document.getElementById('mobile-nav');
   if (!nav || !nav.classList.contains('open')) return;
   if (e.target.closest('.hamburger, #mobile-nav')) return;
@@ -151,12 +237,8 @@ function getNextAvailableSlot() {
   const now = new Date();
   const next = new Date(now.getTime() + 30 * 60000);
   const mins = next.getMinutes();
-  if (mins < 30) {
-    next.setMinutes(30, 0, 0);
-  } else {
-    next.setMinutes(0, 0, 0);
-    next.setHours(next.getHours() + 1);
-  }
+  if (mins < 30) next.setMinutes(30, 0, 0);
+  else { next.setMinutes(0, 0, 0); next.setHours(next.getHours() + 1); }
   const isToday = next.getDate() === now.getDate();
   const dayLabel = isToday ? 'Today' : 'Tomorrow';
   const timeLabel = next.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
@@ -198,14 +280,14 @@ function updateWaitlist() {
 
     $$('.error-msg', form).forEach((el) => el.classList.remove('visible'));
     let hasError = false;
-    if (!name) { document.getElementById('name-error')?.classList.add('visible'); hasError = true; }
+    if (!name)     { document.getElementById('name-error')?.classList.add('visible');     hasError = true; }
     if (!provider) { document.getElementById('provider-error')?.classList.add('visible'); hasError = true; }
-    if (!memberId) { document.getElementById('member-error')?.classList.add('visible'); hasError = true; }
+    if (!memberId) { document.getElementById('member-error')?.classList.add('visible');   hasError = true; }
     if (hasError) { showToast('Please fill in all required fields.', 'error'); return; }
 
     const verifyBtn = document.getElementById('verify-btn');
-    const btnText = verifyBtn.querySelector('.btn-text');
-    const spinner = verifyBtn.querySelector('.spinner');
+    const btnText   = verifyBtn.querySelector('.btn-text');
+    const spinner   = verifyBtn.querySelector('.spinner');
     verifyBtn.disabled = true;
     btnText.textContent = 'Verifying…';
     spinner.style.display = 'inline-block';
@@ -214,17 +296,21 @@ function updateWaitlist() {
       const message =
         `Hi swiftMed Kenya, I'd like a pre-verification check.\n` +
         `Name: ${name}\nInsurance: ${provider}\nMember ID: ${memberId}`;
-      showToast(`Thanks ${name} — opening WhatsApp…`, 'success');
-      openWhatsApp(message, { replace: true });
+
+      // [P0-1] Open WhatsApp in a NEW TAB. Do NOT navigate away.
+      // Do NOT reset the form — the user may need to reference inputs,
+      // and popup blockers may have prevented the WhatsApp tab.
+      openWhatsApp(message);
+      showToast(`Thanks ${name} — opening WhatsApp in a new tab.`, 'success');
+
       verifyBtn.disabled = false;
       btnText.textContent = 'Verify My Coverage Instantly';
       spinner.style.display = 'none';
-      form.reset();
     }, 1200);
   });
 })();
 
-/* ==================== Scroll animation (no-JS safe) ==================== */
+/* ==================== Scroll animation ==================== */
 function observeAnimations() {
   const elements = $$('.animate-on-scroll');
   if (!elements.length) return;
@@ -245,7 +331,7 @@ function observeAnimations() {
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   elements.forEach((el) => {
-    el.classList.add('will-animate');   // only hide once JS is confirmed running
+    el.classList.add('will-animate');
     observer.observe(el);
   });
 }
@@ -288,26 +374,16 @@ function togglePassword(inputId, btn) {
       const empty = !field.value.trim();
 
       let typeValid = true;
-      if (!empty && field.type === 'tel') {
-        const digits = field.value.replace(/\D/g, '');
-        typeValid = /^(?:254|0)?[71]\d{8}$/.test(digits);
-      }
-      if (!empty && field.type === 'number') {
-        typeValid = Number(field.value) > 0;
-      }
-      if (!empty && field.type === 'email') {
-        typeValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
-      }
+      if (!empty && field.type === 'tel') typeValid = isValidKenyanPhone(field.value);
+      if (!empty && field.type === 'number') typeValid = Number(field.value) > 0;
+      if (!empty && field.type === 'email') typeValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
 
       const ok = !empty && typeValid;
       field.classList.toggle('invalid', !ok);
       field.setAttribute('aria-invalid', String(!ok));
       if (error) error.classList.toggle('visible', !ok);
 
-      if (!ok) {
-        valid = false;
-        if (!firstInvalid) firstInvalid = field;
-      }
+      if (!ok) { valid = false; if (!firstInvalid) firstInvalid = field; }
     });
 
     if (firstInvalid) firstInvalid.focus();
@@ -315,15 +391,9 @@ function togglePassword(inputId, btn) {
   }
 
   function showStep(step) {
-    steps.forEach((s) => {
-      s.classList.remove('active');
-      s.style.display = 'none';
-    });
+    steps.forEach((s) => { s.classList.remove('active'); s.style.display = 'none'; });
     const target = form.querySelector(`.form-step[data-step="${step}"]`);
-    if (target) {
-      target.classList.add('active');
-      target.style.display = 'block';
-    }
+    if (target) { target.classList.add('active'); target.style.display = 'block'; }
     currentStep = step;
     if (progressBar) {
       progressBar.style.width = steps.length > 1
@@ -341,18 +411,13 @@ function togglePassword(inputId, btn) {
       if (validatePane(pane)) showStep(currentStep + 1);
     });
   }
-
   if (prevBtn) prevBtn.addEventListener('click', () => showStep(currentStep - 1));
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-
-    // Validate BOTH panes on submit — never trust that the user reached
-    // step 2 through the "Next" button (e.g. Enter key from step 1).
     const pane2 = form.querySelector('.form-step[data-step="2"]');
     if (!validatePane(pane2)) return;
 
-    // Named access — resilient to markup reordering
     const get = (id) => (form.querySelector(`#${id}`)?.value || '').trim();
     const message =
       `Hi swiftMed Corporate Concierge,\n\n` +
@@ -371,10 +436,10 @@ function togglePassword(inputId, btn) {
 
 /* ==================== Booking Modal ==================== */
 const DOCTOR_FEES = {
-  'Dr. Mwangi':  2500,   // General Physician
-  'Dr. Achieng': 3000,   // Cardiologist
-  'Dr. Kamau':   3000,   // Pediatrician
-  'Dr. Otieno':  3000    // Dermatologist
+  'Dr. Mwangi':  2500,
+  'Dr. Achieng': 3000,
+  'Dr. Kamau':   3000,
+  'Dr. Otieno':  3000
 };
 const TELECONSULT_FEE = 2500;
 
@@ -443,15 +508,6 @@ function setTime(time, element) {
   }
 }
 
-function normalizePhone(raw) {
-  const digits = raw.replace(/\D/g, '');
-  if (digits.startsWith('254')) return '0' + digits.slice(3);
-  if (digits.startsWith('0')) return digits;
-  if (digits.length === 9) return '0' + digits;
-  return digits;
-}
-
-/* ---------- Inline form error helpers (WCAG 3.3.1) ---------- */
 function setFieldError(input, message) {
   const errorId = input.getAttribute('aria-describedby');
   const errorEl = errorId ? document.getElementById(errorId) : null;
@@ -471,24 +527,20 @@ function validatePatientForm() {
 
   const rules = [
     { id: 'patient-fullname', required: true,  message: 'Please enter the patient\'s full name.' },
-    { id: 'patient-phone',    required: true,  message: 'Enter a valid Kenyan phone number (e.g. 0712 345 678).', pattern: /^(?:254|0)?[71]\d{8}$/ },
+    { id: 'patient-phone',    required: true,  message: 'Enter a valid Kenyan phone number (e.g. 0712 345 678).', validate: isValidKenyanPhone },
     { id: 'patient-email',    required: false, message: 'Please enter a valid email address.', type: 'email' }
   ];
 
-  rules.forEach(({ id, required, pattern, type, message }) => {
+  rules.forEach(({ id, required, validate, type, message }) => {
     const input = document.getElementById(id);
     if (!input) return;
 
     const raw = input.value.trim();
     let ok = true;
 
-    if (required && !raw) {
-      ok = false;
-    } else if (raw && pattern) {
-      ok = pattern.test(raw.replace(/\D/g, ''));
-    } else if (raw && type === 'email') {
-      ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw);
-    }
+    if (required && !raw) ok = false;
+    else if (raw && validate) ok = validate(raw);
+    else if (raw && type === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw);
 
     setFieldError(input, ok ? '' : message);
     if (!ok && !firstInvalid) firstInvalid = input;
@@ -496,6 +548,14 @@ function validatePatientForm() {
 
   if (firstInvalid) firstInvalid.focus();
   return !firstInvalid;
+}
+
+function focusStepHeading(stepEl) {
+  if (!stepEl) return;
+  const heading = stepEl.querySelector('h3');
+  if (!heading) return;
+  if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+  requestAnimationFrame(() => heading.focus());
 }
 
 function nextStep(step) {
@@ -536,7 +596,10 @@ function nextStep(step) {
 
   $$('.modal-step').forEach((s) => s.classList.remove('active'));
   const target = document.getElementById('step-' + step);
-  if (target) target.classList.add('active');
+  if (target) {
+    target.classList.add('active');
+    focusStepHeading(target);
+  }
   updateProgress(step);
 
   if (step === 2) {
@@ -568,7 +631,11 @@ function simulatePayment() {
     showToast('M-PESA payment confirmed! Booking secured.', 'success');
 
     $$('.modal-step').forEach((s) => s.classList.remove('active'));
-    document.getElementById('step-4')?.classList.add('active');
+    const success = document.getElementById('step-4');
+    if (success) {
+      success.classList.add('active');
+      focusStepHeading(success);
+    }
     updateProgress(4);
 
     payBtn.disabled = false;
@@ -609,7 +676,8 @@ function openBookingModal() {
   modal.classList.add('active');
   document.body.classList.add('modal-open');
 
-  document.getElementById('step-1')?.classList.add('active');
+  const step1 = document.getElementById('step-1');
+  if (step1) step1.classList.add('active');
   ['step-2', 'step-3', 'step-4'].forEach((id) => document.getElementById(id)?.classList.remove('active'));
   updateProgress(1);
 
@@ -677,7 +745,8 @@ function routeSpecialist() {
 
   openBookingModal();
   setTimeout(() => {
-    document.querySelector('.type-card')?.click();       // default to In-Clinic
+    const firstType = $('.type-card');
+    if (firstType) firstType.click();
     $$('.doctor-card').forEach((card) => {
       if (card.querySelector('strong')?.textContent === doctor) card.click();
     });
@@ -776,13 +845,13 @@ window.addEventListener('scroll', onScroll, { passive: true });
 
 /* ==================== Chat Widget ==================== */
 function toggleChat({ focus = true } = {}) {
-  const win     = document.getElementById('chat-window');
-  const badge   = document.querySelector('.chat-badge');
-  const toggle  = document.getElementById('chat-toggle');
+  const win    = document.getElementById('chat-window');
+  const badge  = document.querySelector('.chat-badge');
+  const toggle = document.getElementById('chat-toggle');
   if (!win) return;
 
   const open = win.classList.toggle('open');
-  if (badge) badge.style.display = 'none';
+  if (badge) badge.hidden = true;
   if (toggle) toggle.setAttribute('aria-expanded', String(open));
   document.body.classList.toggle('chat-open', open);
 
@@ -808,7 +877,7 @@ function sendChatMessage() {
 
   const sentMsg = document.createElement('div');
   sentMsg.className = 'chat-message user-message';
-  sentMsg.textContent = message;                       // ← textContent
+  sentMsg.textContent = message;
   chatBody.appendChild(sentMsg);
   chatBody.scrollTop = chatBody.scrollHeight;
   input.value = '';
@@ -831,7 +900,6 @@ function sendChatMessage() {
   }, 900);
 }
 
-/* Outside-click + Escape close for chat & emergency menu */
 document.addEventListener('click', (e) => {
   const win = document.getElementById('chat-window');
   if (win?.classList.contains('open') && !e.target.closest('#chat-window, #chat-toggle')) {
@@ -845,7 +913,6 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  // Booking modal handles its own Escape (with preventDefault)
   if (document.getElementById('booking-modal')?.classList.contains('active')) return;
   closeChat();
   closeEmergencyMenu();
@@ -892,21 +959,36 @@ function initRecentBookingsWidget() {
   }, 90000);
 }
 
-/* ==================== Book with a specific doctor (About page) ==================== */
+/* ==================== Book with a specific doctor ==================== */
+/* [P1-2] Pre-select In-Clinic so the user never hits the "select type" toast. */
 function bookWithDoctor(btn) {
   const doctor = btn.getAttribute('data-doctor');
   if (!doctor) return;
   openBookingModal();
   setTimeout(() => {
+    const firstTypeCard = $('.type-card');
+    if (firstTypeCard) firstTypeCard.click();
     $$('.doctor-card').forEach((card) => {
       if (card.querySelector('strong')?.textContent === doctor) card.click();
     });
   }, 150);
 }
 
+/* ==================== Blog demo links ==================== */
+/* [P1-1] Prevent href="#" links from scrolling to top. Show a clear
+   "coming soon" toast instead. Remove once real articles exist. */
+function initDemoBlogLinks() {
+  const demoLinks = $$('a.read-more[href="#"], a[data-demo-article]');
+  demoLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      showToast('Full article coming soon — this is a portfolio demo.', 'success');
+    });
+  });
+}
+
 /* ==================== Global init ==================== */
 document.addEventListener('DOMContentLoaded', () => {
-  /* 1. Register scroll-reveal targets */
   const animateSelectors = [
     '.how-it-works .step-card',
     '.corporate-section .corporate-text',
@@ -931,20 +1013,20 @@ document.addEventListener('DOMContentLoaded', () => {
   observeAnimations();
   updateWaitlist();
   setInterval(updateWaitlist, 60000);
+  updateOpenStatus();
+  setInterval(updateOpenStatus, 60000);
   initRecentBookingsWidget();
+  initDemoBlogLinks();
 
-  /* 2. Wire every .open-booking-modal trigger.
-        If the trigger has href="#" we preventDefault; otherwise (a WhatsApp
-        fallback link) JS replaces the destination with the modal. */
+  syncMobileNavA11y();
+
   $$('.open-booking-modal').forEach((btn) => {
     btn.addEventListener('click', (e) => {
-      const href = btn.getAttribute('href');
-      if (href === '#') e.preventDefault();
+      e.preventDefault();
       openBookingModal();
     });
   });
 
-  /* 3. Chat nudge — badge only, never steals focus (WCAG 2.4.3 / 3.2.5) */
   setTimeout(() => {
     if (safeStore.get('chatShown')) return;
     safeStore.set('chatShown', 'true');
@@ -952,6 +1034,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (badge) badge.hidden = false;
   }, 12000);
 
-  /* 4. Re-run scroll handler in case the page loaded already scrolled */
   onScroll();
 });
+
+window.addEventListener('resize', syncMobileNavA11y, { passive: true });

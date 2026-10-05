@@ -3,8 +3,4 @@
 User-agent: *
 Allow: /
 
-# Uncomment the line below while this is a portfolio demo build to keep
-# search engines from indexing the placeholder content.
-# Disallow: /
-
 Sitemap: https://swiftmed.co.ke/sitemap.xml

@@ -1,38 +1,23 @@
 /* ============================================================
-   swiftMed Kenya — Production Stylesheet (v8)
+   swiftMed Kenya — Production Stylesheet (v9)
    Author: UI/UX Audit & Redesign
 
-   WHAT'S NEW IN v8
-   ----------------
-   • Every hero photograph now renders at full opacity as a real
-     <img> element. The heavy white scrim gradients are gone, so
-     the photography actually reads as designed.
-   • Home hero: duplicate faded background photo removed — one
-     decode, one request, brighter LCP.
-   • Interior heroes (about / services / blog / faq / 404): new
-     split layout — copy on the left, photograph on the right at
-     100% opacity. Text contrast now comes from a solid tinted
-     panel instead of a fragile gradient.
-   • Responsive hardening (audit patches 1–10):
-     1. Booking progress bar scales with viewport (no more
-        clipping at 320px).
-     2. Time-slot grid auto-fits instead of fixed 3 columns.
-     3. Ticker items wrap instead of forcing one long line.
-     4. Emergency menu capped to viewport width.
-     5. min-width: 0 on every grid/flex child that can be
-        pushed wider by long content.
-     6. Logo hardened against shrink/collapse.
-     7. Toast container bounded on both sides.
-     8. Global overflow safety net (overflow-x: clip + word-break).
-     9. Hero decorative glow capped to viewport.
-    10. Very-narrow viewport (<360px) guardrail rules.
+   v9 CHANGES (audit remediation)
+   ------------------------------
+   • [hidden] override in reset (chat badge fix)
+   • Tagline minimum font-size 0.9rem (low-vision mobile floor)
+   • Emergency FAB pulse capped at 3 iterations
+   • Team avatar upgraded to branded gradient with double ring
+   • Booking step headings: no visible focus ring on programmatic focus
+   • Location block + "Open now" status chip styles
+   • nav[inert] pointer-events guard
+   • FAQ in-page TOC (sticky horizontal scroller)
    ============================================================ */
 
 /* ============================================================
    1. DESIGN TOKENS
    ============================================================ */
 :root {
-  /* Brand */
   --primary: #0B7A75;
   --primary-dark: #085e5a;
   --primary-light: #e6f4f3;
@@ -41,13 +26,11 @@
   --accent: #edfcfa;
   --white: #ffffff;
 
-  /* Text */
   --text-main: #1a2b3c;
   --text-light: #64748b;
   --text-ultralight: #94a3b8;
   --border: #e2e8f0;
 
-  /* Semantic */
   --success: #25D366;
   --success-strong: #0F7A63;
   --success-text: #5EEAD4;
@@ -56,22 +39,18 @@
   --warning: #fbbf24;
   --error: #ef4444;
 
-  /* Elevation */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
 
-  /* Radii */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-pill: 999px;
 
-  /* Motion */
   --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-  /* Spacing scale */
   --space-3xs: 0.25rem;
   --space-2xs: 0.5rem;
   --space-xs:  0.75rem;
@@ -80,20 +59,16 @@
   --space-lg:  2rem;
   --space-xl:  3rem;
 
-  /* Fluid rhythm */
   --section-y:  clamp(3rem, 8vw, 6rem);
   --grid-gap:   clamp(1.25rem, 3vw, 2.5rem);
   --card-pad:   clamp(1.5rem, 3vw, 2.25rem);
 
-  /* Typography */
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Poppins', system-ui, -apple-system, sans-serif;
   --measure: 68ch;
 
-  /* Layout */
   --header-h: 72px;
 
-  /* Floating layer */
   --float-r: 1.5rem;
   --float-b: 1.5rem;
   --float-gap: 4.5rem;
@@ -102,13 +77,15 @@
 /* ============================================================
    2. RESET & BASE
    ============================================================ */
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+/* [P0-2] Author rules must not override [hidden]. Without this,
+   `.chat-badge { display: flex }` beats the UA's default. */
+[hidden] { display: none !important; }
 
 html {
   scroll-behavior: smooth;
@@ -169,69 +146,36 @@ img, svg, video, canvas, iframe {
   display: block;
 }
 
-input, select, textarea {
-  max-width: 100%;
-}
+input, select, textarea { max-width: 100%; }
 
 ul, ol { list-style: none; }
 
-/* Fluid containers */
 .container {
   width: 100%;
   max-width: min(100% - 2rem, 1200px);
   margin-inline: auto;
 }
 
-.container-sm { max-width: min(100% - 2rem, 640px); }
-.container-md { max-width: min(100% - 2rem, 768px); }
-.container-lg { max-width: min(100% - 2rem, 1024px); }
-.container-xl { max-width: min(100% - 2rem, 1280px); }
-
 @media (min-width: 1280px) {
-  .container    { max-width: min(100% - 3rem, 1240px); }
-  .container-lg { max-width: min(100% - 3rem, 1120px); }
-  .container-xl { max-width: min(100% - 3rem, 1360px); }
+  .container { max-width: min(100% - 3rem, 1240px); }
 }
-
 @media (min-width: 1536px) {
-  :root {
-    --space-xl: 5rem;
-    --section-y: clamp(4rem, 6vw, 7rem);
-  }
+  :root { --space-xl: 5rem; --section-y: clamp(4rem, 6vw, 7rem); }
   body { font-size: 17px; }
-
-  .container    { max-width: min(100% - 4rem, 1440px); }
-  .container-md { max-width: min(100% - 4rem, 880px); }
-  .container-lg { max-width: min(100% - 4rem, 1240px); }
-  .container-xl { max-width: min(100% - 4rem, 1560px); }
+  .container { max-width: min(100% - 4rem, 1440px); }
 }
-
 @media (min-width: 1920px) {
-  .container    { max-width: min(100% - 6rem, 1680px); }
-  .container-xl { max-width: min(100% - 6rem, 1780px); }
+  .container { max-width: min(100% - 6rem, 1680px); }
 }
 
 /* ============================================================
-   3. GRID / FLEX CHILD HARDENING  (audit patch 5)
+   3. GRID / FLEX CHILD HARDENING
    ============================================================ */
-.hero-text,
-.hero-image,
-.about-text,
-.about-image,
-.featured-text,
-.featured-image,
-.corporate-text,
-.corporate-form-box,
-.testimonial-card,
-.service-card,
-.blog-card,
-.team-card,
-.value-card,
-.step-card,
-.page-hero-text,
-.page-hero-image {
-  min-width: 0;
-}
+.hero-text, .hero-image, .about-text, .about-image,
+.featured-text, .featured-image, .corporate-text, .corporate-form-box,
+.testimonial-card, .service-card, .blog-card, .team-card,
+.value-card, .step-card, .page-hero-text, .page-hero-image,
+.faq-toc { min-width: 0; }
 
 /* ============================================================
    4. UTILITIES & ACCESSIBILITY
@@ -296,13 +240,11 @@ ul, ol { list-style: none; }
   line-height: 1.2;
 }
 
-.btn-primary,
-.btn-verify {
+.btn-primary, .btn-verify {
   background: var(--primary);
   color: var(--white);
 }
-.btn-primary:hover,
-.btn-verify:hover {
+.btn-primary:hover, .btn-verify:hover {
   background: var(--primary-dark);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
@@ -318,33 +260,16 @@ ul, ol { list-style: none; }
   color: var(--white);
 }
 
-.btn-whatsapp,
-.btn-primary-whatsapp,
-.wa-option {
+.btn-whatsapp, .btn-primary-whatsapp, .wa-option {
   background: var(--success-strong);
   color: var(--white);
 }
-.btn-whatsapp:hover,
-.btn-primary-whatsapp:hover,
-.wa-option:hover {
+.btn-whatsapp:hover, .btn-primary-whatsapp:hover, .wa-option:hover {
   background: #0B6350;
 }
 
-.btn:focus-visible,
-.btn-primary:focus-visible,
-.btn-secondary:focus-visible,
-.btn-verify:focus-visible,
-.btn-whatsapp:focus-visible,
-.btn-primary-whatsapp:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-.btn:disabled,
-.btn-primary:disabled,
-.btn-secondary:disabled,
-.btn-verify:disabled,
-.btn-whatsapp:disabled {
+.btn:disabled, .btn-primary:disabled, .btn-secondary:disabled,
+.btn-verify:disabled, .btn-whatsapp:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
@@ -381,7 +306,7 @@ ul, ol { list-style: none; }
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  flex-shrink: 0;                    /* patch 6 */
+  flex-shrink: 0;
   white-space: nowrap;
 }
 
@@ -398,7 +323,7 @@ ul, ol { list-style: none; }
 
 nav ul {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   list-style: none;
 }
 
@@ -424,12 +349,13 @@ nav ul li a:hover::after { width: 100%; }
 .header-cta {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .btn-phone {
   font-weight: 600;
   color: var(--primary);
+  white-space: nowrap;
 }
 
 .hamburger {
@@ -475,16 +401,17 @@ nav ul li a:hover::after { width: 100%; }
   }
 
   .header-cta { display: none; }
-  .header-cta.open { display: flex; }
-
-  .header-cta.mobile-only { display: none; }
-  .header-cta.mobile-only.open { display: flex; }
-
+  .header-cta.mobile-only { display: flex; }
   .mobile-only { display: flex; }
+
+  /* [P0-3] Inert state must also disable pointer events so a stray
+     tap on the visually collapsed region can't reach inner links. */
+  nav#mobile-nav[inert] { pointer-events: none; }
+  nav#mobile-nav:not([inert]) { pointer-events: auto; }
 }
 
 /* ============================================================
-   7. HERO (HOME)  — full-opacity photograph, no scrim
+   7. HERO (HOME)
    ============================================================ */
 .hero {
   background-color: #f0fdfa;
@@ -493,8 +420,6 @@ nav ul li a:hover::after { width: 100%; }
   overflow: hidden;
 }
 
-/* Decorative glow — capped to viewport so it never triggers
-   horizontal scroll on narrow screens (audit patch 9). */
 .hero::after {
   content: '';
   position: absolute;
@@ -525,8 +450,9 @@ nav ul li a:hover::after { width: 100%; }
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   margin-bottom: 0.5rem;
+  line-height: 1.4;
 }
 
 .subtext {
@@ -594,6 +520,7 @@ nav ul li a:hover::after { width: 100%; }
   aspect-ratio: 3 / 2;
   object-fit: cover;
   width: 100%;
+  border-radius: var(--radius-lg);
 }
 
 .live-badge {
@@ -617,7 +544,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 .live-badge strong { font-weight: 700; }
 
-/* ---------- Insurance verify widget ---------- */
+/* Insurance verify widget */
 .insurance-verify-widget {
   background: var(--white);
   border-radius: var(--radius-lg);
@@ -627,10 +554,7 @@ nav ul li a:hover::after { width: 100%; }
   margin-top: var(--space-lg);
 }
 
-.insurance-verify-widget h3 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-}
+.insurance-verify-widget h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
 .insurance-verify-widget p {
   color: var(--text-light);
   font-size: 0.9rem;
@@ -684,8 +608,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   8. PAGE HERO (INTERIOR PAGES) — split layout, full-opacity
-      photograph on the right. No gradient overlays.
+   8. PAGE HERO (INTERIOR PAGES)
    ============================================================ */
 .page-hero {
   background-color: #f0fdfa;
@@ -701,33 +624,17 @@ nav ul li a:hover::after { width: 100%; }
   align-items: center;
 }
 
-.page-hero-text {
-  min-width: 0;
-  text-align: left;
-}
-
-.page-hero-text .tagline {
-  margin-bottom: 0.5rem;
-}
-
-.page-hero-text h1 {
-  margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
-}
-
+.page-hero-text { text-align: left; }
+.page-hero-text .tagline { margin-bottom: 0.5rem; }
+.page-hero-text h1 { margin-bottom: clamp(0.75rem, 2vw, 1.25rem); }
 .page-hero-text .subtext {
   margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
   max-width: 52ch;
   margin-inline: 0;
 }
-
 .page-hero-text .hero-actions {
   margin-bottom: 0;
   justify-content: flex-start;
-}
-
-/* The photograph — 100% opacity, no overlay */
-.page-hero-image {
-  min-width: 0;
 }
 
 .page-hero-image img {
@@ -740,24 +647,14 @@ nav ul li a:hover::after { width: 100%; }
   box-shadow: var(--shadow-lg);
 }
 
-/* Stack on tablet & below — text first, photo below */
 @media (max-width: 900px) {
   .page-hero-inner {
     grid-template-columns: 1fr;
     gap: clamp(1.75rem, 5vw, 2.5rem);
   }
-
-  .page-hero-text {
-    text-align: center;
-  }
-
-  .page-hero-text .subtext {
-    margin-inline: auto;
-  }
-
-  .page-hero-text .hero-actions {
-    justify-content: center;
-  }
+  .page-hero-text { text-align: center; }
+  .page-hero-text .subtext { margin-inline: auto; }
+  .page-hero-text .hero-actions { justify-content: center; }
 }
 
 /* ============================================================
@@ -800,7 +697,7 @@ nav ul li a:hover::after { width: 100%; }
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  flex-wrap: wrap;                    /* patch 3 */
+  flex-wrap: wrap;
   min-width: 0;
 }
 
@@ -922,7 +819,11 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 .testimonial-stars { color: var(--warning); margin-bottom: 0.5rem; }
-.testimonial-quote { font-size: 0.95rem; color: var(--text-main); margin-bottom: var(--space-sm); }
+.testimonial-quote {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: var(--space-sm);
+}
 .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
 
 .testimonial-avatar {
@@ -961,7 +862,6 @@ nav ul li a:hover::after { width: 100%; }
 .corporate-text .tagline { color: var(--success); }
 .corporate-text h2 { color: var(--white); }
 .corporate-text .subtext { color: var(--text-ultralight); }
-
 .corporate-section .highlight { color: #5EEAD4; }
 
 .corporate-features {
@@ -971,7 +871,6 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 .feature-item { display: flex; align-items: flex-start; gap: 0.75rem; }
-
 .feature-item .icon {
   background: rgba(255, 255, 255, 0.1);
   padding: 0.5rem;
@@ -1041,7 +940,6 @@ nav ul li a:hover::after { width: 100%; }
   padding-block: var(--section-y);
   text-align: center;
 }
-
 .cta-banner h2 { margin-bottom: 0.5rem; }
 .cta-banner p { color: var(--text-light); margin-bottom: var(--space-lg); }
 
@@ -1052,7 +950,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 /* ============================================================
-   15. FOOTER
+   15. FOOTER + LOCATION BLOCK
    ============================================================ */
 .site-footer {
   background: var(--secondary);
@@ -1077,7 +975,8 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 .footer-col p,
-.footer-col a {
+.footer-col a,
+.footer-col address {
   color: var(--text-ultralight);
   font-size: 0.9rem;
   line-height: 1.8;
@@ -1103,6 +1002,57 @@ nav ul li a:hover::after { width: 100%; }
 }
 
 .footer-rating { margin-top: var(--space-sm); font-size: 0.9rem; }
+
+/* Location block — reusable in footer, about, services */
+.location-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+.location-block i {
+  color: var(--primary);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.location-block address {
+  font-style: normal;
+  color: inherit;
+}
+.location-block a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.location-block a:hover { color: var(--success-text); }
+
+/* Open now / closed status chip */
+.open-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: rgba(37, 211, 102, 0.14);
+  color: #0B6350;
+  margin-top: 0.5rem;
+  border: 1px solid rgba(37, 211, 102, 0.25);
+}
+.open-status .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--success-strong);
+  animation: none;
+}
+.open-status[data-state="closed"] {
+  background: rgba(220, 38, 38, 0.1);
+  color: #991b1b;
+  border-color: rgba(220, 38, 38, 0.2);
+}
+.open-status[data-state="closed"] .dot { background: var(--danger); }
 
 /* ============================================================
    16. PAGE — ABOUT
@@ -1213,12 +1163,22 @@ nav ul li a:hover::after { width: 100%; }
   box-shadow: var(--shadow-md);
 }
 
-.team-card img {
-  border-radius: 50%;
-  margin: 0 auto 1rem;
+/* [P3] Upgraded initials avatar — branded gradient + double ring. */
+.team-avatar {
   width: 120px;
   height: 120px;
-  object-fit: cover;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, #0F7A63 100%);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  margin: 0 auto 1rem;
+  border: 4px solid var(--white);
+  box-shadow: 0 0 0 1px var(--border), var(--shadow-md);
 }
 
 .team-role {
@@ -1261,6 +1221,17 @@ nav ul li a:hover::after { width: 100%; }
   color: var(--text-light);
   font-size: 0.9rem;
 }
+
+/* Visit Us section on about page */
+.location-section {
+  padding-block: var(--section-y);
+  background: var(--accent);
+}
+.location-section .mission-card,
+.location-section .vision-card {
+  text-align: left;
+}
+.location-section .card-icon { margin-inline: 0; }
 
 /* ============================================================
    17. PAGE — SERVICES
@@ -1449,12 +1420,38 @@ nav ul li a:hover::after { width: 100%; }
 .read-more:hover { gap: 0.5rem; }
 
 /* ============================================================
-   19. PAGE — FAQ
+   19. PAGE — FAQ + TOC
    ============================================================ */
 .faq-section {
   padding-block: var(--section-y);
   background: var(--white);
 }
+
+/* Sticky horizontal-scrolling TOC. */
+.faq-toc {
+  position: sticky;
+  top: calc(var(--header-h) + 0.5rem);
+  background: var(--white);
+  z-index: 5;
+  padding: 0.75rem 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.faq-toc::-webkit-scrollbar { display: none; }
+
+.faq-toc a {
+  margin-right: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.9rem;
+  display: inline-block;
+}
+.faq-toc a:last-child { margin-right: 0; }
+.faq-toc a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 .faq-list {
   max-width: 800px;
@@ -1464,6 +1461,7 @@ nav ul li a:hover::after { width: 100%; }
 .faq-category {
   margin-top: var(--space-lg);
   margin-bottom: var(--space-sm);
+  scroll-margin-top: calc(var(--header-h) + 4rem);
 }
 
 .faq-category h2 {
@@ -1510,10 +1508,7 @@ nav ul li a:hover::after { width: 100%; }
   border-top: 1px solid var(--border);
 }
 .faq-answer.open { display: block; }
-.faq-answer p {
-  max-width: 68ch;
-  margin-bottom: 0.85rem;
-}
+.faq-answer p { max-width: 68ch; margin-bottom: 0.85rem; }
 .faq-answer p:last-child { margin-bottom: 0; }
 
 /* ============================================================
@@ -1569,7 +1564,6 @@ nav ul li a:hover::after { width: 100%; }
   padding-right: 2.5rem;
 }
 
-/* ---------- Booking progress bar (patch 1) ---------- */
 .booking-progress {
   display: flex;
   align-items: center;
@@ -1622,6 +1616,10 @@ nav ul li a:hover::after { width: 100%; }
 .modal-step { display: none; }
 .modal-step.active { display: block; }
 
+/* [P1-3] Programmatic focus on step headings must not paint a ring. */
+.modal-step h3:focus,
+.modal-step h3:focus-visible { outline: none; }
+
 .type-select,
 .doctor-select {
   display: grid;
@@ -1661,7 +1659,6 @@ nav ul li a:hover::after { width: 100%; }
 .type-card small,
 .doctor-card small { color: var(--text-light); font-size: 0.75rem; }
 
-/* ---------- Time slots (patch 2) ---------- */
 .time-slots {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
@@ -1723,7 +1720,6 @@ nav ul li a:hover::after { width: 100%; }
   font-weight: 600;
   margin-bottom: 0.25rem;
 }
-
 .date-picker select {
   width: 100%;
   padding: 0.75rem;
@@ -1739,8 +1735,6 @@ nav ul li a:hover::after { width: 100%; }
 /* ============================================================
    21. FLOATING LAYER
    ============================================================ */
-
-/* ---------- Emergency FAB (patch 4) ---------- */
 .emergency-fab-container {
   position: fixed;
   bottom: var(--float-b);
@@ -1752,6 +1746,7 @@ nav ul li a:hover::after { width: 100%; }
   gap: var(--space-sm);
 }
 
+/* [P3] Pulse three times, then stop. */
 .emergency-fab {
   width: 55px;
   height: 55px;
@@ -1763,7 +1758,7 @@ nav ul li a:hover::after { width: 100%; }
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
   transition: transform 0.3s ease;
-  animation: emergency-pulse 2s infinite;
+  animation: emergency-pulse 2s ease-out 3;
 }
 
 .emergency-menu {
@@ -1808,7 +1803,7 @@ nav ul li a:hover::after { width: 100%; }
 }
 .call-option { background: var(--danger); }
 
-/* ---------- Chat widget ---------- */
+/* Chat widget */
 #chat-widget {
   position: fixed;
   bottom: var(--float-b);
@@ -1982,7 +1977,7 @@ nav ul li a:hover::after { width: 100%; }
   }
 }
 
-/* ---------- Back to top ---------- */
+/* Back to top */
 #back-to-top {
   position: fixed;
   bottom: calc(var(--float-b) + 4.5rem);
@@ -2021,7 +2016,7 @@ body.chat-open .recent-bookings-widget {
   pointer-events: none;
 }
 
-/* ---------- Recent bookings (demo) ---------- */
+/* Recent bookings demo widget */
 .recent-bookings-widget {
   position: fixed;
   bottom: calc(var(--float-b) + 9.5rem);
@@ -2062,7 +2057,7 @@ body.chat-open .recent-bookings-widget {
   .recent-bookings-widget { display: none !important; }
 }
 
-/* ---------- Mobile sticky CTA ---------- */
+/* Mobile sticky CTA */
 .mobile-cta-bar {
   display: none;
   position: fixed;
@@ -2105,13 +2100,11 @@ body.chat-open .recent-bookings-widget {
 @media (max-width: 768px) {
   :root { --float-b: 6.5rem; }
   .mobile-cta-bar { display: block; }
-  body {
-    padding-bottom: max(84px, calc(84px + env(safe-area-inset-bottom)));
-  }
+  body { padding-bottom: max(84px, calc(84px + env(safe-area-inset-bottom))); }
 }
 
 /* ============================================================
-   22. TOAST  (patch 7)
+   22. TOAST
    ============================================================ */
 #toast-container {
   position: fixed;
@@ -2147,25 +2140,8 @@ body.chat-open .recent-bookings-widget {
 .toast.hide    { animation: slideOut 0.3s ease-in forwards; }
 
 /* ============================================================
-   23. AVATARS & ICONS
+   23. ICONS
    ============================================================ */
-.team-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: var(--primary-light);
-  color: var(--primary);
-  display: grid;
-  place-items: center;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 2rem;
-  letter-spacing: 1px;
-  margin: 0 auto 1rem;
-  border: 3px solid var(--white);
-  box-shadow: var(--shadow-sm);
-}
-
 .doctor-icon {
   width: 44px;
   height: 44px;
@@ -2236,7 +2212,6 @@ body.chat-open .recent-bookings-widget {
   .corporate-content {
     grid-template-columns: 1fr;
   }
-
   .hero-image { order: 2; }
   .hero-text  { order: 1; }
 }
@@ -2259,28 +2234,18 @@ body.chat-open .recent-bookings-widget {
   h2 { font-size: 1.6rem; line-height: 1.25; }
   h3 { font-size: 1.2rem; line-height: 1.3;  }
 
-  .step-card,
-  .value-card,
-  .team-card,
-  .service-card,
-  .testimonial-card,
-  .mission-card,
-  .vision-card {
+  .step-card, .value-card, .team-card, .service-card,
+  .testimonial-card, .mission-card, .vision-card {
     padding: 1.25rem;
   }
-
   .modal-content { padding: 1.25rem; }
 }
 
-/* ---------- Very-narrow viewport guardrail (patch 10) ---------- */
 @media (max-width: 360px) {
   .type-select,
   .doctor-select { grid-template-columns: 1fr; }
-
   .hero-actions > * { width: 100%; }
-
   .header-inner { gap: 0.5rem; }
-
   .container { max-width: calc(100% - 1.25rem); }
 }
 
@@ -2288,9 +2253,7 @@ body.chat-open .recent-bookings-widget {
    26. REDUCED MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -2298,6 +2261,7 @@ body.chat-open .recent-bookings-widget {
   }
   .animate-on-scroll.will-animate { opacity: 1; transform: none; }
   #back-to-top { transition: none; }
+  .emergency-fab { animation: none; }
 }
 
 /* ============================================================

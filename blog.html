@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Tips & Insights | swiftMed Kenya</title>
+    <title>Health Tips &amp; Insights | swiftMed Kenya</title>
     <meta name="description" content="Practical health tips for Nairobi residents. Learn how to stay healthy, prevent illness, and manage chronic conditions from swiftMed Kenya's expert doctors.">
     <meta name="theme-color" content="#0B7A75">
     <link rel="canonical" href="https://swiftmed.co.ke/blog.html">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="swiftMed Kenya">
-    <meta property="og:title" content="Health Tips & Insights | swiftMed Kenya">
+    <meta property="og:title" content="Health Tips &amp; Insights | swiftMed Kenya">
     <meta property="og:description" content="Practical health tips for Nairobi residents from our expert doctors.">
     <meta property="og:url" content="https://swiftmed.co.ke/blog.html">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop&fm=webp">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Health Tips &amp; Insights | swiftMed Kenya">
+    <meta name="twitter:description" content="Practical health tips for Nairobi residents from our expert doctors.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop&fm=webp">
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -24,6 +27,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://images.unsplash.com">
+
+    <link rel="preload" as="image"
+          href="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800&auto=format&fit=crop&fm=webp"
+          imagesrcset="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=480&auto=format&fit=crop&fm=webp 480w,
+                       https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800&auto=format&fit=crop&fm=webp 800w,
+                       https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop&fm=webp 1200w"
+          imagesizes="(min-width: 900px) 45vw, 100vw"
+          fetchpriority="high">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -48,12 +60,13 @@
             <a class="logo" href="index.html" aria-label="swiftMed Kenya — home">
                 <span class="logo-icon" aria-hidden="true">+</span> swiftMed <span class="logo-highlight">Kenya</span>
             </a>
-            <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobile-nav" onclick="toggleMobileMenu()">
+            <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav" onclick="toggleMobileMenu()">
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
             <nav id="mobile-nav" aria-label="Main navigation">
                 <ul>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="services.html#pricing">Pricing</a></li>
                     <li><a href="index.html#insurance">Insurance</a></li>
                     <li><a href="index.html#corporate">Corporate</a></li>
                     <li><a href="index.html#how-it-works">How It Works</a></li>
@@ -61,16 +74,16 @@
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
                 </ul>
-                <div class="header-cta mobile-only" id="header-cta-mobile">
+                <div class="header-cta mobile-only">
                     <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
                     <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-whatsapp">WhatsApp Us</a>
-                    <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book Appointment</a>
+                    <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
                 </div>
             </nav>
             <div class="header-cta" id="header-cta">
                 <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
                 <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-whatsapp">WhatsApp Us</a>
-                <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book Appointment</a>
+                <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
             </div>
         </div>
     </header>
@@ -84,12 +97,16 @@
                 <h1>Stay Healthy, Nairobi</h1>
                 <p class="subtext">Practical advice from our doctors to help you live a healthier life.</p>
                 <div class="hero-actions">
-                    <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book a Consultation</a>
+                    <a href="#" class="btn-primary open-booking-modal">Book a Consultation</a>
                     <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20have%20a%20health%20question." target="_blank" rel="noopener" class="btn-secondary">Ask a Doctor</a>
                 </div>
             </div>
             <div class="page-hero-image">
-                <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800&auto=format&fit=crop&fm=webp"
+                     srcset="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=480&auto=format&fit=crop&fm=webp 480w,
+                             https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800&auto=format&fit=crop&fm=webp 800w,
+                             https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1200&auto=format&fit=crop&fm=webp 1200w"
+                     sizes="(min-width: 900px) 45vw, 100vw"
                      alt="Microscope and laboratory glassware on a clean workbench"
                      loading="eager" fetchpriority="high" decoding="async"
                      width="1200" height="800">
@@ -100,7 +117,10 @@
     <section class="featured-post">
         <div class="container featured-post-content">
             <div class="featured-image">
-                <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800&auto=format&fit=crop&fm=webp"
+                     srcset="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=480&auto=format&fit=crop&fm=webp 480w,
+                             https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=800&auto=format&fit=crop&fm=webp 800w"
+                     sizes="(min-width: 900px) 45vw, 100vw"
                      alt="Laboratory microscope and glassware on a clean benchtop"
                      loading="lazy" decoding="async" width="800" height="533">
             </div>
@@ -113,7 +133,7 @@
                     <span><i class="fa-solid fa-clock" aria-hidden="true"></i> 5 min read</span>
                     <span><i class="fa-solid fa-calendar" aria-hidden="true"></i> Aug 25, 2026</span>
                 </div>
-                <a href="#" class="btn-primary">Read Full Article</a>
+                <a href="#" class="btn-primary" data-demo-article rel="nofollow">Read Full Article</a>
             </div>
         </div>
     </section>
@@ -127,115 +147,133 @@
             <div class="blog-grid">
                 <article class="blog-card">
                     <div class="blog-card-image">
-                        <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=400&auto=format&fit=crop"
+                        <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=400&auto=format&fit=crop&fm=webp"
+                             srcset="https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=400&auto=format&fit=crop&fm=webp 400w,
+                                     https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=800&auto=format&fit=crop&fm=webp 800w"
+                             sizes="(min-width: 900px) 33vw, 100vw"
                              alt="Laboratory vials arranged neatly on a rack"
                              loading="lazy" decoding="async" width="400" height="267">
                         <span class="blog-category">Heart Health</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3><a href="#">Managing Hypertension in Nairobi's Fast-Paced Life</a></h3>
+                        <h3><a href="#" data-demo-article>Managing Hypertension in Nairobi's Fast-Paced Life</a></h3>
                         <p>High blood pressure is on the rise among young professionals. Here's how to keep it under control with simple lifestyle changes.</p>
                         <div class="post-meta">
                             <span><i class="fa-solid fa-user-doctor" aria-hidden="true"></i> Dr. Achieng</span>
                             <span><i class="fa-solid fa-clock" aria-hidden="true"></i> 6 min read</span>
                             <span><i class="fa-solid fa-calendar" aria-hidden="true"></i> Aug 20, 2026</span>
                         </div>
-                        <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="#" class="read-more" data-demo-article rel="nofollow">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
                 <article class="blog-card">
                     <div class="blog-card-image">
-                        <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=400&auto=format&fit=crop"
-                             alt="Microscope and lab equipment on a clean workbench"
+                        <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=400&auto=format&fit=crop&fm=webp"
+                             srcset="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=400&auto=format&fit=crop&fm=webp 400w,
+                                     https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop&fm=webp 800w"
+                             sizes="(min-width: 900px) 33vw, 100vw"
+                             alt="Person applying skincare product — dermatology article illustration"
                              loading="lazy" decoding="async" width="400" height="267">
                         <span class="blog-category">Dermatology</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3><a href="#">5 Common Skin Problems in Kenya and How to Treat Them</a></h3>
+                        <h3><a href="#" data-demo-article>5 Common Skin Problems in Kenya and How to Treat Them</a></h3>
                         <p>From acne to eczema, our dermatologist Dr. Otieno shares tips for healthy skin in the Kenyan climate.</p>
                         <div class="post-meta">
                             <span><i class="fa-solid fa-user-doctor" aria-hidden="true"></i> Dr. Otieno</span>
                             <span><i class="fa-solid fa-clock" aria-hidden="true"></i> 5 min read</span>
                             <span><i class="fa-solid fa-calendar" aria-hidden="true"></i> Aug 15, 2026</span>
                         </div>
-                        <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="#" class="read-more" data-demo-article rel="nofollow">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
                 <article class="blog-card">
                     <div class="blog-card-image">
-                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=400&auto=format&fit=crop"
+                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=400&auto=format&fit=crop&fm=webp"
+                             srcset="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=400&auto=format&fit=crop&fm=webp 400w,
+                                     https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop&fm=webp 800w"
+                             sizes="(min-width: 900px) 33vw, 100vw"
                              alt="Clean hospital room with neatly arranged beds"
                              loading="lazy" decoding="async" width="400" height="267">
                         <span class="blog-category">Pediatrics</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3><a href="#">Childhood Vaccinations: What Parents in Nairobi Need to Know</a></h3>
+                        <h3><a href="#" data-demo-article>Childhood Vaccinations: What Parents in Nairobi Need to Know</a></h3>
                         <p>Keep your child safe with the right vaccination schedule. Our pediatrician explains what's required and when.</p>
                         <div class="post-meta">
                             <span><i class="fa-solid fa-user-doctor" aria-hidden="true"></i> Dr. Kamau</span>
                             <span><i class="fa-solid fa-clock" aria-hidden="true"></i> 8 min read</span>
                             <span><i class="fa-solid fa-calendar" aria-hidden="true"></i> Aug 10, 2026</span>
                         </div>
-                        <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="#" class="read-more" data-demo-article rel="nofollow">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
                 <article class="blog-card">
                     <div class="blog-card-image">
-                        <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=400&auto=format&fit=crop"
+                        <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=400&auto=format&fit=crop&fm=webp"
+                             srcset="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=400&auto=format&fit=crop&fm=webp 400w,
+                                     https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=800&auto=format&fit=crop&fm=webp 800w"
+                             sizes="(min-width: 900px) 33vw, 100vw"
                              alt="Stethoscope on a clean, light-colored surface"
                              loading="lazy" decoding="async" width="400" height="267">
                         <span class="blog-category">Wellness</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3><a href="#">Working from Home? Here's How to Avoid Back Pain</a></h3>
+                        <h3><a href="#" data-demo-article>Working from Home? Here's How to Avoid Back Pain</a></h3>
                         <p>Desk jobs and remote work are causing a spike in back problems. Our general physician shares simple stretches to stay pain-free.</p>
                         <div class="post-meta">
                             <span><i class="fa-solid fa-user-doctor" aria-hidden="true"></i> Dr. Mwangi</span>
                             <span><i class="fa-solid fa-clock" aria-hidden="true"></i> 4 min read</span>
                             <span><i class="fa-solid fa-calendar" aria-hidden="true"></i> Aug 5, 2026</span>
                         </div>
-                        <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="#" class="read-more" data-demo-article rel="nofollow">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
                 <article class="blog-card">
                     <div class="blog-card-image">
-                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400&auto=format&fit=crop"
+                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400&auto=format&fit=crop&fm=webp"
+                             srcset="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400&auto=format&fit=crop&fm=webp 400w,
+                                     https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800&auto=format&fit=crop&fm=webp 800w"
+                             sizes="(min-width: 900px) 33vw, 100vw"
                              alt="Fresh vegetables and ingredients for a balanced meal"
                              loading="lazy" decoding="async" width="400" height="267">
                         <span class="blog-category">Nutrition</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3><a href="#">The Ultimate Guide to a Balanced Kenyan Diet</a></h3>
+                        <h3><a href="#" data-demo-article>The Ultimate Guide to a Balanced Kenyan Diet</a></h3>
                         <p>Githeri, sukuma wiki, ugali—how to eat healthy without breaking the bank. Our nutritionist-approved tips.</p>
                         <div class="post-meta">
                             <span><i class="fa-solid fa-user-doctor" aria-hidden="true"></i> Dr. Mwangi</span>
                             <span><i class="fa-solid fa-clock" aria-hidden="true"></i> 7 min read</span>
                             <span><i class="fa-solid fa-calendar" aria-hidden="true"></i> Jul 28, 2026</span>
                         </div>
-                        <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="#" class="read-more" data-demo-article rel="nofollow">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
                 <article class="blog-card">
                     <div class="blog-card-image">
-                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=400&auto=format&fit=crop"
-                             alt="Modern clinic interior with organised medical stations"
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400&auto=format&fit=crop&fm=webp"
+                             srcset="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400&auto=format&fit=crop&fm=webp 400w,
+                                     https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop&fm=webp 800w"
+                             sizes="(min-width: 900px) 33vw, 100vw"
+                             alt="Doctor using a tablet in a modern clinic — general health article illustration"
                              loading="lazy" decoding="async" width="400" height="267">
                         <span class="blog-category">General Health</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3><a href="#">When Should You See a Doctor? Don't Ignore These Symptoms</a></h3>
+                        <h3><a href="#" data-demo-article>When Should You See a Doctor? Don't Ignore These Symptoms</a></h3>
                         <p>Persistent fatigue, unexplained weight loss, sudden headaches—know when it's time to get professional help.</p>
                         <div class="post-meta">
                             <span><i class="fa-solid fa-user-doctor" aria-hidden="true"></i> Dr. Achieng</span>
                             <span><i class="fa-solid fa-clock" aria-hidden="true"></i> 5 min read</span>
                             <span><i class="fa-solid fa-calendar" aria-hidden="true"></i> Jul 20, 2026</span>
                         </div>
-                        <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="#" class="read-more" data-demo-article rel="nofollow">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
                 </article>
             </div>
@@ -247,7 +285,7 @@
             <h2>Have a health concern?</h2>
             <p>Don't wait – book a consultation with one of our doctors today.</p>
             <div class="hero-actions">
-                <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book in 60 Seconds</a>
+                <a href="#" class="btn-primary open-booking-modal">Book in 60 Seconds</a>
                 <a href="https://wa.me/254702555093" target="_blank" rel="noopener" class="btn-secondary">WhatsApp Us</a>
             </div>
         </div>
@@ -272,20 +310,33 @@
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="services.html#pricing">Pricing</a></li>
                     <li><a href="index.html#insurance">Insurance</a></li>
                     <li><a href="index.html#corporate">Corporate</a></li>
                     <li><a href="index.html#how-it-works">How It Works</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
-                    <li><a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="open-booking-modal">Book Appointment</a></li>
+                    <li><a href="#" class="open-booking-modal">Book Appointment</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h3>Contact</h3>
                 <p><i class="fa-solid fa-phone" aria-hidden="true"></i> <a href="tel:+254702555093">0702 555 093</a></p>
                 <p><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/254702555093" target="_blank" rel="noopener">WhatsApp Us</a></p>
-                <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Nairobi, Kenya</p>
+                <div class="location-block">
+                    <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                    <address>
+                        Westlands Business Park, 3rd Floor<br>
+                        Waiyaki Way, Westlands<br>
+                        Nairobi 00100, Kenya<br>
+                        <a href="https://maps.google.com/?q=Westlands+Business+Park+Nairobi" target="_blank" rel="noopener">Get directions &rarr;</a>
+                    </address>
+                </div>
+                <span class="open-status" data-state="open" data-open-status>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span data-open-text>Open now</span>
+                </span>
             </div>
             <div class="footer-col">
                 <h3>Hours</h3>
@@ -297,7 +348,6 @@
         <div class="container footer-bottom"><p>&copy; 2026 swiftMed Kenya. All rights reserved.</p></div>
     </footer>
 
-    <!-- Booking Modal -->
     <div id="booking-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
         <div class="modal-content">
             <button class="modal-close" aria-label="Close booking modal" onclick="closeBookingModal()">&times;</button>
@@ -344,23 +394,17 @@
                 <form id="patient-form" novalidate>
                     <div class="form-group">
                         <label class="sr-only" for="patient-fullname">Full name</label>
-                        <input type="text" id="patient-fullname" placeholder="Full Name"
-                               autocomplete="name" required
-                               aria-describedby="patient-fullname-error">
+                        <input type="text" id="patient-fullname" placeholder="Full Name" autocomplete="name" required aria-describedby="patient-fullname-error">
                         <small class="error-msg" id="patient-fullname-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">
                         <label class="sr-only" for="patient-phone">Phone number</label>
-                        <input type="tel" id="patient-phone" inputmode="tel"
-                               placeholder="Phone (e.g. 0712 345 678)" autocomplete="tel" required
-                               aria-describedby="patient-phone-error">
+                        <input type="tel" id="patient-phone" inputmode="tel" placeholder="Phone (e.g. 0712 345 678)" autocomplete="tel" required aria-describedby="patient-phone-error">
                         <small class="error-msg" id="patient-phone-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">
                         <label class="sr-only" for="patient-email">Email (optional)</label>
-                        <input type="email" id="patient-email" placeholder="Email (optional)"
-                               autocomplete="email"
-                               aria-describedby="patient-email-error">
+                        <input type="email" id="patient-email" placeholder="Email (optional)" autocomplete="email" aria-describedby="patient-email-error">
                         <small class="error-msg" id="patient-email-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">

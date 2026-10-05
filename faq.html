@@ -13,8 +13,11 @@
     <meta property="og:title" content="FAQs | swiftMed Kenya">
     <meta property="og:description" content="Bookings, insurance, wait times, teleconsult, corporate health — all your questions answered.">
     <meta property="og:url" content="https://swiftmed.co.ke/faq.html">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop&fm=webp">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FAQs | swiftMed Kenya">
+    <meta name="twitter:description" content="Bookings, insurance, wait times, teleconsult — all your questions answered.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop&fm=webp">
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -24,6 +27,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://images.unsplash.com">
+
+    <link rel="preload" as="image"
+          href="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=800&auto=format&fit=crop&fm=webp"
+          imagesrcset="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=480&auto=format&fit=crop&fm=webp 480w,
+                       https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=800&auto=format&fit=crop&fm=webp 800w,
+                       https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop&fm=webp 1200w"
+          imagesizes="(min-width: 900px) 45vw, 100vw"
+          fetchpriority="high">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -38,7 +50,7 @@
         {"@type": "Question","name": "How long will I actually wait?","acceptedAnswer": {"@type": "Answer","text": "Zero minutes. You book a specific time slot, you arrive at that time, and the doctor sees you immediately."}},
         {"@type": "Question","name": "How does teleconsult work?","acceptedAnswer": {"@type": "Answer","text": "After booking, you'll receive a video call link via WhatsApp or SMS. At your scheduled time, click the link and you'll be connected to your doctor."}},
         {"@type": "Question","name": "What if I have a medical emergency?","acceptedAnswer": {"@type": "Answer","text": "Call our emergency line at 0702 555 093, or use the red ambulance button on the bottom left of every page."}},
-        {"@type": "Question","name": "Where are you located?","acceptedAnswer": {"@type": "Answer","text": "We're in the heart of Nairobi, easily accessible from CBD, Westlands, and Upper Hill."}}
+        {"@type": "Question","name": "Where are you located?","acceptedAnswer": {"@type": "Answer","text": "We're in Westlands, Nairobi — Westlands Business Park, 3rd Floor, Waiyaki Way. Easily accessible from CBD, Westlands, and Upper Hill."}}
       ]
     }
     </script>
@@ -52,12 +64,13 @@
             <a class="logo" href="index.html" aria-label="swiftMed Kenya — home">
                 <span class="logo-icon" aria-hidden="true">+</span> swiftMed <span class="logo-highlight">Kenya</span>
             </a>
-            <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobile-nav" onclick="toggleMobileMenu()">
+            <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav" onclick="toggleMobileMenu()">
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
             <nav id="mobile-nav" aria-label="Main navigation">
                 <ul>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="services.html#pricing">Pricing</a></li>
                     <li><a href="index.html#insurance">Insurance</a></li>
                     <li><a href="index.html#corporate">Corporate</a></li>
                     <li><a href="index.html#how-it-works">How It Works</a></li>
@@ -65,16 +78,16 @@
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
                 </ul>
-                <div class="header-cta mobile-only" id="header-cta-mobile">
+                <div class="header-cta mobile-only">
                     <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
                     <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-whatsapp">WhatsApp Us</a>
-                    <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book Appointment</a>
+                    <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
                 </div>
             </nav>
             <div class="header-cta" id="header-cta">
                 <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
                 <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-whatsapp">WhatsApp Us</a>
-                <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book Appointment</a>
+                <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
             </div>
         </div>
     </header>
@@ -91,11 +104,15 @@
                     <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20have%20a%20question." target="_blank" rel="noopener" class="btn-primary-whatsapp">
                         <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Ask on WhatsApp
                     </a>
-                    <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-secondary open-booking-modal">Book Now</a>
+                    <a href="#" class="btn-secondary open-booking-modal">Book Now</a>
                 </div>
             </div>
             <div class="page-hero-image">
-                <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=800&auto=format&fit=crop&fm=webp"
+                     srcset="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=480&auto=format&fit=crop&fm=webp 480w,
+                             https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=800&auto=format&fit=crop&fm=webp 800w,
+                             https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop&fm=webp 1200w"
+                     sizes="(min-width: 900px) 45vw, 100vw"
                      alt="Stethoscope on a clean, light-colored surface"
                      loading="eager" fetchpriority="high" decoding="async"
                      width="1200" height="800">
@@ -105,9 +122,21 @@
 
     <section class="faq-section">
         <div class="container">
+            <nav class="faq-toc" aria-label="FAQ categories">
+                <a href="#cat-booking">Booking</a>
+                <a href="#cat-insurance">Insurance</a>
+                <a href="#cat-wait">Wait Times</a>
+                <a href="#cat-tele">Teleconsult</a>
+                <a href="#cat-corporate">Corporate</a>
+                <a href="#cat-emergency">Emergencies</a>
+                <a href="#cat-general">General</a>
+            </nav>
+        </div>
+
+        <div class="container">
             <div class="faq-list">
 
-                <div class="faq-category"><h2>Booking &amp; Appointments</h2></div>
+                <div class="faq-category" id="cat-booking"><h2>Booking &amp; Appointments</h2></div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)"><span>How do I book an appointment?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
                     <div class="faq-answer"><p>Simple! Click the "Book Appointment" button anywhere on the site, follow the steps, and confirm. Or just WhatsApp us at 0702 555 093 and we'll handle it for you in a minute.</p></div>
@@ -125,7 +154,7 @@
                     <div class="faq-answer"><p>We'll do our best to see you, but if you're more than 15 minutes late, we may need to reschedule to avoid holding up other patients. That's why we promise zero wait – we respect everyone's time.</p></div>
                 </div>
 
-                <div class="faq-category"><h2>Insurance &amp; Payment</h2></div>
+                <div class="faq-category" id="cat-insurance"><h2>Insurance &amp; Payment</h2></div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)"><span>Do you accept my insurance? (SHA, AAR, Jubilee)</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
                     <div class="faq-answer"><p>Yes, we work with all major insurers in Kenya: SHA, AAR, Jubilee, and others. Use the "Verify My Coverage" widget on the homepage and we'll confirm instantly.</p></div>
@@ -147,7 +176,7 @@
                     <div class="faq-answer"><p>Yes, every payment comes with an official receipt that you can present to your insurer. For corporate clients, we provide detailed billing statements automatically.</p></div>
                 </div>
 
-                <div class="faq-category"><h2>Wait Times &amp; Efficiency</h2></div>
+                <div class="faq-category" id="cat-wait"><h2>Wait Times &amp; Efficiency</h2></div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)"><span>How long will I actually wait?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
                     <div class="faq-answer"><p>Zero minutes. That's our promise. You book a specific time slot, you arrive at that time, and the doctor sees you immediately.</p></div>
@@ -161,7 +190,7 @@
                     <div class="faq-answer"><p>We highly recommend booking to guarantee a slot. However, if you walk in, we'll check availability. If there's a free slot, we'll see you right away; otherwise we'll book you for the next available time – it's usually within 30 minutes.</p></div>
                 </div>
 
-                <div class="faq-category"><h2>Teleconsult</h2></div>
+                <div class="faq-category" id="cat-tele"><h2>Teleconsult</h2></div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)"><span>How does teleconsult work?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
                     <div class="faq-answer"><p>After booking, you'll receive a video call link via WhatsApp/SMS. At your scheduled time, click the link and you'll be connected to your doctor. You'll get a prescription and any follow-up notes digitally.</p></div>
@@ -171,7 +200,7 @@
                     <div class="faq-answer"><p>Yes. If the doctor orders tests, you can visit our lab at your convenience – no need to book. You'll receive results via WhatsApp within a few hours.</p></div>
                 </div>
 
-                <div class="faq-category"><h2>Corporate</h2></div>
+                <div class="faq-category" id="cat-corporate"><h2>Corporate</h2></div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)"><span>How do I set up corporate access?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
                     <div class="faq-answer"><p>Fill out the "Request Corporate Access" form on the homepage, or WhatsApp us. Our team will call you within 2 business hours to set up your bespoke plan and give you a dashboard login.</p></div>
@@ -181,7 +210,7 @@
                     <div class="faq-answer"><p>Yes, we provide monthly consolidated invoices, automated insurance billing, and quarterly anonymized wellness reports for your HR team.</p></div>
                 </div>
 
-                <div class="faq-category"><h2>Emergencies</h2></div>
+                <div class="faq-category" id="cat-emergency"><h2>Emergencies</h2></div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)"><span>What if I have a medical emergency?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
                     <div class="faq-answer"><p>Call our emergency line immediately at 0702 555 093, or use the red ambulance button on the bottom left of every page. We'll dispatch an ambulance right away and guide you over the phone.</p></div>
@@ -191,10 +220,10 @@
                     <div class="faq-answer"><p>Our ambulance and urgent care services are available 24/7. For regular appointments, our hours are Mon–Fri 8:00–20:00, Sat 9:00–18:00, Sun by appointment.</p></div>
                 </div>
 
-                <div class="faq-category"><h2>General</h2></div>
+                <div class="faq-category" id="cat-general"><h2>General</h2></div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)"><span>Where are you located?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
-                    <div class="faq-answer"><p>We're in the heart of Nairobi, easily accessible from CBD, Westlands, and Upper Hill. You'll get exact directions when you book.</p></div>
+                    <div class="faq-answer"><p>We're in Westlands, Nairobi — Westlands Business Park, 3rd Floor, Waiyaki Way. Easily accessible from CBD, Westlands, and Upper Hill. <a href="https://maps.google.com/?q=Westlands+Business+Park+Nairobi" target="_blank" rel="noopener">Get directions</a>.</p></div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)"><span>How do I know which doctor is right for me?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
@@ -243,20 +272,33 @@
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="services.html#pricing">Pricing</a></li>
                     <li><a href="index.html#insurance">Insurance</a></li>
                     <li><a href="index.html#corporate">Corporate</a></li>
                     <li><a href="index.html#how-it-works">How It Works</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
-                    <li><a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="open-booking-modal">Book Appointment</a></li>
+                    <li><a href="#" class="open-booking-modal">Book Appointment</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h3>Contact</h3>
                 <p><i class="fa-solid fa-phone" aria-hidden="true"></i> <a href="tel:+254702555093">0702 555 093</a></p>
                 <p><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/254702555093" target="_blank" rel="noopener">WhatsApp Us</a></p>
-                <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Nairobi, Kenya</p>
+                <div class="location-block">
+                    <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                    <address>
+                        Westlands Business Park, 3rd Floor<br>
+                        Waiyaki Way, Westlands<br>
+                        Nairobi 00100, Kenya<br>
+                        <a href="https://maps.google.com/?q=Westlands+Business+Park+Nairobi" target="_blank" rel="noopener">Get directions &rarr;</a>
+                    </address>
+                </div>
+                <span class="open-status" data-state="open" data-open-status>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span data-open-text>Open now</span>
+                </span>
             </div>
             <div class="footer-col">
                 <h3>Hours</h3>
@@ -268,7 +310,6 @@
         <div class="container footer-bottom"><p>&copy; 2026 swiftMed Kenya. All rights reserved.</p></div>
     </footer>
 
-    <!-- Booking Modal -->
     <div id="booking-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="booking-title">
         <div class="modal-content">
             <button class="modal-close" aria-label="Close booking modal" onclick="closeBookingModal()">&times;</button>
@@ -315,23 +356,17 @@
                 <form id="patient-form" novalidate>
                     <div class="form-group">
                         <label class="sr-only" for="patient-fullname">Full name</label>
-                        <input type="text" id="patient-fullname" placeholder="Full Name"
-                               autocomplete="name" required
-                               aria-describedby="patient-fullname-error">
+                        <input type="text" id="patient-fullname" placeholder="Full Name" autocomplete="name" required aria-describedby="patient-fullname-error">
                         <small class="error-msg" id="patient-fullname-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">
                         <label class="sr-only" for="patient-phone">Phone number</label>
-                        <input type="tel" id="patient-phone" inputmode="tel"
-                               placeholder="Phone (e.g. 0712 345 678)" autocomplete="tel" required
-                               aria-describedby="patient-phone-error">
+                        <input type="tel" id="patient-phone" inputmode="tel" placeholder="Phone (e.g. 0712 345 678)" autocomplete="tel" required aria-describedby="patient-phone-error">
                         <small class="error-msg" id="patient-phone-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">
                         <label class="sr-only" for="patient-email">Email (optional)</label>
-                        <input type="email" id="patient-email" placeholder="Email (optional)"
-                               autocomplete="email"
-                               aria-describedby="patient-email-error">
+                        <input type="email" id="patient-email" placeholder="Email (optional)" autocomplete="email" aria-describedby="patient-email-error">
                         <small class="error-msg" id="patient-email-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">
