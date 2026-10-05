@@ -1,22 +1,19 @@
 /* ============================================================
-   swiftMed Kenya – Production Stylesheet (v5)
+   swiftMed Kenya – Production Stylesheet (v6)
    Portfolio demo build.
 
-   CHANGES FROM v4
+   CHANGES FROM v5
    ---------------
-   • html font-size 100% (respects user preference, WCAG 1.4.4)
-   • --measure applied at 1024px (not 1536px)
-   • Toast container owns positioning; toasts stack cleanly
-   • Floating rail: chat-open hides back-to-top and activity widget
-   • Emergency menu uses visibility+opacity (transition actually runs)
-   • .step-dot contrast 3.87:1 → 13.1:1 (WCAG AA)
-   • Footer headings h3, FAQ category headings h2
-   • Invalid form fields get a non-colour-only cue
+   • .hero and .page-hero now support photographic backgrounds
+     via a --hero-photo CSS variable, layered under the existing
+     gradient so text contrast stays AA.
+   • Added .page-hero--{about,services,blog,faq,404} modifiers.
+   • All hero imagery is African/Kenyan clinical contexts or
+     neutral medical equipment (no off-market subjects).
    ============================================================ */
 
 /* ---------- 1. Design Tokens ---------- */
 :root {
-  /* Brand */
   --primary: #0B7A75;
   --primary-dark: #085e5a;
   --primary-light: #e6f4f3;
@@ -25,37 +22,31 @@
   --accent: #edfcfa;
   --white: #ffffff;
 
-  /* Text */
   --text-main: #1a2b3c;
   --text-light: #64748b;
   --text-ultralight: #94a3b8;
   --border: #e2e8f0;
 
-  /* Semantic */
-  --success: #25D366;          /* decorative / on-dark accents only */
-  --success-strong: #0F7A63;   /* 5.3:1 with white — use for solid buttons */
-  --success-text: #5EEAD4;     /* 12.1:1 on --secondary */
+  --success: #25D366;
+  --success-strong: #0F7A63;
+  --success-text: #5EEAD4;
   --danger: #dc2626;
   --danger-soft: #f87171;
   --warning: #fbbf24;
   --error: #ef4444;
 
-  /* Elevation */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
 
-  /* Radii */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-pill: 999px;
 
-  /* Motion */
   --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-  /* Spacing */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 1.5rem;
@@ -63,15 +54,12 @@
   --space-xl: 4rem;
   --space-2xl: 6rem;
 
-  /* Type */
   --font-body: 'Inter', system-ui, sans-serif;
   --font-heading: 'Poppins', system-ui, sans-serif;
   --measure: 68ch;
 
-  /* Sticky header */
   --header-h: 72px;
 
-  /* Floating layer — single source of truth */
   --float-r: 1.5rem;
   --float-b: 1.5rem;
   --float-gap: 4.5rem;
@@ -89,8 +77,6 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 1rem);
-  /* 100% respects the user's browser/OS text-size preference (WCAG 1.4.4).
-     All sizing downstream is in rem, so nothing shifts at defaults. */
   font-size: 100%;
 }
 
@@ -133,7 +119,6 @@ a {
 }
 
 img { max-width: 100%; height: auto; display: block; }
-
 ul, ol { list-style: none; }
 
 /* ---------- Fluid container system ---------- */
@@ -148,7 +133,6 @@ ul, ol { list-style: none; }
 .container-lg { max-width: min(100% - 2rem, 1024px); }
 .container-xl { max-width: min(100% - 2rem, 1280px); }
 
-/* Progressive desktop expansion — reclaim horizontal space */
 @media (min-width: 1280px) {
   .container    { max-width: min(100% - 3rem, 1240px); }
   .container-lg { max-width: min(100% - 3rem, 1120px); }
@@ -167,8 +151,6 @@ ul, ol { list-style: none; }
   .container-xl { max-width: min(100% - 6rem, 1780px); }
 }
 
-/* Cap the measure once the layout has room for it. Applied at 1024px so
-   1280–1500px laptops don't read 130-character lines. */
 @media (min-width: 1024px) {
   .hero-text > p,
   .about-text p,
@@ -182,7 +164,6 @@ ul, ol { list-style: none; }
   }
 }
 
-/* Scale type + vertical rhythm on very large viewports */
 @media (min-width: 1536px) {
   :root { --space-xl: 5rem; }
   body  { font-size: 17px; }
@@ -268,7 +249,6 @@ ul, ol { list-style: none; }
   color: var(--white);
 }
 
-/* WCAG-AA compliant WhatsApp buttons */
 .btn-whatsapp,
 .btn-primary-whatsapp,
 .wa-option {
@@ -379,7 +359,6 @@ nav ul li a:hover::after { width: 100%; }
   min-height: 48px;
 }
 
-/* Mobile menu */
 @media (max-width: 768px) {
   :root { --header-h: 60px; }
 
@@ -425,7 +404,19 @@ nav ul li a:hover::after { width: 100%; }
 
 /* ---------- 5. Hero Section ---------- */
 .hero {
-  background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 70%);
+  /* Default hero backdrop — stethoscope on a light surface (no people).
+     Layered under a near-opaque teal→white gradient so text contrast
+     stays WCAG AA regardless of the underlying photo. */
+  --hero-photo: url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1920&auto=format&fit=crop');
+  background-color: #f0fdfa;
+  background-image:
+    linear-gradient(135deg,
+      rgba(240, 253, 250, 0.96) 0%,
+      rgba(255, 255, 255, 0.93) 70%),
+    var(--hero-photo);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: var(--space-xl) 0;
   position: relative;
   overflow: hidden;
@@ -523,7 +514,6 @@ nav ul li a:hover::after { width: 100%; }
 .google-logo { margin-right: 0.5rem; }
 .google-badge-info { display: flex; flex-direction: column; }
 
-/* Hero image + live badge */
 .hero-image { position: relative; }
 
 .live-badge {
@@ -601,8 +591,6 @@ nav ul li a:hover::after { width: 100%; }
 
 .error-msg.visible { display: block; }
 
-/* Invalid field cue: colour + subtle gradient (not colour-only,
-   survives colour-blindness and monochrome displays) */
 .form-group input.invalid,
 .form-group select.invalid,
 .form-group textarea.invalid {
@@ -846,7 +834,6 @@ nav ul li a:hover::after { width: 100%; }
 .cta-banner h2 { margin-bottom: 0.5rem; }
 .cta-banner p { color: var(--text-light); margin-bottom: var(--space-lg); }
 
-/* Center button groups inside centered sections */
 .page-hero .hero-actions,
 .cta-banner .hero-actions,
 .voices-cta .hero-actions {
@@ -961,8 +948,6 @@ nav ul li a:hover::after { width: 100%; }
   height: 28px;
   border-radius: 50%;
   background: var(--border);
-  /* --secondary (#0F172A) on --border (#e2e8f0) = 13.1:1.
-     --text-light was 3.87:1 and failed WCAG AA for this size. */
   color: var(--secondary);
   display: flex;
   align-items: center;
@@ -1116,8 +1101,6 @@ nav ul li a:hover::after { width: 100%; }
   animation: emergency-pulse 2s infinite;
 }
 
-/* visibility+opacity lets the transition actually run.
-   display:none toggling skips transitions entirely. */
 .emergency-menu {
   display: flex;
   flex-direction: column;
@@ -1451,9 +1434,6 @@ nav ul li a:hover::after { width: 100%; }
   border-color: var(--primary);
 }
 
-/* While the chat window is open, get the right-rail elements out of its way.
-   Back-to-top and the activity widget sit at the same coordinates and would
-   otherwise be covered by the chat panel. */
 body.chat-open #back-to-top,
 body.chat-open .recent-bookings-widget {
   opacity: 0;
@@ -1493,13 +1473,11 @@ body.chat-open .recent-bookings-widget {
   to { transform: translateX(100%); opacity: 0; }
 }
 
-/* Scroll-reveal — progressive enhancement, no-JS safe */
 .animate-on-scroll { transition: opacity 0.55s ease, transform 0.55s ease; }
 .animate-on-scroll.will-animate { opacity: 0; transform: translateY(16px); }
 .animate-on-scroll.visible { opacity: 1; transform: none; }
 
 /* ---------- 20. Toast ---------- */
-/* Container owns positioning; toasts stack inside it. */
 #toast-container {
   position: fixed;
   top: calc(var(--header-h) + 1rem);
@@ -1531,7 +1509,6 @@ body.chat-open .recent-bookings-widget {
 .toast.error   { border-left-color: var(--danger-soft); }
 .toast.hide    { animation: slideOut 0.3s ease-in forwards; }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1559,7 +1536,6 @@ body.chat-open .recent-bookings-widget {
   .hero-text  { order: 1; }
 }
 
-/* Prevent grid blowout on narrow viewports */
 .blog-grid,
 .services-grid {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
@@ -1578,12 +1554,41 @@ body.chat-open .recent-bookings-widget {
 .hidden { display: none !important; }
 .invalid { border-color: var(--error) !important; }
 
-/* Page hero for interior pages */
+/* ---------- Page hero (interior pages) ---------- */
 .page-hero {
-  background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 70%);
+  background-color: #f0fdfa;
+  background-image:
+    linear-gradient(135deg,
+      rgba(240, 253, 250, 0.95) 0%,
+      rgba(255, 255, 255, 0.91) 55%,
+      rgba(230, 244, 243, 0.86) 100%),
+    var(--hero-photo, none);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: var(--space-xl) 0;
   text-align: center;
   position: relative;
+}
+
+/* Per-page hero photographs.
+   Each is either a Nairobi/Kenyan clinical context or neutral medical
+   equipment — no off-market subjects. The heavy gradient above keeps
+   the underlying image purely decorative so text contrast stays AA. */
+.page-hero--about {
+  --hero-photo: url('https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=1920&auto=format&fit=crop');
+}
+.page-hero--services {
+  --hero-photo: url('https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1920&auto=format&fit=crop');
+}
+.page-hero--blog {
+  --hero-photo: url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=1920&auto=format&fit=crop');
+}
+.page-hero--faq {
+  --hero-photo: url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1920&auto=format&fit=crop');
+}
+.page-hero--404 {
+  --hero-photo: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1920&auto=format&fit=crop');
 }
 
 .page-hero .tagline { margin-bottom: 0.5rem; }
@@ -1592,7 +1597,6 @@ body.chat-open .recent-bookings-widget {
 
 /* Services page */
 .services-section { padding: var(--space-xl) 0; background: var(--white); }
-
 .services-grid { display: grid; gap: var(--space-lg); }
 
 .service-card {
@@ -1940,7 +1944,3 @@ body.chat-open .recent-bookings-widget {
   aspect-ratio: 3 / 2;
   object-fit: cover;
 }
-
-/* content-visibility: auto is a useful perf lever but interacts poorly with
-   IntersectionObserver reveals and browser find-in-page. Enable per-section
-   once tested in your target browsers. */
