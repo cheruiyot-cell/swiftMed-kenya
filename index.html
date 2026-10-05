@@ -57,18 +57,6 @@
         {"@type": "OpeningHoursSpecification","dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens": "08:00","closes": "20:00"},
         {"@type": "OpeningHoursSpecification","dayOfWeek": "Saturday","opens": "09:00","closes": "18:00"}
       ],
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "500",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "sameAs": [
-        "https://www.facebook.com/swiftmedkenya",
-        "https://www.instagram.com/swiftmedkenya",
-        "https://www.linkedin.com/company/swiftmedkenya"
-      ],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Medical Services",
@@ -114,20 +102,20 @@
                 <div class="header-cta mobile-only" id="header-cta-mobile">
                     <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
                     <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-whatsapp">WhatsApp Us</a>
-                    <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
+                    <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book Appointment</a>
                 </div>
             </nav>
             <div class="header-cta" id="header-cta">
                 <a href="tel:+254702555093" class="btn-phone">Call: 0702 555 093</a>
                 <a href="https://wa.me/254702555093?text=Hi%20swiftMed%20Kenya%2C%20I%20want%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-whatsapp">WhatsApp Us</a>
-                <a href="#" class="btn-primary open-booking-modal">Book Appointment</a>
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book Appointment</a>
             </div>
         </div>
     </header>
 
     <main id="main" tabindex="-1">
 
-    <!-- Live availability ticker -->
+    <!-- Live availability ticker (MOCK DATA — see app.js → MOCK DATA block) -->
     <div class="waitlist-ticker">
         <div class="container ticker-inner">
             <div class="ticker-live-status">
@@ -146,7 +134,7 @@
                 <span id="wait-doctors" class="ticker-value">—</span>
             </div>
             <div class="ticker-cta ticker-mobile-hide">
-                <a href="#" class="open-booking-modal">Lock in your slot &rarr;</a>
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="open-booking-modal">Lock in your slot &rarr;</a>
             </div>
         </div>
     </div>
@@ -172,7 +160,7 @@
                 </div>
 
                 <div class="google-review-badge">
-                    <a href="https://g.page/r/your-google-review-link/review" target="_blank" rel="noopener" class="google-badge-link">
+                    <a href="https://g.page/r/swiftmed-demo/review" target="_blank" rel="noopener" class="google-badge-link">
                         <div class="google-logo" aria-hidden="true">
                             <svg viewBox="0 0 48 48" width="24" height="24"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
                         </div>
@@ -226,8 +214,13 @@
                     Next slot: <strong class="js-next-slot">—</strong>
                 </div>
                 <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=800&auto=format&fit=crop"
+                     srcset="https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=480&auto=format&fit=crop 480w,
+                             https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=800&auto=format&fit=crop 800w,
+                             https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1200&auto=format&fit=crop 1200w"
+                     sizes="(min-width: 900px) 45vw, 100vw"
                      alt="Stethoscope and medical supplies neatly arranged on a clean surface"
-                     loading="eager" width="800" height="533">
+                     loading="eager" fetchpriority="high" decoding="async"
+                     width="800" height="533">
             </div>
         </div>
     </section>
@@ -270,24 +263,24 @@
                 <label class="sr-only" for="symptom-select">Choose a symptom</label>
                 <select id="symptom-select">
                     <option value="">Select Symptom...</option>
-                    <option value="Dr. Achieng (Cardiologist)">Chest pain / heart issues</option>
-                    <option value="Dr. Mwangi (General Physician)">Fever, headache, flu</option>
-                    <option value="Dr. Kamau (Pediatrician)">Child fever / vaccination</option>
-                    <option value="Dr. Mwangi (General Physician)">Tired all the time</option>
+                    <option value="chest-pain" data-doctor="Dr. Achieng">Chest pain / heart issues</option>
+                    <option value="fever-flu" data-doctor="Dr. Mwangi">Fever, headache, flu</option>
+                    <option value="child-fever" data-doctor="Dr. Kamau">Child fever / vaccination</option>
+                    <option value="fatigue" data-doctor="Dr. Mwangi">Tired all the time</option>
                 </select>
                 <button class="btn-primary" onclick="routeSpecialist()">Find My Doctor</button>
             </div>
         </div>
     </div>
 
-    <!-- Patient Voices -->
+    <!-- Patient Voices (inline — no-JS safe) -->
     <section class="patient-voices">
         <div class="container">
             <div class="section-header">
                 <h2>What Nairobians Say About Us</h2>
                 <p>We listen to every customer. Your feedback shapes how we work.</p>
                 <div class="google-review-badge center-badge">
-                    <a href="https://g.page/r/your-google-review-link/review" target="_blank" rel="noopener" class="google-badge-link">
+                    <a href="https://g.page/r/swiftmed-demo/review" target="_blank" rel="noopener" class="google-badge-link">
                         <div class="google-logo" aria-hidden="true">
                             <svg viewBox="0 0 48 48" width="24" height="24"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
                         </div>
@@ -300,10 +293,78 @@
                 </div>
             </div>
 
-            <div class="testimonial-grid" id="testimonial-grid"></div>
+            <!-- Portfolio demo — replace with real, attributable reviews before launch. -->
+            <div class="testimonial-grid">
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
+                    <p class="testimonial-quote">"I used to spend half a day at the clinic waiting. Now I book on WhatsApp, walk in at my slot, and I'm out in 20 minutes. This is how healthcare should be."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" aria-hidden="true">G</div>
+                        <div>
+                            <div class="testimonial-name">Grace Wanjiru</div>
+                            <div class="testimonial-role">Entrepreneur, Westlands</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
+                    <p class="testimonial-quote">"The insurance verification saved me from a huge bill. They confirmed my SHA cover in under a minute before I even visited. No hidden charges, no stress."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" aria-hidden="true">B</div>
+                        <div>
+                            <div class="testimonial-name">Brian Ochieng</div>
+                            <div class="testimonial-role">Software Developer, Kilimani</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
+                    <p class="testimonial-quote">"Our company moved all staff health to swiftMed. Employees love it because they don't lose work time. I love it because the billing is automatic. Win-win."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" aria-hidden="true">A</div>
+                        <div>
+                            <div class="testimonial-name">Amina Yusuf</div>
+                            <div class="testimonial-role">HR Manager, Upper Hill</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
+                    <p class="testimonial-quote">"I saw the live wait ticker showing zero minutes, so I just walked in. It was true — I was in and out before my tea got cold. Unbelievable."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" aria-hidden="true">P</div>
+                        <div>
+                            <div class="testimonial-name">Peter Kariuki</div>
+                            <div class="testimonial-role">Small Business Owner, CBD</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
+                    <p class="testimonial-quote">"The teleconsult option is a lifesaver. I didn't need to leave the house when my son was sick. The doctor called, gave a prescription, and we were done."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" aria-hidden="true">L</div>
+                        <div>
+                            <div class="testimonial-name">Lucy Njeri</div>
+                            <div class="testimonial-role">Teacher, South B</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card animate-on-scroll">
+                    <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
+                    <p class="testimonial-quote">"I always hate the queueing part of visiting a doctor. swiftMed made it feel like a premium experience. The doctor even explained everything clearly."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar" aria-hidden="true">D</div>
+                        <div>
+                            <div class="testimonial-name">David Mwangi</div>
+                            <div class="testimonial-role">Sales Executive, Nairobi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="voices-cta">
-                <a href="https://g.page/r/your-google-review-link/review" target="_blank" rel="noopener" class="btn-secondary">See All Reviews on Google</a>
+                <a href="https://g.page/r/swiftmed-demo/review" target="_blank" rel="noopener" class="btn-secondary">See All Reviews on Google</a>
             </div>
         </div>
     </section>
@@ -399,7 +460,7 @@
             <h2>Ready to skip the queue?</h2>
             <p>Book your appointment now or talk to us on WhatsApp.</p>
             <div class="hero-actions">
-                <a href="#" class="btn-primary open-booking-modal">Book in 60 Seconds</a>
+                <a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="btn-primary open-booking-modal">Book in 60 Seconds</a>
                 <a href="https://wa.me/254702555093" target="_blank" rel="noopener" class="btn-secondary">WhatsApp Us</a>
             </div>
         </div>
@@ -411,18 +472,18 @@
     <footer class="site-footer">
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4>swiftMed Kenya</h4>
+                <h3>swiftMed Kenya</h3>
                 <p>Nairobi's fastest healthcare. No queues, no stress.</p>
                 <div class="social-links">
-                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+                    <a href="https://facebook.com/swiftmedkenya" aria-label="Facebook" target="_blank" rel="noopener"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+                    <a href="https://twitter.com/swiftmedkenya" aria-label="Twitter" target="_blank" rel="noopener"><i class="fa-brands fa-twitter" aria-hidden="true"></i></a>
+                    <a href="https://instagram.com/swiftmedkenya" aria-label="Instagram" target="_blank" rel="noopener"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://linkedin.com/company/swiftmedkenya" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
                 </div>
                 <div class="footer-rating"><span class="google-stars" aria-hidden="true">★★★★★</span> <strong>4.9</strong> · 500+ reviews</div>
             </div>
             <div class="footer-col">
-                <h4>Quick Links</h4>
+                <h3>Quick Links</h3>
                 <ul>
                     <li><a href="services.html">Services</a></li>
                     <li><a href="#insurance">Insurance</a></li>
@@ -431,17 +492,17 @@
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="faq.html">FAQs</a></li>
-                    <li><a href="#" class="open-booking-modal">Book Appointment</a></li>
+                    <li><a href="https://wa.me/254702555093?text=Hi%20swiftMed%2C%20I%20want%20to%20book%20an%20appointment." class="open-booking-modal">Book Appointment</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Contact</h4>
+                <h3>Contact</h3>
                 <p><i class="fa-solid fa-phone" aria-hidden="true"></i> <a href="tel:+254702555093">0702 555 093</a></p>
                 <p><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/254702555093" target="_blank" rel="noopener">WhatsApp Us</a></p>
                 <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Nairobi, Kenya</p>
             </div>
             <div class="footer-col">
-                <h4>Hours</h4>
+                <h3>Hours</h3>
                 <p>Mon–Fri: 8:00 AM – 8:00 PM</p>
                 <p>Sat: 9:00 AM – 6:00 PM</p>
                 <p>Sun: By appointment</p>
@@ -471,13 +532,11 @@
                 <div class="type-select">
                     <button type="button" class="type-card" onclick="setApptType('in-clinic', this)">
                         <i class="fa-solid fa-hospital" aria-hidden="true"></i>
-                        <span>In-Clinic</span>
-                        <small>From KES 2,500</small>
+                        <span>In-Clinic</span><small>From KES 2,500</small>
                     </button>
                     <button type="button" class="type-card" onclick="setApptType('teleconsult', this)">
                         <i class="fa-solid fa-video" aria-hidden="true"></i>
-                        <span>Teleconsult</span>
-                        <small>KES 2,500</small>
+                        <span>Teleconsult</span><small>KES 2,500</small>
                     </button>
                 </div>
                 <div class="doctor-select mt-3">
@@ -517,17 +576,24 @@
                 <form id="patient-form" novalidate>
                     <div class="form-group">
                         <label class="sr-only" for="patient-fullname">Full name</label>
-                        <input type="text" id="patient-fullname" placeholder="Full Name" autocomplete="name" required>
-                        <small class="error-msg">Name is required.</small>
+                        <input type="text" id="patient-fullname" placeholder="Full Name"
+                               autocomplete="name" required
+                               aria-describedby="patient-fullname-error">
+                        <small class="error-msg" id="patient-fullname-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">
                         <label class="sr-only" for="patient-phone">Phone number</label>
-                        <input type="tel" id="patient-phone" inputmode="tel" placeholder="Phone (e.g., 0712 345 678)" autocomplete="tel" required pattern="^(?:\+?254|0)(7|1)\d{8}$">
-                        <small class="error-msg">Enter a valid Kenyan phone number.</small>
+                        <input type="tel" id="patient-phone" inputmode="tel"
+                               placeholder="Phone (e.g. 0712 345 678)" autocomplete="tel" required
+                               aria-describedby="patient-phone-error">
+                        <small class="error-msg" id="patient-phone-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">
                         <label class="sr-only" for="patient-email">Email (optional)</label>
-                        <input type="email" id="patient-email" placeholder="Email (optional)" autocomplete="email">
+                        <input type="email" id="patient-email" placeholder="Email (optional)"
+                               autocomplete="email"
+                               aria-describedby="patient-email-error">
+                        <small class="error-msg" id="patient-email-error" role="alert"></small>
                     </div>
                     <div class="form-group" style="margin-top:1rem;">
                         <label class="sr-only" for="patient-notes">Notes (optional)</label>
@@ -594,7 +660,7 @@
     </button>
 
     <div id="recent-bookings-widget" class="recent-bookings-widget">
-        <div class="recent-bookings-header"><span class="dot" aria-hidden="true"></span> RECENT ACTIVITY</div>
+        <div class="recent-bookings-header"><span class="dot" aria-hidden="true"></span> RECENT ACTIVITY (DEMO)</div>
         <div class="recent-bookings-content" id="recent-bookings-content">
             <p class="recent-booking-item">Grace W. booked a General Consultation</p>
             <p class="recent-booking-time">2 mins ago</p>
@@ -646,7 +712,7 @@
         </div>
         <button id="chat-toggle" class="chat-toggle" onclick="toggleChat()" aria-label="Open chat" aria-expanded="false" aria-controls="chat-window">
             <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
-            <span class="chat-badge" aria-hidden="true">1</span>
+            <span class="chat-badge" aria-hidden="true" hidden>1</span>
         </button>
     </div>
 

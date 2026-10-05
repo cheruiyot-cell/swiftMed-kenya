@@ -1,6 +1,17 @@
 /* ============================================================
-   swiftMed Kenya – Production Stylesheet (v4)
-   Author: UI/UX Audit & Redesign
+   swiftMed Kenya – Production Stylesheet (v5)
+   Portfolio demo build.
+
+   CHANGES FROM v4
+   ---------------
+   • html font-size 100% (respects user preference, WCAG 1.4.4)
+   • --measure applied at 1024px (not 1536px)
+   • Toast container owns positioning; toasts stack cleanly
+   • Floating rail: chat-open hides back-to-top and activity widget
+   • Emergency menu uses visibility+opacity (transition actually runs)
+   • .step-dot contrast 3.87:1 → 13.1:1 (WCAG AA)
+   • Footer headings h3, FAQ category headings h2
+   • Invalid form fields get a non-colour-only cue
    ============================================================ */
 
 /* ---------- 1. Design Tokens ---------- */
@@ -78,7 +89,9 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 1rem);
-  font-size: 16px;
+  /* 100% respects the user's browser/OS text-size preference (WCAG 1.4.4).
+     All sizing downstream is in rem, so nothing shifts at defaults. */
+  font-size: 100%;
 }
 
 body {
@@ -154,21 +167,25 @@ ul, ol { list-style: none; }
   .container-xl { max-width: min(100% - 6rem, 1780px); }
 }
 
-/* Scale type + vertical rhythm once the layout has room */
-@media (min-width: 1536px) {
-  :root { --space-xl: 5rem; }
-  body  { font-size: 17px; }
-
-  /* Cap the measure, not the container */
+/* Cap the measure once the layout has room for it. Applied at 1024px so
+   1280–1500px laptops don't read 130-character lines. */
+@media (min-width: 1024px) {
   .hero-text > p,
   .about-text p,
   .corporate-text > p,
   .faq-answer p,
   .service-card p,
   .step-card p,
-  .featured-text > p {
+  .featured-text > p,
+  .blog-card-content p {
     max-width: var(--measure);
   }
+}
+
+/* Scale type + vertical rhythm on very large viewports */
+@media (min-width: 1536px) {
+  :root { --space-xl: 5rem; }
+  body  { font-size: 17px; }
 }
 
 /* ---------- 2b. Utilities / a11y ---------- */
@@ -377,7 +394,7 @@ nav ul li a:hover::after { width: 100%; }
     border-bottom: 1px solid var(--border);
     box-shadow: var(--shadow-lg);
     padding: var(--space-md);
-    display: block;              /* keep in flow for transition */
+    display: block;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -584,8 +601,14 @@ nav ul li a:hover::after { width: 100%; }
 
 .error-msg.visible { display: block; }
 
+/* Invalid field cue: colour + subtle gradient (not colour-only,
+   survives colour-blindness and monochrome displays) */
 .form-group input.invalid,
-.form-group select.invalid { border-color: var(--error); }
+.form-group select.invalid,
+.form-group textarea.invalid {
+  border-color: var(--error);
+  background-image: linear-gradient(135deg, rgba(239, 68, 68, 0.05), transparent 60%);
+}
 
 /* ---------- 6. Live Ticker ---------- */
 .waitlist-ticker {
@@ -844,10 +867,13 @@ nav ul li a:hover::after { width: 100%; }
   margin-bottom: var(--space-lg);
 }
 
-.footer-col h4 {
+.footer-col h3 {
   color: var(--white);
   margin-bottom: var(--space-sm);
   font-size: 1rem;
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .footer-col p,
@@ -935,7 +961,9 @@ nav ul li a:hover::after { width: 100%; }
   height: 28px;
   border-radius: 50%;
   background: var(--border);
-  color: var(--text-light);
+  /* --secondary (#0F172A) on --border (#e2e8f0) = 13.1:1.
+     --text-light was 3.87:1 and failed WCAG AA for this size. */
+  color: var(--secondary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1088,8 +1116,10 @@ nav ul li a:hover::after { width: 100%; }
   animation: emergency-pulse 2s infinite;
 }
 
+/* visibility+opacity lets the transition actually run.
+   display:none toggling skips transitions entirely. */
 .emergency-menu {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 0.5rem;
   background: var(--white);
@@ -1099,12 +1129,13 @@ nav ul li a:hover::after { width: 100%; }
   border: 1px solid #fca5a5;
   transform: translateY(10px);
   opacity: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
 }
 
 .emergency-menu.active {
-  display: flex;
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
 }
 
@@ -1139,6 +1170,7 @@ nav ul li a:hover::after { width: 100%; }
   max-width: 280px;
   display: none;
   z-index: 9996;
+  transition: opacity 0.25s ease, visibility 0.25s;
 }
 
 .recent-bookings-widget.show {
@@ -1413,34 +1445,48 @@ nav ul li a:hover::after { width: 100%; }
   transform: translateY(0);
 }
 
-#back-to-top:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
+#back-to-top:hover {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+
+/* While the chat window is open, get the right-rail elements out of its way.
+   Back-to-top and the activity widget sit at the same coordinates and would
+   otherwise be covered by the chat panel. */
+body.chat-open #back-to-top,
+body.chat-open .recent-bookings-widget {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 
 /* ---------- 19. Animations ---------- */
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6); }
-  70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6); }
+  70%  { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
   100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
 }
 
 @keyframes emergency-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-  70% { box-shadow: 0 0 0 12px rgba(220, 38, 38, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+  70%  { box-shadow: 0 0 0 12px rgba(220, 38, 38, 0); }
   100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
 }
 
 @keyframes slideInRight {
   from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(0);    opacity: 1; }
 }
 
 @keyframes chatIn {
   from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideIn {
   from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(0);    opacity: 1; }
 }
 
 @keyframes slideOut {
@@ -1452,10 +1498,22 @@ nav ul li a:hover::after { width: 100%; }
 .animate-on-scroll.will-animate { opacity: 0; transform: translateY(16px); }
 .animate-on-scroll.visible { opacity: 1; transform: none; }
 
-.toast {
+/* ---------- 20. Toast ---------- */
+/* Container owns positioning; toasts stack inside it. */
+#toast-container {
   position: fixed;
   top: calc(var(--header-h) + 1rem);
-  right: 15px;
+  right: 1rem;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: min(360px, calc(100vw - 2rem));
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
   background: var(--secondary);
   color: var(--white);
   padding: 0.75rem 1rem;
@@ -1467,13 +1525,11 @@ nav ul li a:hover::after { width: 100%; }
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
-  z-index: 10001;
-  max-width: calc(100vw - 2rem);
 }
 
 .toast.success { border-left-color: var(--success); }
-.toast.error { border-left-color: var(--danger-soft); }
-.toast.hide { animation: slideOut 0.3s ease-in forwards; }
+.toast.error   { border-left-color: var(--danger-soft); }
+.toast.hide    { animation: slideOut 0.3s ease-in forwards; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -1489,7 +1545,7 @@ nav ul li a:hover::after { width: 100%; }
   #back-to-top { transition: none; }
 }
 
-/* ---------- 20. Responsive Grid Collapse ---------- */
+/* ---------- 21. Responsive Grid Collapse ---------- */
 @media (max-width: 900px) {
   .hero-content,
   .featured-post-content,
@@ -1500,7 +1556,7 @@ nav ul li a:hover::after { width: 100%; }
   }
 
   .hero-image { order: 2; }
-  .hero-text { order: 1; }
+  .hero-text  { order: 1; }
 }
 
 /* Prevent grid blowout on narrow viewports */
@@ -1509,7 +1565,7 @@ nav ul li a:hover::after { width: 100%; }
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
 }
 
-/* ---------- 21. Utility Classes ---------- */
+/* ---------- 22. Utility Classes ---------- */
 .mt-1 { margin-top: var(--space-xs); }
 .mt-2 { margin-top: var(--space-sm); }
 .mt-3 { margin-top: var(--space-md); }
@@ -1537,10 +1593,7 @@ nav ul li a:hover::after { width: 100%; }
 /* Services page */
 .services-section { padding: var(--space-xl) 0; background: var(--white); }
 
-.services-grid {
-  display: grid;
-  gap: var(--space-lg);
-}
+.services-grid { display: grid; gap: var(--space-lg); }
 
 .service-card {
   background: var(--accent);
@@ -1587,11 +1640,12 @@ nav ul li a:hover::after { width: 100%; }
 
 .faq-category { margin-top: var(--space-lg); margin-bottom: var(--space-sm); }
 
-.faq-category h3 {
+.faq-category h2 {
   font-size: 1.2rem;
   color: var(--primary);
   border-bottom: 2px solid var(--border);
   padding-bottom: 0.5rem;
+  margin-bottom: 0;
 }
 
 .faq-item {
@@ -1843,13 +1897,7 @@ nav ul li a:hover::after { width: 100%; }
 
 .partners-note { text-align: center; color: var(--text-light); font-size: 0.9rem; }
 
-/* Content visibility for perf */
-.content-visibility-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: 800px;
-}
-
-/* ---------- 22. Icon & Initial Avatars ---------- */
+/* ---------- 23. Icon & Initial Avatars ---------- */
 .team-avatar {
   width: 120px;
   height: 120px;
@@ -1892,3 +1940,7 @@ nav ul li a:hover::after { width: 100%; }
   aspect-ratio: 3 / 2;
   object-fit: cover;
 }
+
+/* content-visibility: auto is a useful perf lever but interacts poorly with
+   IntersectionObserver reveals and browser find-in-page. Enable per-section
+   once tested in your target browsers. */

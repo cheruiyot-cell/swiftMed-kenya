@@ -1,27 +1,83 @@
 /* ============================================================
-   swiftMed Kenya – Application Script (v3)
-   All DOM access is guarded so the file works on every page.
+   swiftMed Kenya — Application Script (v4)
+   Author: UI/UX Audit & Redesign
+
+   ARCHITECTURE NOTES
+   ------------------
+   • All DOM access is guarded — this file is loaded on every page.
+   • All user-supplied strings go through textContent, never innerHTML.
+   • All storage calls are wrapped (Safari private mode throws).
+   • MOCK DATA: this build is a portfolio demonstration. See the
+     MOCK DATA block below. In production these values would come
+     from a booking API and a real-time events stream.
+
+   ICON STRATEGY
+   -------------
+   Font Awesome via CDN is used here for reviewer convenience.
+   In a production build, replace with an inline SVG sprite:
+   ~250 KB saved and two third-party origins removed from the
+   critical path. See README.md → "Production checklist".
    ============================================================ */
 'use strict';
 
 /* ---------- Constants ---------- */
 const WHATSAPP_NUMBER = '254702555093';
+const WA_BASE = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 /* ---------- Tiny DOM helpers ---------- */
 const $  = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
+/* ---------- Safe storage ---------- */
+const safeStore = {
+  get(k)     { try { return sessionStorage.getItem(k); } catch { return null; } },
+  set(k, v)  { try { sessionStorage.setItem(k, v); } catch { /* noop */ } },
+  getL(k)    { try { return localStorage.getItem(k); } catch { return null; } },
+  setL(k, v) { try { localStorage.setItem(k, v); } catch { /* noop */ } }
+};
+
+/* ==================== MOCK DATA ====================
+   Everything below is demonstration data for this portfolio build.
+   Replace with real API responses in production.
+   ==================================================== */
+
+const MOCK_RECENT_BOOKINGS = [
+  { name: 'Grace W.', service: 'General Consultation',    time: '2 mins ago'  },
+  { name: 'Brian O.', service: 'Teleconsult',             time: '5 mins ago'  },
+  { name: 'Amina Y.', service: 'Specialist Consultation', time: '8 mins ago'  },
+  { name: 'Peter K.', service: 'Lab Tests',               time: '12 mins ago' },
+  { name: 'Lucy N.',  service: 'General Consultation',    time: '15 mins ago' },
+  { name: 'David M.', service: 'Teleconsult',             time: '20 mins ago' },
+  { name: 'Sarah J.', service: 'General Consultation',    time: '25 mins ago' },
+  { name: 'Kevin O.', service: 'Specialist Consultation', time: '30 mins ago' }
+];
+
+const MOCK_DOCTOR_SHIFTS = {
+  weekday:  { start: 8, end: 20, onShift: 4 },
+  saturday: { start: 9, end: 18, onShift: 3 },
+  sunday:   { onShift: 0 }
+};
+
 /* ==================== Toast ==================== */
 function showToast(message, type = 'success') {
   const container = document.getElementById('toast-container');
   if (!container) return;
+
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.setAttribute('role', 'status');
   toast.setAttribute('aria-live', 'polite');
-  const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
-  toast.innerHTML = `<i class="fa-solid ${icon}" aria-hidden="true"></i><span>${message}</span>`;
+
+  const icon = document.createElement('i');
+  icon.className = `fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}`;
+  icon.setAttribute('aria-hidden', 'true');
+
+  const text = document.createElement('span');
+  text.textContent = message;              // ← never innerHTML
+
+  toast.append(icon, text);
   container.appendChild(toast);
+
   setTimeout(() => {
     toast.classList.add('hide');
     setTimeout(() => toast.remove(), 300);
@@ -30,7 +86,7 @@ function showToast(message, type = 'success') {
 
 /* ==================== WhatsApp helper (popup-blocker safe) ==================== */
 function openWhatsApp(message, { replace = false } = {}) {
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  const url = `${WA_BASE}?text=${encodeURIComponent(message)}`;
   if (replace) window.location.href = url;
   else window.open(url, '_blank', 'noopener,noreferrer');
 }
@@ -39,11 +95,10 @@ function openWhatsApp(message, { replace = false } = {}) {
 function throttle(fn, limit = 100) {
   let waiting = false;
   return function (...args) {
-    if (!waiting) {
-      fn.apply(this, args);
-      waiting = true;
-      setTimeout(() => (waiting = false), limit);
-    }
+    if (waiting) return;
+    fn.apply(this, args);
+    waiting = true;
+    setTimeout(() => { waiting = false; }, limit);
   };
 }
 
@@ -69,6 +124,7 @@ function toggleMobileMenu() {
   const ctaMobile = document.getElementById('header-cta-mobile');
   const hamburger = $('.hamburger');
   if (!nav || !hamburger) return;
+
   const isOpen = !nav.classList.contains('open');
   if (isOpen) {
     nav.classList.add('open');
@@ -86,19 +142,21 @@ document.addEventListener('click', (e) => {
   if (window.innerWidth > 768) return;
   const nav = document.getElementById('mobile-nav');
   if (!nav || !nav.classList.contains('open')) return;
-  if (e.target.closest('.hamburger')) return;
-  if (e.target.closest('#mobile-nav')) return;
+  if (e.target.closest('.hamburger, #mobile-nav')) return;
   closeMobileMenu();
 });
 
-/* ==================== Live availability ticker ==================== */
+/* ==================== Live availability ticker (MOCK) ==================== */
 function getNextAvailableSlot() {
   const now = new Date();
   const next = new Date(now.getTime() + 30 * 60000);
   const mins = next.getMinutes();
-  if (mins < 30) next.setMinutes(30, 0, 0);
-  else next.setMinutes(0, 0, 0), next.setHours(next.getHours() + 1);
-
+  if (mins < 30) {
+    next.setMinutes(30, 0, 0);
+  } else {
+    next.setMinutes(0, 0, 0);
+    next.setHours(next.getHours() + 1);
+  }
   const isToday = next.getDate() === now.getDate();
   const dayLabel = isToday ? 'Today' : 'Tomorrow';
   const timeLabel = next.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
@@ -109,14 +167,20 @@ function getDoctorsOnShift() {
   const now = new Date();
   const h = now.getHours();
   const d = now.getDay();
-  if (d >= 1 && d <= 5) return h >= 8 && h < 20 ? '4 on shift' : 'By appointment';
-  if (d === 6) return h >= 9 && h < 18 ? '3 on shift' : 'By appointment';
+  if (d >= 1 && d <= 5) {
+    const { start, end, onShift } = MOCK_DOCTOR_SHIFTS.weekday;
+    return h >= start && h < end ? `${onShift} on shift` : 'By appointment';
+  }
+  if (d === 6) {
+    const { start, end, onShift } = MOCK_DOCTOR_SHIFTS.saturday;
+    return h >= start && h < end ? `${onShift} on shift` : 'By appointment';
+  }
   return 'By appointment';
 }
 
 function updateWaitlist() {
   const slot = getNextAvailableSlot();
-  $$('.js-next-slot').forEach((el) => (el.textContent = slot));
+  $$('.js-next-slot').forEach((el) => { el.textContent = slot; });
   const docsEl = document.getElementById('wait-doctors');
   if (docsEl) docsEl.textContent = getDoctorsOnShift();
 }
@@ -151,7 +215,6 @@ function updateWaitlist() {
         `Hi swiftMed Kenya, I'd like a pre-verification check.\n` +
         `Name: ${name}\nInsurance: ${provider}\nMember ID: ${memberId}`;
       showToast(`Thanks ${name} — opening WhatsApp…`, 'success');
-      // Replace (not open) so popup blockers can't interfere after the async delay
       openWhatsApp(message, { replace: true });
       verifyBtn.disabled = false;
       btnText.textContent = 'Verify My Coverage Instantly';
@@ -160,33 +223,6 @@ function updateWaitlist() {
     }, 1200);
   });
 })();
-
-/* ==================== Testimonials ==================== */
-const testimonials = [
-  { name: 'Grace Wanjiru', role: 'Entrepreneur, Westlands', text: 'I used to spend half a day at the clinic waiting. Now I book on WhatsApp, walk in at my slot, and I’m out in 20 minutes. This is how healthcare should be.' },
-  { name: 'Brian Ochieng', role: 'Software Developer, Kilimani', text: 'The insurance verification saved me from a huge bill. They confirmed my SHA cover in under a minute before I even visited. No hidden charges, no stress.' },
-  { name: 'Amina Yusuf', role: 'HR Manager, Upper Hill', text: 'Our company moved all staff health to swiftMed. Employees love it because they don’t lose work time. I love it because the billing is automatic. Win-win.' },
-  { name: 'Peter Kariuki', role: 'Small Business Owner, CBD', text: 'I saw the live wait ticker showing zero minutes, so I just walked in. It was true – I was in and out before my tea got cold. Unbelievable.' },
-  { name: 'Lucy Njeri', role: 'Teacher, South B', text: 'The teleconsult option is a lifesaver. I didn’t need to leave the house when my son was sick. The doctor called, gave a prescription, and we were done.' },
-  { name: 'David Mwangi', role: 'Sales Executive, Nairobi', text: 'I always hate the queueing part of visiting a doctor. swiftMed made it feel like a premium experience. The doctor even explained everything clearly.' }
-];
-
-function renderTestimonials() {
-  const grid = document.getElementById('testimonial-grid');
-  if (!grid) return;
-  grid.innerHTML = testimonials.map((t) => `
-    <div class="testimonial-card animate-on-scroll">
-      <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
-      <p class="testimonial-quote">"${t.text}"</p>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar" aria-hidden="true">${t.name.charAt(0)}</div>
-        <div>
-          <div class="testimonial-name">${t.name}</div>
-          <div class="testimonial-role">${t.role}</div>
-        </div>
-      </div>
-    </div>`).join('');
-}
 
 /* ==================== Scroll animation (no-JS safe) ==================== */
 function observeAnimations() {
@@ -209,19 +245,18 @@ function observeAnimations() {
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   elements.forEach((el) => {
-    // Only hide it once we KNOW JS is running
-    el.classList.add('will-animate');
+    el.classList.add('will-animate');   // only hide once JS is confirmed running
     observer.observe(el);
   });
 }
 
-/* ==================== Corporate ==================== */
+/* ==================== Corporate login (demo) ==================== */
 (function initCorporateLogin() {
   const form = document.getElementById('corp-login-form');
   if (!form) return;
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    showToast('Redirecting to secure HR Dashboard…', 'success');
+    showToast('Demo build — HR dashboard not connected.', 'success');
     this.reset();
   });
 })();
@@ -236,12 +271,48 @@ function togglePassword(inputId, btn) {
   btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
 }
 
+/* ==================== Corporate access ==================== */
 (function initCorporateAccess() {
   const form = document.getElementById('corp-access-form');
   if (!form) return;
   const steps = $$('.form-step', form);
   const progressBar = document.getElementById('corp-progress-bar');
   let currentStep = 1;
+
+  function validatePane(pane) {
+    let valid = true;
+    let firstInvalid = null;
+
+    $$('input[required]', pane).forEach((field) => {
+      const error = field.parentElement.querySelector('.error-msg');
+      const empty = !field.value.trim();
+
+      let typeValid = true;
+      if (!empty && field.type === 'tel') {
+        const digits = field.value.replace(/\D/g, '');
+        typeValid = /^(?:254|0)?[71]\d{8}$/.test(digits);
+      }
+      if (!empty && field.type === 'number') {
+        typeValid = Number(field.value) > 0;
+      }
+      if (!empty && field.type === 'email') {
+        typeValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
+      }
+
+      const ok = !empty && typeValid;
+      field.classList.toggle('invalid', !ok);
+      field.setAttribute('aria-invalid', String(!ok));
+      if (error) error.classList.toggle('visible', !ok);
+
+      if (!ok) {
+        valid = false;
+        if (!firstInvalid) firstInvalid = field;
+      }
+    });
+
+    if (firstInvalid) firstInvalid.focus();
+    return valid;
+  }
 
   function showStep(step) {
     steps.forEach((s) => {
@@ -266,20 +337,8 @@ function togglePassword(inputId, btn) {
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
-      const currentPane = form.querySelector(`.form-step[data-step="${currentStep}"]`);
-      let valid = true;
-      $$('input', currentPane).forEach((field) => {
-        const error = field.parentElement.querySelector('.error-msg');
-        if (!field.value.trim()) {
-          field.classList.add('invalid');
-          if (error) error.classList.add('visible');
-          valid = false;
-        } else {
-          field.classList.remove('invalid');
-          if (error) error.classList.remove('visible');
-        }
-      });
-      if (valid) showStep(currentStep + 1);
+      const pane = form.querySelector(`.form-step[data-step="${currentStep}"]`);
+      if (validatePane(pane)) showStep(currentStep + 1);
     });
   }
 
@@ -287,16 +346,22 @@ function togglePassword(inputId, btn) {
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    const inputs = $$('input', form);
-    const hrName = inputs[0]?.value || '';
-    const company = inputs[1]?.value || '';
-    const phone = inputs[2]?.value || '';
-    const employees = inputs[3]?.value || '';
+
+    // Validate BOTH panes on submit — never trust that the user reached
+    // step 2 through the "Next" button (e.g. Enter key from step 1).
+    const pane2 = form.querySelector('.form-step[data-step="2"]');
+    if (!validatePane(pane2)) return;
+
+    // Named access — resilient to markup reordering
+    const get = (id) => (form.querySelector(`#${id}`)?.value || '').trim();
     const message =
       `Hi swiftMed Corporate Concierge,\n\n` +
       `I'd like to request corporate access.\n\n` +
-      `HR Manager: ${hrName}\nCompany: ${company}\n` +
-      `Office Phone: ${phone}\nEmployees: ${employees}`;
+      `HR Manager: ${get('corp-hr-name')}\n` +
+      `Company: ${get('corp-company')}\n` +
+      `Office Phone: ${get('corp-phone')}\n` +
+      `Employees: ${get('corp-employees')}`;
+
     showToast('Request sent! Our concierge will call you within 2 hours.', 'success');
     openWhatsApp(message, { replace: true });
   });
@@ -306,10 +371,10 @@ function togglePassword(inputId, btn) {
 
 /* ==================== Booking Modal ==================== */
 const DOCTOR_FEES = {
-  'Dr. Mwangi': 2500,   // General Physician
-  'Dr. Achieng': 3000,  // Cardiologist
-  'Dr. Kamau': 3000,    // Pediatrician
-  'Dr. Otieno': 3000    // Dermatologist
+  'Dr. Mwangi':  2500,   // General Physician
+  'Dr. Achieng': 3000,   // Cardiologist
+  'Dr. Kamau':   3000,   // Pediatrician
+  'Dr. Otieno':  3000    // Dermatologist
 };
 const TELECONSULT_FEE = 2500;
 
@@ -347,7 +412,7 @@ function generateTimeSlots() {
   const container = document.getElementById('time-slots');
   if (!container) return;
   container.innerHTML = '';
-  const allSlots = ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
+  const allSlots = ['8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'];
   const unavailable = ['11:00 AM', '3:00 PM'];
 
   allSlots.forEach((slot) => {
@@ -386,38 +451,87 @@ function normalizePhone(raw) {
   return digits;
 }
 
+/* ---------- Inline form error helpers (WCAG 3.3.1) ---------- */
+function setFieldError(input, message) {
+  const errorId = input.getAttribute('aria-describedby');
+  const errorEl = errorId ? document.getElementById(errorId) : null;
+  const invalid = Boolean(message);
+
+  input.setAttribute('aria-invalid', String(invalid));
+  input.classList.toggle('invalid', invalid);
+
+  if (errorEl) {
+    errorEl.textContent = message || '';
+    errorEl.classList.toggle('visible', invalid);
+  }
+}
+
+function validatePatientForm() {
+  let firstInvalid = null;
+
+  const rules = [
+    { id: 'patient-fullname', required: true,  message: 'Please enter the patient\'s full name.' },
+    { id: 'patient-phone',    required: true,  message: 'Enter a valid Kenyan phone number (e.g. 0712 345 678).', pattern: /^(?:254|0)?[71]\d{8}$/ },
+    { id: 'patient-email',    required: false, message: 'Please enter a valid email address.', type: 'email' }
+  ];
+
+  rules.forEach(({ id, required, pattern, type, message }) => {
+    const input = document.getElementById(id);
+    if (!input) return;
+
+    const raw = input.value.trim();
+    let ok = true;
+
+    if (required && !raw) {
+      ok = false;
+    } else if (raw && pattern) {
+      ok = pattern.test(raw.replace(/\D/g, ''));
+    } else if (raw && type === 'email') {
+      ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw);
+    }
+
+    setFieldError(input, ok ? '' : message);
+    if (!ok && !firstInvalid) firstInvalid = input;
+  });
+
+  if (firstInvalid) firstInvalid.focus();
+  return !firstInvalid;
+}
+
 function nextStep(step) {
   if (step === 2) {
     if (!bookingState.apptType) { showToast('Please select the type of visit.', 'error'); return; }
-    if (!bookingState.doctor) { showToast('Please select a doctor.', 'error'); return; }
+    if (!bookingState.doctor)   { showToast('Please select a doctor.', 'error'); return; }
   }
 
   if (step === 3) {
     if (!bookingState.time) { showToast('Please select a time slot.', 'error'); return; }
-    const form = document.getElementById('patient-form');
-    if (form && !form.checkValidity()) { form.reportValidity(); return; }
+    if (!validatePatientForm()) return;
 
-    const nameEl = document.getElementById('patient-fullname');
+    const nameEl  = document.getElementById('patient-fullname');
     const phoneEl = document.getElementById('patient-phone');
     const emailEl = document.getElementById('patient-email');
     const notesEl = document.getElementById('patient-notes');
-    const dateEl = document.getElementById('booking-date');
+    const dateEl  = document.getElementById('booking-date');
 
-    bookingState.patient.name = (nameEl?.value || '').trim();
+    bookingState.patient.name  = (nameEl?.value || '').trim();
     bookingState.patient.phone = normalizePhone(phoneEl?.value || '');
     bookingState.patient.email = (emailEl?.value || '').trim();
     bookingState.patient.notes = (notesEl?.value || '').trim();
     bookingState.fee = computeFee();
 
-    const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
-    set('summary-type', bookingState.apptType === 'in-clinic' ? 'In-Clinic' : 'Teleconsult');
-    set('summary-doctor', bookingState.doctor);
-    set('summary-date', dateEl ? dateEl.options[dateEl.selectedIndex].text : '');
-    set('summary-time', bookingState.time);
+    const set = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
+    set('summary-type',    bookingState.apptType === 'in-clinic' ? 'In-Clinic' : 'Teleconsult');
+    set('summary-doctor',  bookingState.doctor);
+    set('summary-date',    dateEl ? dateEl.options[dateEl.selectedIndex].text : '');
+    set('summary-time',    bookingState.time);
     set('summary-patient', bookingState.patient.name);
-    set('summary-phone', bookingState.patient.phone);
-    set('mpesa-phone', bookingState.patient.phone);
-    set('summary-fee', `KES ${bookingState.fee.toLocaleString()}`);
+    set('summary-phone',   bookingState.patient.phone);
+    set('mpesa-phone',     bookingState.patient.phone);
+    set('summary-fee',     `KES ${bookingState.fee.toLocaleString()}`);
   }
 
   $$('.modal-step').forEach((s) => s.classList.remove('active'));
@@ -450,16 +564,18 @@ function simulatePayment() {
       Math.random().toString(36).substring(2, 8).toUpperCase();
     const refEl = document.getElementById('booking-ref');
     if (refEl) refEl.textContent = ref;
+
     showToast('M-PESA payment confirmed! Booking secured.', 'success');
+
     $$('.modal-step').forEach((s) => s.classList.remove('active'));
     document.getElementById('step-4')?.classList.add('active');
     updateProgress(4);
+
     payBtn.disabled = false;
     btnText.textContent = 'Send STK Push';
     spinner.style.display = 'none';
-    try {
-      localStorage.setItem('lastBooking', JSON.stringify({ ...bookingState, ref }));
-    } catch (_) { /* storage may be unavailable */ }
+
+    safeStore.setL('lastBooking', JSON.stringify({ ...bookingState, ref }));
   }, 1800);
 }
 
@@ -469,6 +585,10 @@ function resetBookingModal() {
   $$('.doctor-card').forEach((c) => c.classList.remove('selected'));
   $$('.slot-btn').forEach((b) => b.classList.remove('selected'));
   document.getElementById('patient-form')?.reset();
+  ['patient-fullname', 'patient-phone', 'patient-email'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) setFieldError(el, '');
+  });
   const dateEl = document.getElementById('booking-date');
   if (dateEl) dateEl.selectedIndex = 0;
 }
@@ -484,9 +604,11 @@ function openBookingModal() {
   resetBookingModal();
   const modal = document.getElementById('booking-modal');
   if (!modal) return;
+
   lastFocusedElement = document.activeElement;
   modal.classList.add('active');
   document.body.classList.add('modal-open');
+
   document.getElementById('step-1')?.classList.add('active');
   ['step-2', 'step-3', 'step-4'].forEach((id) => document.getElementById(id)?.classList.remove('active'));
   updateProgress(1);
@@ -508,7 +630,6 @@ function closeBookingModal() {
   }
 }
 
-/* Modal keyboard + overlay behaviour */
 (function initModalBehaviour() {
   const modal = document.getElementById('booking-modal');
   if (!modal) return;
@@ -525,13 +646,12 @@ function closeBookingModal() {
       closeBookingModal();
       return;
     }
-
     if (e.key !== 'Tab') return;
 
     const focusable = getFocusable(modal);
     if (!focusable.length) return;
     const first = focusable[0];
-    const last = focusable[focusable.length - 1];
+    const last  = focusable[focusable.length - 1];
 
     if (e.shiftKey && document.activeElement === first) {
       e.preventDefault();
@@ -546,14 +666,33 @@ function closeBookingModal() {
 /* ==================== Symptom Checker ==================== */
 function routeSpecialist() {
   const select = document.getElementById('symptom-select');
-  if (!select) return;
-  const symptom = select.value;
-  if (!symptom) { showToast('Please select a symptom.', 'error'); return; }
-  showToast(`Based on your symptoms, we recommend our ${symptom}.`, 'success');
-  setTimeout(() => openBookingModal(), 900);
+  if (!select || !select.value) {
+    showToast('Please select a symptom.', 'error');
+    return;
+  }
+  const opt = select.selectedOptions[0];
+  const doctor = opt.dataset.doctor || select.value.split(' (')[0];
+
+  showToast(`Based on your symptoms, we recommend ${doctor}.`, 'success');
+
+  openBookingModal();
+  setTimeout(() => {
+    document.querySelector('.type-card')?.click();       // default to In-Clinic
+    $$('.doctor-card').forEach((card) => {
+      if (card.querySelector('strong')?.textContent === doctor) card.click();
+    });
+  }, 150);
 }
 
 /* ==================== Emergency ==================== */
+function closeEmergencyMenu() {
+  const menu = document.getElementById('emergency-menu');
+  const fab = $('.emergency-fab');
+  if (!menu) return;
+  menu.classList.remove('active');
+  if (fab) fab.setAttribute('aria-expanded', 'false');
+}
+
 function toggleEmergencyMenu() {
   const menu = document.getElementById('emergency-menu');
   const fab = $('.emergency-fab');
@@ -636,10 +775,10 @@ const onScroll = throttle(() => {
 window.addEventListener('scroll', onScroll, { passive: true });
 
 /* ==================== Chat Widget ==================== */
-function toggleChat() {
-  const win = document.getElementById('chat-window');
-  const badge = document.querySelector('.chat-badge');
-  const toggle = document.getElementById('chat-toggle');
+function toggleChat({ focus = true } = {}) {
+  const win     = document.getElementById('chat-window');
+  const badge   = document.querySelector('.chat-badge');
+  const toggle  = document.getElementById('chat-toggle');
   if (!win) return;
 
   const open = win.classList.toggle('open');
@@ -647,14 +786,14 @@ function toggleChat() {
   if (toggle) toggle.setAttribute('aria-expanded', String(open));
   document.body.classList.toggle('chat-open', open);
 
-  if (open) {
+  if (open && focus) {
     setTimeout(() => document.getElementById('chat-input')?.focus(), 250);
   }
 }
 
 function closeChat() {
   const win = document.getElementById('chat-window');
-  if (!win) return;
+  if (!win || !win.classList.contains('open')) return;
   win.classList.remove('open');
   document.body.classList.remove('chat-open');
   document.getElementById('chat-toggle')?.setAttribute('aria-expanded', 'false');
@@ -669,7 +808,7 @@ function sendChatMessage() {
 
   const sentMsg = document.createElement('div');
   sentMsg.className = 'chat-message user-message';
-  sentMsg.textContent = message;
+  sentMsg.textContent = message;                       // ← textContent
   chatBody.appendChild(sentMsg);
   chatBody.scrollTop = chatBody.scrollHeight;
   input.value = '';
@@ -679,33 +818,57 @@ function sendChatMessage() {
   setTimeout(() => {
     const botMsg = document.createElement('div');
     botMsg.className = 'chat-message bot-message';
-    botMsg.innerHTML = `<p>Thanks! Opening WhatsApp so a real person can help.</p><p>For urgent issues call <strong>0702 555 093</strong>.</p>`;
+    const p1 = document.createElement('p');
+    p1.textContent = 'Thanks! Opening WhatsApp so a real person can help.';
+    const p2 = document.createElement('p');
+    p2.append('For urgent issues call ');
+    const strong = document.createElement('strong');
+    strong.textContent = '0702 555 093';
+    p2.append(strong, '.');
+    botMsg.append(p1, p2);
     chatBody.appendChild(botMsg);
     chatBody.scrollTop = chatBody.scrollHeight;
   }, 900);
 }
 
-/* ==================== Recent activity widget ==================== */
-const recentBookings = [
-  { name: 'Grace W.', service: 'General Consultation', time: '2 mins ago' },
-  { name: 'Brian O.', service: 'Teleconsult', time: '5 mins ago' },
-  { name: 'Amina Y.', service: 'Specialist Consultation', time: '8 mins ago' },
-  { name: 'Peter K.', service: 'Lab Tests', time: '12 mins ago' },
-  { name: 'Lucy N.', service: 'General Consultation', time: '15 mins ago' },
-  { name: 'David M.', service: 'Teleconsult', time: '20 mins ago' },
-  { name: 'Sarah J.', service: 'General Consultation', time: '25 mins ago' },
-  { name: 'Kevin O.', service: 'Specialist Consultation', time: '30 mins ago' }
-];
+/* Outside-click + Escape close for chat & emergency menu */
+document.addEventListener('click', (e) => {
+  const win = document.getElementById('chat-window');
+  if (win?.classList.contains('open') && !e.target.closest('#chat-window, #chat-toggle')) {
+    closeChat();
+  }
+  const em = document.getElementById('emergency-menu');
+  if (em?.classList.contains('active') && !e.target.closest('.emergency-fab-container')) {
+    closeEmergencyMenu();
+  }
+});
 
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  // Booking modal handles its own Escape (with preventDefault)
+  if (document.getElementById('booking-modal')?.classList.contains('active')) return;
+  closeChat();
+  closeEmergencyMenu();
+  closeMobileMenu();
+});
+
+/* ==================== Recent activity widget (MOCK) ==================== */
 let bookingIndex = 0;
 
 function showRecentBooking() {
   const content = document.getElementById('recent-bookings-content');
   if (!content) return;
-  const booking = recentBookings[bookingIndex % recentBookings.length];
-  content.innerHTML =
-    `<p class="recent-booking-item">${booking.name} booked a ${booking.service}</p>` +
-    `<p class="recent-booking-time">${booking.time}</p>`;
+  const booking = MOCK_RECENT_BOOKINGS[bookingIndex % MOCK_RECENT_BOOKINGS.length];
+
+  const p1 = document.createElement('p');
+  p1.className = 'recent-booking-item';
+  p1.textContent = `${booking.name} booked a ${booking.service}`;
+
+  const p2 = document.createElement('p');
+  p2.className = 'recent-booking-time';
+  p2.textContent = booking.time;
+
+  content.replaceChildren(p1, p2);
   bookingIndex++;
 }
 
@@ -729,53 +892,21 @@ function initRecentBookingsWidget() {
   }, 90000);
 }
 
-/* ==================== Blog ==================== */
-const blogPosts = [
-  { title: "Managing Hypertension in Nairobi's Fast-Paced Life", excerpt: "High blood pressure is on the rise among young professionals. Here's how to keep it under control with simple lifestyle changes.", author: "Dr. Achieng", date: "Aug 20, 2026", readTime: "6 min read", category: "Heart Health", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=400&auto=format&fit=crop", link: "#" },
-  { title: "5 Common Skin Problems in Kenya and How to Treat Them", excerpt: "From acne to eczema, our dermatologist Dr. Otieno shares tips for healthy skin in the Kenyan climate.", author: "Dr. Otieno", date: "Aug 15, 2026", readTime: "5 min read", category: "Dermatology", image: "https://images.unsplash.com/photo-1552642986-ccb41e7059e7?q=80&w=400&auto=format&fit=crop", link: "#" },
-  { title: "Childhood Vaccinations: What Parents in Nairobi Need to Know", excerpt: "Keep your child safe with the right vaccination schedule. Our pediatrician explains what's required and when.", author: "Dr. Kamau", date: "Aug 10, 2026", readTime: "8 min read", category: "Pediatrics", image: "https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=400&auto=format&fit=crop", link: "#" },
-  { title: "Working from Home? Here's How to Avoid Back Pain", excerpt: "Desk jobs and remote work are causing a spike in back problems. Our general physician shares simple stretches to stay pain-free.", author: "Dr. Mwangi", date: "Aug 5, 2026", readTime: "4 min read", category: "Wellness", image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=400&auto=format&fit=crop", link: "#" },
-  { title: "The Ultimate Guide to a Balanced Kenyan Diet", excerpt: "Githeri, sukuma wiki, ugali—how to eat healthy without breaking the bank. Our nutritionist-approved tips.", author: "Dr. Mwangi", date: "Jul 28, 2026", readTime: "7 min read", category: "Nutrition", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400&auto=format&fit=crop", link: "#" },
-  { title: "When Should You See a Doctor? Don't Ignore These Symptoms", excerpt: "Persistent fatigue, unexplained weight loss, sudden headaches—know when it's time to get professional help.", author: "Dr. Achieng", date: "Jul 20, 2026", readTime: "5 min read", category: "General Health", image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400&auto=format&fit=crop", link: "#" }
-];
-
-function renderBlogPosts() {
-  const grid = document.getElementById('blog-grid');
-  if (!grid) return;
-  grid.innerHTML = blogPosts.map((post) => `
-    <article class="blog-card">
-      <div class="blog-card-image">
-        <img src="${post.image}" alt="" loading="lazy">
-        <span class="blog-category">${post.category}</span>
-      </div>
-      <div class="blog-card-content">
-        <h3><a href="${post.link}">${post.title}</a></h3>
-        <p>${post.excerpt}</p>
-        <div class="post-meta">
-          <span><i class="fa-solid fa-user-doctor" aria-hidden="true"></i> ${post.author}</span>
-          <span><i class="fa-solid fa-clock" aria-hidden="true"></i> ${post.readTime}</span>
-          <span><i class="fa-solid fa-calendar" aria-hidden="true"></i> ${post.date}</span>
-        </div>
-        <a href="${post.link}" class="read-more">Read More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-      </div>
-    </article>`).join('');
-}
-
 /* ==================== Book with a specific doctor (About page) ==================== */
 function bookWithDoctor(btn) {
   const doctor = btn.getAttribute('data-doctor');
+  if (!doctor) return;
   openBookingModal();
   setTimeout(() => {
     $$('.doctor-card').forEach((card) => {
-      const name = card.querySelector('strong')?.textContent;
-      if (name === doctor) card.click();
+      if (card.querySelector('strong')?.textContent === doctor) card.click();
     });
   }, 150);
 }
 
 /* ==================== Global init ==================== */
 document.addEventListener('DOMContentLoaded', () => {
-  /* Register scroll-reveal targets */
+  /* 1. Register scroll-reveal targets */
   const animateSelectors = [
     '.how-it-works .step-card',
     '.corporate-section .corporate-text',
@@ -796,29 +927,31 @@ document.addEventListener('DOMContentLoaded', () => {
     $$(sel).forEach((el) => el.classList.add('animate-on-scroll'));
   });
 
-  renderTestimonials();
-  renderBlogPosts();
   initFaqA11y();
   observeAnimations();
   updateWaitlist();
   setInterval(updateWaitlist, 60000);
   initRecentBookingsWidget();
 
-  /* Wire every .open-booking-modal trigger */
+  /* 2. Wire every .open-booking-modal trigger.
+        If the trigger has href="#" we preventDefault; otherwise (a WhatsApp
+        fallback link) JS replaces the destination with the modal. */
   $$('.open-booking-modal').forEach((btn) => {
-    btn.addEventListener('click', (e) => { e.preventDefault(); openBookingModal(); });
+    btn.addEventListener('click', (e) => {
+      const href = btn.getAttribute('href');
+      if (href === '#') e.preventDefault();
+      openBookingModal();
+    });
   });
 
-  /* Auto-open chat once per session */
+  /* 3. Chat nudge — badge only, never steals focus (WCAG 2.4.3 / 3.2.5) */
   setTimeout(() => {
-    if (sessionStorage.getItem('chatShown')) return;
-    const toggle = document.getElementById('chat-toggle');
-    if (toggle) {
-      toggle.click();
-      sessionStorage.setItem('chatShown', 'true');
-    }
+    if (safeStore.get('chatShown')) return;
+    safeStore.set('chatShown', 'true');
+    const badge = document.querySelector('.chat-badge');
+    if (badge) badge.hidden = false;
   }, 12000);
 
-  /* Re-run scroll handler once on load in case we're already scrolled */
+  /* 4. Re-run scroll handler in case the page loaded already scrolled */
   onScroll();
 });
